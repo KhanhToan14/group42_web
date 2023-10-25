@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true"> <!-- default 1 minutes -->
+
+    <springProfile name="local">
+        <property name="LOG_NAME" value="recruitment" />
+        <property name="LOG_FILE" value="./logs/local/recruitment_error" />
+    </springProfile>
+    <springProfile name="dev">
+        <property name="LOG_FILE" value="./logs/dev/recruitment_error" />
+    </springProfile>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                [${LOG_NAME}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+            </Pattern>
+        </layout>
+    </appender>
+    <logger name="org.springframework" level="info" additivity="false">
+        <appender-ref ref="stdout" />
+    </logger>
+
+    <logger name="com.example.recruitment" level="debug" additivity="false">
+        <appender-ref ref="stdout" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="stdout" />
+        <!-- <appender-ref ref="file" /> -->
+
+    </root>
+
+</configuration>
