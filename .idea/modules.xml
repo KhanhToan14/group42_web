@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.web.recruitment.iml" filepath="$PROJECT_DIR$/.idea/modules/com.web.recruitment.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.web.recruitment.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.web.recruitment.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.web.recruitment.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.web.recruitment.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/group42_web.iml" filepath="$PROJECT_DIR$/.idea/group42_web.iml" />
     </modules>
   </component>
