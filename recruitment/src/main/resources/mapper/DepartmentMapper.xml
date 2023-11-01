@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.recruitment.persistence.mapper.DepartmentMapper">
+    <resultMap id="department" type="com.web.recruitment.persistence.dto.Department">
+        <result column="ID" property="id"/>
+        <result column="NAME" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="DEL_YN" property="delYn"/>
+        <result column="CREATE_DT" property="createDt"/>
+        <result column="UPDATE_DT" property="updateDt"/>
+    </resultMap>
+
+    <sql id="select_department">
+        SELECT *
+        FROM DEPARTMENT_TB
+    </sql>
+    <select id="list_department" resultMap="department" parameterType="map">
+        <include refid="select_department"></include>
+        WHERE DEL_YN = 0
+        ORDER BY CREATE_DT DESC
+    </select>
+    <select id="select" resultMap="department" parameterType="map">
+        <include refid="select_department"></include>
+        WHERE ID = #{id}
+            AND DEL_YN = 0
+    </select>
+</mapper>
