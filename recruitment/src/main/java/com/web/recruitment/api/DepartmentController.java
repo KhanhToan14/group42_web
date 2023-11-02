@@ -8,10 +8,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -36,5 +33,30 @@ public class DepartmentController {
         Map<String, Object> response;
         response = departmentService.select(id);
         return response;
+    }
+    @Operation(summary = "Get department API", description = "get department")
+    @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> getListDepartment(
+            @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
+            @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "createAt") String sortBy,
+            @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
+    ) throws Exception{
+        int pageSizeInt;
+        try {
+            pageSizeInt = Integer.parseInt(pageSize);
+        } catch (NumberFormatException ex) {
+            pageSizeInt = 30;
+        }
+        int currentPageInt;
+        try {
+            currentPageInt = Integer.parseInt(currentPage);
+        } catch (NumberFormatException ex) {
+            currentPageInt = 1;
+        }
+        Map<String, Object> responseBody;
+        responseBody = departmentService.listDepartment(pageSizeInt, currentPageInt, keyword, sortBy, sortType);
+        return responseBody;
     }
 }

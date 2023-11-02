@@ -5,5 +5,5 @@ import java.util.*;
 public interface DepartmentService {
     Map<String, Object> select(int id) throws Exception;
 
-    /*Map<String, Object> listDepartment(int pageSize, int currentPage, String keyword, String sortBy, String sortType);*/
+    Map<String, Object> listDepartment(int pageSize, int currentPage, String keyword, String sortBy, String sortType) throws Exception;
 }
