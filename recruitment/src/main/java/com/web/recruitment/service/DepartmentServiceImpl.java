@@ -19,7 +19,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     }
 
     @Override
-    public Map<String, Object> select(long id) throws Exception{
+    public Map<String, Object> select(int id) throws Exception{
         Map<String, Object> response = new HashMap<>();
         Department department = departmentMapper.select(id);
         response.put("department", department);

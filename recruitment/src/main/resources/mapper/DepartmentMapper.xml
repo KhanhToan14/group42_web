@@ -3,11 +3,11 @@
 <mapper namespace="com.web.recruitment.persistence.mapper.DepartmentMapper">
     <resultMap id="department" type="com.web.recruitment.persistence.dto.Department">
         <result column="ID" property="id"/>
-        <result column="NAME" property="name"/>
+        <result column="DEPARTMENT_NM" property="name"/>
         <result column="DESCRIPTION" property="description"/>
         <result column="DEL_YN" property="delYn"/>
-        <result column="CREATE_DT" property="createDt"/>
-        <result column="UPDATE_DT" property="updateDt"/>
+        <result column="CREATE_AT" property="createAt"/>
+        <result column="UPDATE_AT" property="updateAt"/>
     </resultMap>
 
     <sql id="select_department">
@@ -24,4 +24,17 @@
         WHERE ID = #{id}
             AND DEL_YN = 0
     </select>
+    <!-- list phân trang-->
+    <select id="list" resultMap="department" parameterMap="map">
+        <include refid="select_department"></include>
+        WHERE DEL_YN = 0
+        ORDER BY
+        <if test="sortBy == 'createAT'">
+            CREATE_AT
+        </if>
+        <if test="sortBy == 'name'">
+            NAME
+        </if>
+    </select>
+
 </mapper>
