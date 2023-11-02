@@ -9,7 +9,11 @@
         <result column="CREATE_AT" property="createAt"/>
         <result column="UPDATE_AT" property="updateAt"/>
     </resultMap>
-
+    <resultMap id="departmentInformation" type="com.web.recruitment.api.dto.department.DepartmentInformation">
+        <result column="ID" property="id"/>
+        <result column="DEPARTMENT_NM" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
+    </resultMap>
     <sql id="select_department">
         SELECT *
         FROM DEPARTMENT_TB
@@ -25,16 +29,52 @@
             AND DEL_YN = 0
     </select>
     <!-- list phân trang-->
-    <select id="list" resultMap="department" parameterMap="map">
+    <select id="list" resultMap="departmentInformation" parameterType="map">
         <include refid="select_department"></include>
         WHERE DEL_YN = 0
         ORDER BY
-        <if test="sortBy == 'createAT'">
+        <if test="sortBy == 'createAt'">
             CREATE_AT
         </if>
         <if test="sortBy == 'name'">
-            NAME
+            DEPARTMENT_NM
         </if>
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
     </select>
-
+    <select id="listByName" resultMap="departmentInformation" parameterType="map">
+        <include refid="select_department"></include>
+        WHERE DEPARTMENT_NM LIKE CONCAT("%", #{keyword}, "%")
+            AND DEL_YN = 0
+        ORDER BY
+        <if test="sortBy == 'createAt'">
+            CREATE_AT
+        </if>
+        <if test="sortBy == 'name'">
+            DEPARTMENT_NM
+        </if>
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="total" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM DEPARTMENT_TB
+        WHERE DEL_YN = 0
+    </select>
+    <select id="totalByKeyword" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM DEPARTMENT_TB
+        WHERE DEL_YN = 0
+            AND DEPARTMENT_NM LIKE CONCAT("%", #{keyword}, "%")
+    </select>
 </mapper>
