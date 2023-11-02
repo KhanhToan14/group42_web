@@ -31,7 +31,7 @@ public class DepartmentController {
     @Operation(summary = "Select department API", description = "select department")
     @GetMapping(path = "/select/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> selectDepartment(
-            @PathVariable("id") Long id
+            @PathVariable("id") int id
     ) throws Exception {
         Map<String, Object> response;
         response = departmentService.select(id);
