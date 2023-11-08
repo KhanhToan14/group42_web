@@ -1,5 +1,6 @@
 package com.web.recruitment.persistence.mapper;
 
+import com.web.recruitment.api.dto.department.DepartmentInsert;
 import com.web.recruitment.persistence.dto.Department;
 import java.util.*;
 public interface DepartmentMapper {
@@ -12,4 +13,8 @@ public interface DepartmentMapper {
     int totalByKeyword(Map<String, Object> reqMap) throws Exception;
 
     List<Department> listByName(Map<String, Object> reqMap) throws Exception;
+
+    int insert(DepartmentInsert departmentInsert) throws Exception;
+
+    int selectByName(Map<String, Object> reqMap) throws Exception;
 }

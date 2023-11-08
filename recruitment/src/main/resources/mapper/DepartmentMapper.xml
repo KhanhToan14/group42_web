@@ -12,11 +12,17 @@
     <resultMap id="departmentInformation" type="com.web.recruitment.api.dto.department.DepartmentInformation">
         <result column="ID" property="id"/>
         <result column="DEPARTMENT_NM" property="name"/>
-        <result column="DESCRIPTION" property="description"/>
     </resultMap>
     <sql id="select_department">
         SELECT *
         FROM DEPARTMENT_TB
+    </sql>
+    <sql id="update_department">
+        UPDATE
+            DEPARTMENT_TB
+        SET DEPARTMENT_NM = BINARY#{name}
+            , DESCRIPTION = #{description}
+            , UPDATE_AT = NOW()
     </sql>
     <select id="list_department" resultMap="department" parameterType="map">
         <include refid="select_department"></include>
@@ -76,5 +82,33 @@
         FROM DEPARTMENT_TB
         WHERE DEL_YN = 0
             AND DEPARTMENT_NM LIKE CONCAT("%", #{keyword}, "%")
+    </select>
+    <insert id="insert" parameterType="com.web.recruitment.api.dto.department.DepartmentInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+            DEPARTMENT_TB
+            (
+                DEPARTMENT_NM
+                , DESCRIPTION
+                , DEL_YN
+                , CREATE_AT
+                , UPDATE_AT
+            )
+        VALUES
+            (
+                BINARY#{name}
+                , #{description}
+                , 0
+                , NOW()
+                , NOW()
+            )
+    </insert>
+
+    <select id="selectByName" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM DEPARTMENT_TB
+        WHERE DEPARTMENT_NM = BINARY#{name}
+            AND DEL_YN = 0
     </select>
 </mapper>

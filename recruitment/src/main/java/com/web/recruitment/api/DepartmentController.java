@@ -1,5 +1,6 @@
 package com.web.recruitment.api;
 
+import com.web.recruitment.api.dto.department.DepartmentInsert;
 import com.web.recruitment.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -34,7 +35,7 @@ public class DepartmentController {
         response = departmentService.select(id);
         return response;
     }
-    @Operation(summary = "Get department API", description = "get department")
+    @Operation(summary = "Get list department API", description = "get list department")
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> getListDepartment(
             @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
@@ -59,4 +60,20 @@ public class DepartmentController {
         responseBody = departmentService.listDepartment(pageSizeInt, currentPageInt, keyword, sortBy, sortType);
         return responseBody;
     }
+
+    @Operation(summary = "Insert department API", description = "Insert department")
+    @GetMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> insertDepartment(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "description", required = false) String description
+    )
+    throws Exception{
+        Map<String, Object> response;
+        DepartmentInsert departmentInsert = new DepartmentInsert();
+        departmentInsert.setName(name);
+        departmentInsert.setDescription(description);
+        response = departmentService.insert(departmentInsert);
+        return response;
+    }
+
 }
