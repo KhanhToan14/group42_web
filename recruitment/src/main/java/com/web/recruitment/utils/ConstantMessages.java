@@ -12,6 +12,12 @@ public class ConstantMessages {
     public static final String SORT_TYPE = "sortType";
     public static final String SORT_BY = "sortBy";
 
+    public static final String MESSAGE = "message";
+    public static final String NAME = "name";
+    public static final String NAME_NOT_NULL_ERROR = "NameNotNull";
+    public static final String NAME_EXIST = "NameExist";
     //
     public static final String DEPARTMENT = "department";
+    public static final String SUCCESS_INSERT_DEPARTMENT = "SuccessInsertDepartment";
+
 }

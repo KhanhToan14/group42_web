@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Department {
-    private long id;
+    private int id;
     private String name;
     private String description;
     private int delYn;
