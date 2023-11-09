@@ -62,16 +62,12 @@ public class DepartmentController {
     }
 
     @Operation(summary = "Insert department API", description = "Insert department")
-    @GetMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> insertDepartment(
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "description", required = false) String description
+            @RequestBody() DepartmentInsert departmentInsert
     )
     throws Exception{
         Map<String, Object> response;
-        DepartmentInsert departmentInsert = new DepartmentInsert();
-        departmentInsert.setName(name);
-        departmentInsert.setDescription(description);
         response = departmentService.insert(departmentInsert);
         return response;
     }
