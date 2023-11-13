@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static com.web.recruitment.utils.ConstantMessages.*;
@@ -179,14 +180,55 @@ public class DepartmentServiceImpl implements DepartmentService{
 
     @Override
     public Map<String, Object> delete (int id) throws Exception{
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> subResError = new HashMap<>();
+        Map<String, Object> resError = new HashMap<>();
         if(departmentMapper.select(id) == null){
-            throw new NotFoundException(ID, ID_NOT_EXIST_ERROR);
+            subResError.put(ID, ID_NOT_EXIST_ERROR);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
         }
-        return null;
+        departmentMapper.delete(id);
+        resError.put(MESSAGE, SUCCESS_DELETE_DEPARTMENT);
+        return resError;
     }
     @Override
-    public Map<String, Object> deleteChoice(List<Integer> id) throws Exception{
-        return null;
+    public Map<String, Object> deleteChoice(List<Integer> ids) throws Exception{
+        Map<String, Object> subResError = new HashMap<>();
+        Map<String, Object> resError = new HashMap<>();
+        ArrayList<Integer> idsDeleteSuccess = new ArrayList<>();
+        ArrayList<Integer> idsDeleteNotSuccess = new ArrayList<>();
+        int validId;
+        int idsSize = ids.size();
+        if(idsSize > 0){
+            for(Integer id : ids){
+                if(departmentMapper.select(id) == null){
+                    idsDeleteNotSuccess.add(id);
+                } else {
+                    validId = id;
+                    idsDeleteSuccess.add(validId);
+                    departmentMapper.delete(id);
+                }
+            }
+        } else {
+            subResError.put(DELETE_IDS, DELETE_IDS_MUST_NOT_NULL_OR_EMPTY);
+            resError.put(MESSAGE, ConstantMessages.INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        }
+        if(idsDeleteSuccess.size() > 0){
+            if (idsDeleteNotSuccess.size() > 0){
+                resError.put(LIST_ID_CAN_NOT_DELETE, idsDeleteNotSuccess);
+                resError.put(LIST_ID_DELETED, idsDeleteSuccess);
+                resError.put(MESSAGE, SUCCESS_DELETE_DEPARTMENT);
+            } else{
+                resError.put(MESSAGE, SUCCESS_DELETE_DEPARTMENT);
+            }
+        } else {
+            subResError.put(DELETE_IDS, IDS_INVALID);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+        }
+        return resError;
     }
 }

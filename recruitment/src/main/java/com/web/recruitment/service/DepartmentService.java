@@ -15,6 +15,6 @@ public interface DepartmentService {
 
     Map<String, Object> delete(int id) throws Exception;
 
-    Map<String, Object> deleteChoice(List<Integer> id) throws Exception;
+    Map<String, Object> deleteChoice(List<Integer> ids) throws Exception;
 
 }
