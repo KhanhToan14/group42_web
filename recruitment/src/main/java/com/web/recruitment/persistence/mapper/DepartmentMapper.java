@@ -11,10 +11,6 @@ public interface DepartmentMapper {
 
     int total(Map<String, Object> reqMap) throws Exception;
 
-    int totalByKeyword(Map<String, Object> reqMap) throws Exception;
-
-    List<Department> listByName(Map<String, Object> reqMap) throws Exception;
-
     int insert(DepartmentInsert departmentInsert) throws Exception;
 
     int selectByName(Map<String, Object> reqMap) throws Exception;
