@@ -1,5 +1,6 @@
 package com.web.recruitment.api;
 
+import com.web.recruitment.api.dto.DeleteRequest;
 import com.web.recruitment.api.dto.department.DepartmentInsert;
 import com.web.recruitment.api.dto.department.DepartmentUpdate;
 import com.web.recruitment.service.DepartmentService;
@@ -95,6 +96,35 @@ public class DepartmentController {
         resError = departmentService.update(departmentUpdate);
         res = new JSONObject(resError);
         if (resError.get(MESSAGE).equals(SUCCESS_UPDATE_DEPARTMENT)){
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @Operation(summary = "Delete department API", description = "Delete department")
+    @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteDepartment(
+            @PathVariable("id") int id
+    ) throws Exception{
+        JSONObject res;
+        Map<String, Object> resError;
+        resError = departmentService.delete(id);
+        res = new JSONObject(resError);
+        if(resError.get(MESSAGE).equals(SUCCESS_DELETE_DEPARTMENT)){
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+    @Operation(summary = "Delete departments API", description = "Delete departments")
+    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteDepartments(
+            @RequestBody DeleteRequest deleteRequest
+    ) throws Exception{
+        JSONObject res;
+        Map<String, Object> resError;
+        resError = departmentService.deleteChoice(deleteRequest.getDeleteIds());
+        res = new JSONObject(resError);
+        if(resError.get(MESSAGE).equals(SUCCESS_DELETE_DEPARTMENT)){
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
