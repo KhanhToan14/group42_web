@@ -36,23 +36,34 @@ public class DepartmentServiceImpl implements DepartmentService{
         return response;
     }
     @Override
-    public Map<String, Object> listDepartment(int pageSize, int currentPage, String keyword, String sortBy, String sortType) throws Exception {
-        List<Department> retList = null;
+    public Map<String, Object> listDepartment(Map<String, Object> filter) throws Exception {
+        List<Department> retList;
         Map<String, Object> reqInfo = new HashMap<>();
-        Map<String, Object> reqMap = new HashMap<>();
-        int total;
-        int limit;
-        int offset;
+        int pageSize = (int) filter.get(PAGE_SIZE);
+        int currentPage = (int) filter.get(CURRENT_PAGE);
+        if (currentPage <= 0) {
+            currentPage = 1;
+        }
+        if (pageSize <= 0) {
+            pageSize = 30;
+        }
+        int total = departmentMapper.total(filter);
+        int limit = pageSize;
+        int offset = pageSize * (currentPage - 1);
+        filter.put(LIMIT, limit);
+        filter.put(OFFSET, offset);
+        String sortBy = (String) filter.get(SORT_BY);
+        String sortType = (String) filter.get(SORT_TYPE);
         if (sortBy == null || sortBy.isBlank()) {
-            sortBy = "createAt";
+            sortBy = "time";
         } else {
             sortBy = sortBy.trim();
-            if (!sortBy.equals("name") && !sortBy.equals("createAt")) {
-                sortBy = "createAt";
+            if (!sortBy.equals("name") && !sortBy.equals("time")) {
+                sortBy = "time";
             }
         }
         if (sortType == null || sortType.isBlank()) {
-            if (sortBy.equals("createAt")) {
+            if (sortBy.equals("time")) {
                 sortType = "desc";
             } else {
                 sortType = "asc";
@@ -63,31 +74,9 @@ public class DepartmentServiceImpl implements DepartmentService{
                 sortType = "asc";
             }
         }
-
-        if (currentPage <= 0) {
-            currentPage = 1;
-        }
-        if (pageSize <= 0) {
-            pageSize = 30;
-        }
-        limit = pageSize;
-        offset = pageSize * (currentPage - 1);
-        if (offset < 0) {
-            return null;
-        }
-        reqMap.put(LIMIT, limit);
-        reqMap.put(OFFSET, offset);
-        reqMap.put(SORT_BY, sortBy);
-        reqMap.put(SORT_TYPE, sortType);
-        if(keyword == null || keyword.trim().equals("")){
-            retList = departmentMapper.list(reqMap);
-            total = retList.size();
-        }
-        else {
-            reqMap.put(KEYWORD, keyword);
-            retList = departmentMapper.listByName(reqMap);
-            total = departmentMapper.totalByKeyword(reqMap);
-        }
+        filter.replace(SORT_BY, sortBy);
+        filter.replace(SORT_TYPE, sortType);
+        retList = departmentMapper.list(filter);
         reqInfo.put(CURRENT_PAGE, currentPage);
         reqInfo.put(PAGE_SIZE, pageSize);
         reqInfo.put(DATA, retList);

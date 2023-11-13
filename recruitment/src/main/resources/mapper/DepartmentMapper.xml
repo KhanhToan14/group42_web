@@ -12,6 +12,7 @@
     <resultMap id="departmentInformation" type="com.web.recruitment.api.dto.department.DepartmentInformation">
         <result column="ID" property="id"/>
         <result column="DEPARTMENT_NM" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
     </resultMap>
     <sql id="select_department">
         SELECT *
@@ -44,27 +45,11 @@
     <select id="list" resultMap="departmentInformation" parameterType="map">
         <include refid="select_department"></include>
         WHERE DEL_YN = 0
+        <if test="keyword != null">
+            AND DEPARTMENT_NM LIKE CONCAT("%", #{keyword}, "%")
+        </if>
         ORDER BY
-        <if test="sortBy == 'createAt'">
-            CREATE_AT
-        </if>
-        <if test="sortBy == 'name'">
-            DEPARTMENT_NM
-        </if>
-        <if test="sortType == 'asc'">
-            ASC
-        </if>
-        <if test="sortType == 'desc'">
-            DESC
-        </if>
-        LIMIT #{limit} OFFSET #{offset}
-    </select>
-    <select id="listByName" resultMap="departmentInformation" parameterType="map">
-        <include refid="select_department"></include>
-        WHERE DEPARTMENT_NM LIKE CONCAT("%", #{keyword}, "%")
-            AND DEL_YN = 0
-        ORDER BY
-        <if test="sortBy == 'createAt'">
+        <if test="sortBy == 'time'">
             CREATE_AT
         </if>
         <if test="sortBy == 'name'">
@@ -82,12 +67,9 @@
         SELECT COUNT(ID)
         FROM DEPARTMENT_TB
         WHERE DEL_YN = 0
-    </select>
-    <select id="totalByKeyword" resultType="int" parameterType="map">
-        SELECT COUNT(ID)
-        FROM DEPARTMENT_TB
-        WHERE DEL_YN = 0
+        <if test="keyword != null">
             AND DEPARTMENT_NM LIKE CONCAT("%", #{keyword}, "%")
+        </if>
     </select>
     <insert id="insert" parameterType="com.web.recruitment.api.dto.department.DepartmentInsert" keyColumn="id"
             keyProperty="id"

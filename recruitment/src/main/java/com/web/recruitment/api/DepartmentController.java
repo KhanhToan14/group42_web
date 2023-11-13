@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.web.recruitment.utils.ConstantMessages.*;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+
+import java.util.HashMap;
 import java.util.Map;
 
 @Tag(name = "Department API", description = "API for functions related to department")
@@ -49,24 +52,35 @@ public class DepartmentController {
             @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
             @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-            @RequestParam(value = "sortBy", required = false, defaultValue = "createAt") String sortBy,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "time") String sortBy,
             @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
     ) throws Exception{
         int pageSizeInt;
-        try {
-            pageSizeInt = Integer.parseInt(pageSize);
-        } catch (NumberFormatException ex) {
-            pageSizeInt = 30;
-        }
         int currentPageInt;
-        try {
-            currentPageInt = Integer.parseInt(currentPage);
-        } catch (NumberFormatException ex) {
+        if (!isNumeric(pageSize)) {
+            pageSizeInt = 30;
+        } else {
+            pageSizeInt = Integer.parseInt(pageSize);
+        }
+        if (!isNumeric(currentPage)) {
             currentPageInt = 1;
+        } else {
+            currentPageInt = Integer.parseInt(currentPage);
         }
         JSONObject res;
+        Map<String, Object> filter = new HashMap<>();
+        filter.put(PAGE_SIZE, pageSizeInt);
+        filter.put(CURRENT_PAGE, currentPageInt);
+        filter.put(SORT_BY, sortBy);
+        filter.put(SORT_TYPE, sortType);
+        if (keyword == null || keyword.trim().equals("")) {
+            filter.put(KEYWORD, null);
+        }
+        else {
+            filter.put(KEYWORD, keyword);
+        }
         Map<String, Object> responseBody;
-        responseBody = departmentService.listDepartment(pageSizeInt, currentPageInt, keyword, sortBy, sortType);
+        responseBody = departmentService.listDepartment(filter);
         res = new JSONObject(responseBody);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
