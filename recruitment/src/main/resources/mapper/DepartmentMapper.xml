@@ -24,6 +24,12 @@
             , DESCRIPTION = #{description}
             , UPDATE_AT = NOW()
     </sql>
+    <sql id="delete_department">
+        UPDATE
+            DEPARTMENT_TB
+        SET DEL_YN = 1
+            , UPDATE_AT = NOW()
+    </sql>
     <select id="list_department" resultMap="department" parameterType="map">
         <include refid="select_department"></include>
         WHERE DEL_YN = 0
@@ -111,4 +117,24 @@
         WHERE DEPARTMENT_NM = BINARY#{name}
             AND DEL_YN = 0
     </select>
+    <update id="update" parameterType="com.web.recruitment.api.dto.department.DepartmentUpdate" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        <include refid="update_department"></include>
+        WHERE ID = #{id}
+            AND DEL_YN = 0
+    </update>
+    <delete id="delete" parameterType="int">
+        <include refid="delete_department"></include>
+        WHERE ID = #{id}
+            AND DEL_YN = 0
+    </delete>
+    <update id="deleteChoice" parameterType="java.util.List">
+        UPDATE
+            DEPARTMENT_TB
+        SET DEL_YN = 1
+        WHERE DEL_YN = 0
+            AND ID IN
+        <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
+    </update>
 </mapper>

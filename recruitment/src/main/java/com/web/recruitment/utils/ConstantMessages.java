@@ -14,10 +14,16 @@ public class ConstantMessages {
 
     public static final String MESSAGE = "message";
     public static final String NAME = "name";
-    public static final String NAME_NOT_NULL_ERROR = "NameNotNull";
+    public static final String NAME_MUST_NOT_NULL = "NameMustNotNull";
     public static final String NAME_EXIST = "NameExist";
+    public static final String ID = "id";
+    public static final String ID_MUST_NOT_NULL = "IdMustNotNull";
+    public static final String ID_NOT_EXIST_ERROR = "IdNotExist";
+    public static final String INVALID_INPUT_MESSAGE = "InvalidInput";
+    public static final String ERRORS = "errors";
     //
     public static final String DEPARTMENT = "department";
     public static final String SUCCESS_INSERT_DEPARTMENT = "SuccessInsertDepartment";
+    public static final String SUCCESS_UPDATE_DEPARTMENT = "SuccessUpdateDepartment";
 
 }

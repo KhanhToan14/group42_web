@@ -1,6 +1,8 @@
 package com.web.recruitment.service;
 
 import com.web.recruitment.api.dto.department.DepartmentInsert;
+import com.web.recruitment.api.dto.department.DepartmentUpdate;
+import com.web.recruitment.exception.NotFoundException;
 import com.web.recruitment.exception.ValidationException;
 import com.web.recruitment.persistence.dto.Department;
 import com.web.recruitment.persistence.mapper.DepartmentMapper;
@@ -95,17 +97,24 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> insert(DepartmentInsert departmentInsert) throws Exception{
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> subResError = new HashMap<>();
+        Map<String, Object> resError = new HashMap<>();
         departmentInsert.setName(autoCorrectFormatName(departmentInsert.getName()));
         String name = departmentInsert.getName();
         if(name == null || name.isBlank()){
-            throw new ValidationException(NAME, NAME_NOT_NULL_ERROR);
+            subResError.put(NAME, NAME_MUST_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
         } else {
             name = name.trim();
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put(NAME, name);
             if(departmentMapper.selectByName(reqMap) != 0){
-                throw new ValidationException(NAME, NAME_EXIST);
+                subResError.put(NAME, NAME_EXIST);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
             } else {
                 departmentInsert.setName(name);
             }
@@ -116,10 +125,68 @@ public class DepartmentServiceImpl implements DepartmentService{
         }else {
             departmentInsert.setDescription(null);
         }
-        int isSuccess = departmentMapper.insert(departmentInsert);
-        if (isSuccess == 1){
-            response.put(MESSAGE, SUCCESS_INSERT_DEPARTMENT);
+        departmentMapper.insert(departmentInsert);
+        resError.put(MESSAGE, SUCCESS_INSERT_DEPARTMENT);
+        return resError;
+    }
+
+    @Override
+    public Map<String, Object> update(DepartmentUpdate departmentUpdate) throws Exception{
+        Map<String, Object> subResError = new HashMap<>();
+        Map<String, Object> resError = new HashMap<>();
+        if(departmentUpdate.getId() == null){
+            subResError.put(ID, ID_MUST_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
         }
-        return response;
+        if(departmentMapper.select(departmentUpdate.getId()) == null){
+            subResError.put(ID, ID_NOT_EXIST_ERROR);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        }
+        departmentUpdate.setName(autoCorrectFormatName(departmentUpdate.getName()));
+        String name = departmentUpdate.getName();
+        if(name == null || name.isBlank()){
+            subResError.put(NAME, NAME_MUST_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            name = name.trim();
+            Map<String, Object> reqMap = new HashMap<>();
+            reqMap.put(NAME, name);
+            if(departmentMapper.selectByName(reqMap) != 0){
+                subResError.put(NAME, NAME_EXIST);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            } else {
+                departmentUpdate.setName(name);
+            }
+        }
+        String description = departmentUpdate.getDescription();
+        if(description != null && !description.trim().equals("")){
+            departmentUpdate.setDescription(autoCorrectFormatName(description));
+        }else {
+            departmentUpdate.setDescription(null);
+        }
+        departmentMapper.update(departmentUpdate);
+        resError.put(MESSAGE, SUCCESS_UPDATE_DEPARTMENT);
+        return resError;
+    }
+
+    @Override
+    public Map<String, Object> delete (int id) throws Exception{
+        Map<String, Object> response = new HashMap<>();
+        if(departmentMapper.select(id) == null){
+            throw new NotFoundException(ID, ID_NOT_EXIST_ERROR);
+        }
+        return null;
+    }
+    @Override
+    public Map<String, Object> deleteChoice(List<Integer> id) throws Exception{
+        return null;
     }
 }

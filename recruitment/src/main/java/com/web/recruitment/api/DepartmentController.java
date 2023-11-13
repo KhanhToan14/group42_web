@@ -1,16 +1,21 @@
 package com.web.recruitment.api;
 
 import com.web.recruitment.api.dto.department.DepartmentInsert;
+import com.web.recruitment.api.dto.department.DepartmentUpdate;
 import com.web.recruitment.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.web.recruitment.utils.ConstantMessages.*;
 import java.util.Map;
 
 @Tag(name = "Department API", description = "API for functions related to department")
@@ -28,16 +33,18 @@ public class DepartmentController {
 
     @Operation(summary = "Select department API", description = "select department")
     @GetMapping(path = "/select/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> selectDepartment(
+    public ResponseEntity<Object> selectDepartment(
             @PathVariable("id") int id
     ) throws Exception {
         Map<String, Object> response;
+        JSONObject res;
         response = departmentService.select(id);
-        return response;
+        res = new JSONObject(response);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "Get list department API", description = "get list department")
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> getListDepartment(
+    public ResponseEntity<Object> getListDepartment(
             @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
             @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
@@ -56,20 +63,41 @@ public class DepartmentController {
         } catch (NumberFormatException ex) {
             currentPageInt = 1;
         }
+        JSONObject res;
         Map<String, Object> responseBody;
         responseBody = departmentService.listDepartment(pageSizeInt, currentPageInt, keyword, sortBy, sortType);
-        return responseBody;
+        res = new JSONObject(responseBody);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @Operation(summary = "Insert department API", description = "Insert department")
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> insertDepartment(
-            @RequestBody() DepartmentInsert departmentInsert
-    )
-    throws Exception{
-        Map<String, Object> response;
-        response = departmentService.insert(departmentInsert);
-        return response;
+    public ResponseEntity<Object> insertDepartment(
+            @RequestBody DepartmentInsert departmentInsert
+    ) throws Exception{
+        JSONObject res;
+        Map<String, Object> resError;
+        resError = departmentService.insert(departmentInsert);
+        res = new JSONObject(resError);
+        if (resError.get(MESSAGE).equals(SUCCESS_INSERT_DEPARTMENT)){
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @Operation(summary = "Update department API", description = "Update department")
+    @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateDepartment(
+            @RequestBody DepartmentUpdate departmentUpdate
+    ) throws Exception{
+        JSONObject res;
+        Map<String, Object> resError;
+        resError = departmentService.update(departmentUpdate);
+        res = new JSONObject(resError);
+        if (resError.get(MESSAGE).equals(SUCCESS_UPDATE_DEPARTMENT)){
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 }
