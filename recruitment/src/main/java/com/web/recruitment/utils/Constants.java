@@ -15,6 +15,8 @@ public class Constants {
 
     public static final String PHONE_NUMBER_84_REGEX = "^\\+84[\\d]{9}$";
 
+    public static final long MAX_IMAGE_SIZE_IN_BYTES = 524880; // 5MB = 5*1024*1024 = 524880 bytes
+
     public static final int DEFAULT_PAGE_SIZE = 30;
 
     public static final int DEFAULT_CURRENT_PAGE = 1;

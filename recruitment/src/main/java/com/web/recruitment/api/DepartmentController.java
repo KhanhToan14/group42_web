@@ -44,7 +44,11 @@ public class DepartmentController {
         JSONObject res;
         response = departmentService.select(id);
         res = new JSONObject(response);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if(response.get(MESSAGE).equals(NOT_FOUND_MESSAGE)){
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        } else{
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
     }
     @Operation(summary = "Get list department API", description = "get list department")
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -112,6 +116,9 @@ public class DepartmentController {
         if (resError.get(MESSAGE).equals(SUCCESS_UPDATE_DEPARTMENT)){
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
+        else if (resError.get(MESSAGE).equals(NOT_FOUND_MESSAGE)){
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
@@ -127,7 +134,7 @@ public class DepartmentController {
         if(resError.get(MESSAGE).equals(SUCCESS_DELETE_DEPARTMENT)){
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
-        return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
     }
     @Operation(summary = "Delete departments API", description = "Delete departments")
     @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)

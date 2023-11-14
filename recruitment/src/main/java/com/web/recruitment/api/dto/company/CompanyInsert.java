@@ -13,9 +13,10 @@ import lombok.Setter;
 public class CompanyInsert {
     @JsonIgnore
     private int id;
+    private String code;
     private String name;
     private String website;
     private String description;
-    private String logoUrl;
+    private String logo;
     private String skills;
 }

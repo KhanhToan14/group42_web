@@ -26,11 +26,28 @@ public class ConstantMessages {
     public static final String LIST_ID_CAN_NOT_DELETE = "listIdCanNotDelete";
     public static final String LIST_ID_DELETED = "listIdDeleted";
     public static final String IDS_INVALID = "IdsInvalid";
+    public static final String NOT_FOUND_MESSAGE = "NotFound";
+    public static final String SOME_THING_WENT_WRONG_MESSAGE = "SomeThingWentWrong";
     //
     public static final String DEPARTMENT = "department";
     public static final String SUCCESS_INSERT_DEPARTMENT = "SuccessInsertDepartment";
     public static final String SUCCESS_UPDATE_DEPARTMENT = "SuccessUpdateDepartment";
     public static final String SUCCESS_DELETE_DEPARTMENT = "SuccessDeleteDepartment";
+    //
+    public static final String COMPANY = "company";
+    public static final String SUCCESS_INSERT_COMPANY = "SuccessInsertCompany";
+    public static final String SUCCESS_UPDATE_COMPANY = "SuccessUpdateCompany";
+    public static final String SUCCESS_DELETE_COMPANY = "SuccessDeleteCompany";
+    public static final String CODE = "code";
+    public static final String CODE_MUST_NOT_NULL = "CodeMustNotNull";
+    public static final String CODE_NOT_EXIST_ERROR = "CodeNotExist";
+    public static final String WEBSITE = "website";
+    public static final String WEBSITE_INVALID = "WebsiteInvalid";
+    public static final String WEBSITE_NOT_EXIST_ERROR = "WebsiteNotExist";
+    public static final String LOGO = "logo";
+    public static final String LOGO_INVALID_ERROR = "LogoMustBeInBase64FormatAndSizeLessThan512KBAndIsOneOfTheFollowingTypesPngJpgJpegSvg";
+    public static final String LOGO_INVALID_SIZE_ERROR = "LogoSizeMustBeSmallerOrEqualTo512KB";
+
 
 
 }
