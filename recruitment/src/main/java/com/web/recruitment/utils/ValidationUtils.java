@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.web.recruitment.utils.Constants.*;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 @Slf4j
@@ -46,15 +47,7 @@ public class ValidationUtils {
         return null;
     }
 
-    public static boolean validateBase64(String base64String) {
-        var decoder = Base64.getDecoder();
-        try {
-            decoder.decode(base64String);
-            return true;
-        } catch (IllegalArgumentException ex) {
-            return false;
-        }
-    }
+
     public static boolean validateDateForm(String date) {
         String[] parts = date.split("-");
 
@@ -112,7 +105,7 @@ public class ValidationUtils {
     }
 
     public static String autoCorrectFormatName(String name) {
-        if(name == null){
+        if (name == null) {
             return null;
         }
         name = name.trim();
@@ -120,5 +113,88 @@ public class ValidationUtils {
         for (int i = name.length() - 1; i > 0; i--)
             if (name.charAt(i) == ' ' && name.charAt(i - 1) == ' ') stringBuilder.deleteCharAt(i);
         return stringBuilder.toString();
+    }
+
+    public static boolean validateWebsite(String website) {
+        int lengthWebsite = website.length();
+        StringBuilder stringBuilder = new StringBuilder(website);
+        for (int i = 0; i < lengthWebsite; i++) {
+            if (website.charAt(i) != ' ') {
+                if (i == 0) {
+                    break;
+                } else {
+                    stringBuilder.delete(0, i - 1);
+                    break;
+                }
+            }
+        }
+        int length1 = stringBuilder.length();
+        for (int i = length1 - 1; i > 0; i--) {
+            if (stringBuilder.charAt(i) != ' ') {
+                if (i == length1){
+                    break;
+                } else {
+                    stringBuilder.delete(i + 1, length1);
+                    break;
+                }
+            }
+        }
+        int length2 = stringBuilder.length();
+        for (int i = 0; i < length2; i++){
+            if (stringBuilder.charAt(i) == ' '){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if a given sting is a valid base 64 string
+     * @Return true if given string is a valid base 64 string, false otherwise
+     */
+    public static boolean validateBase64(String base64String){
+        var decoder = Base64.getDecoder();
+        try {
+            decoder.decode(base64String);
+            return true;
+        } catch (IllegalArgumentException ex){
+            return false;
+        }
+    }
+    /**
+     * Check if a given string is a valid base64 format of an image
+     * @Return true if the given is valid, false otherwise
+     */
+    public static boolean validateImageBase64(String imageBase64){
+        // check type of base64 (png, jpg, jpeg, svg)
+        String[] mimeTypes = new String[]{"data:image/png;base64,", "data:image/jpeg;base64,", "data:image/svg+xml;base64,"};
+        boolean isMimeTypeMatch = false;
+        for (String mimyType : mimeTypes){
+            if(imageBase64.startsWith(mimyType)){
+                isMimeTypeMatch = true;
+                break;
+            }
+        }
+        if (!isMimeTypeMatch) {
+            return false;
+        }
+        // check if content is a valid base64 String
+        String base64Part = imageBase64.substring(imageBase64.indexOf(";base64,") + 8); // ";base64," has 8 characters
+        return validateBase64(base64Part);
+    }
+    /**
+     * Check if image's size is valid. This method assumes that the imageBase64 is a valid base64 string.
+     *
+     * @return true if image's size is valid, false otherwise
+     */
+    public static boolean validateImageSize(String imageBase64) {
+        // extract base64 part from imageBase64
+        String base64Part = imageBase64.substring(imageBase64.indexOf(";base64,") + 8); // ";base64," has 8 characters
+        // count number of "=" characters in the end of base64 part
+        int countEqualChars = base64Part.length() - base64Part.indexOf("=");
+        // calculate image's size from base64 length
+        long originalImageSizeInBytes = base64Part.length() / 4 * 3 - (long) countEqualChars;
+
+        return originalImageSizeInBytes <= MAX_IMAGE_SIZE_IN_BYTES;
     }
 }

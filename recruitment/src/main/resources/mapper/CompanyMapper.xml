@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.recruitment.persistence.mapper.CompanyMapper">
+    <resultMap id="company" type="com.web.recruitment.persistence.dto.Company">
+        <result column="ID" property="id"/>
+        <result column="CODE" property="code"/>
+        <result column="COMPANY_NM" property="name"/>
+        <result column="WEBSITE" property="website"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="LOGO" property="logo"/>
+        <result column="SKILLS" property="skills"/>
+        <result column="DEL_YN" property="delYn"/>
+        <result column="CREATE_AT" property="createAt"/>
+        <result column="UPDATE_AT" property="updateAt"/>
+    </resultMap>
+    <resultMap id="companyInformation" type="com.web.recruitment.api.dto.company.CompanyInformation">
+        <result column="ID" property="id"/>
+        <result column="CODE" property="code"/>
+        <result column="COMPANY_NM" property="name"/>
+        <result column="WEBSITE" property="website"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="LOGO" property="logo"/>
+        <result column="SKILLS" property="skills"/>
+    </resultMap>
+    <sql id="select_company">
+        SELECT *
+        FROM COMPANIES_TB
+    </sql>
+    <sql id="update_company">
+        UPDATE
+        COMPANIES_TB
+        SET CODE = #{code}
+            , COMPANY_NM = BINARY#{name}
+            , WEBSITE = #{website}
+            , DESCRIPTION = #{description}
+            , LOGO = #{logo}
+            , SKILLS = #{skills}
+            , UPDATE_AT = NOW()
+    </sql>
+    <sql id="delete_company">
+        UPDATE
+        COMPANIES_TB
+        SET DEL_YN = 1
+            , UPDATE_AT = NOW()
+    </sql>
+    <select id="list_company" resultMap="company" parameterType="map">
+        <include refid="select_company"></include>
+        WHERE DEL_YN = 0
+        ORDER BY CREATE_DT DESC
+    </select>
+    <select id="select" resultMap="company" parameterType="map">
+        <include refid="select_company"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
+    <!-- list phân trang-->
+    <select id="list" resultMap="companyInformation" parameterType="map">
+        <include refid="select_company"></include>
+        WHERE DEL_YN = 0
+        <if test="keyword != null">
+            AND COMPANY_NM LIKE CONCAT("%", #{keyword}, "%")
+            OR CODE LIKE CONCAT("%", #{code}, "%")
+        </if>
+        ORDER BY
+        <if test="sortBy == 'time'">
+            CREATE_AT
+        </if>
+        <if test="sortBy == 'name'">
+            COMPANY_NM
+        </if>
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="total" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM COMPANIES_TB
+        WHERE DEL_YN = 0
+        <if test="keyword != null">
+            AND COMPANY_NM LIKE CONCAT("%", #{keyword}, "%")
+            OR CODE LIKE CONCAT("%", #{code}, "%")
+        </if>
+    </select>
+    <insert id="insert" parameterType="com.web.recruitment.api.dto.company.CompanyInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+            COMPANIES_TB
+            (
+                CODE
+                , COMPANY_NM
+                , WEBSITE
+                , DESCRIPTION
+                , LOGO
+                , SKILLS
+                , DEL_YN
+                , CREATE_AT
+                , UPDATE_AT
+                )
+            VALUES
+            (
+                #{code}
+                , BINARY#{name}
+                , #{website}
+                , #{description}
+                , #{logo}
+                , #{skills}
+                , 0
+                , NOW()
+                , NOW()
+            )
+    </insert>
+
+    <select id="selectByName" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM COMPANIES_TB
+        WHERE COMPANY_NM = BINARY#{name}
+            AND DEL_YN = 0
+    </select>
+    <update id="update" parameterType="com.web.recruitment.api.dto.company.CompanyUpdate" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        <include refid="update_company"></include>
+        WHERE ID = #{id}
+            AND DEL_YN = 0
+    </update>
+    <delete id="delete" parameterType="int">
+        <include refid="delete_company"></include>
+        WHERE ID = #{id}
+            AND DEL_YN = 0
+    </delete>
+    <update id="deleteChoice" parameterType="java.util.List">
+        UPDATE
+        COMPANIES_TB
+        SET DEL_YN = 1
+        WHERE DEL_YN = 0
+            AND ID IN
+        <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
+    </update>
+    <select id="selectCompanyByCode" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM COMPANIES_TB
+        WHERE CODE = #{code}
+            AND DEL_YN = 0
+    </select>
+    <select id="selectCompanyByWebsite" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM COMPANIES_TB
+        WHERE WEBSITE = #{website}
+            AND DEL_YN = 0
+    </select>
+</mapper>

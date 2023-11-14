@@ -10,10 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompanyUpdate {
-    private int id;
+    private Integer id;
+    private String code;
     private String name;
     private String website;
     private String description;
-    private String logoUrl;
+    private String logo;
     private String skills;
 }

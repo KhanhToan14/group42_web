@@ -11,10 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Company {
     private int id;
+    private String code;
     private String name;
     private String website;
     private String description;
-    private String logoUrl;
+    private String logo;
     private String skills;
     private int delYn;
     private String createAt;

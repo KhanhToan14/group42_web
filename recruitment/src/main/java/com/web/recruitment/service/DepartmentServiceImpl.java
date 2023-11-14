@@ -1,5 +1,6 @@
 package com.web.recruitment.service;
 
+import ch.qos.logback.core.html.NOPThrowableRenderer;
 import com.web.recruitment.api.dto.department.DepartmentInsert;
 import com.web.recruitment.api.dto.department.DepartmentUpdate;
 import com.web.recruitment.exception.NotFoundException;
@@ -31,9 +32,18 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Override
     public Map<String, Object> select(int id) throws Exception{
         Map<String, Object> response = new HashMap<>();
+        Map<String, Object> subResError = new HashMap<>();
+        Map<String, Object> resError = new HashMap<>();
         Department department = departmentMapper.select(id);
-        response.put(DEPARTMENT, department);
-        return response;
+        if(department == null) {
+            subResError.put(ID, ID_NOT_EXIST_ERROR);
+            resError.put(MESSAGE, NOT_FOUND_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            response.put(DEPARTMENT, department);
+            return response;
+        }
     }
     @Override
     public Map<String, Object> listDepartment(Map<String, Object> filter) throws Exception {
@@ -132,7 +142,7 @@ public class DepartmentServiceImpl implements DepartmentService{
         }
         if(departmentMapper.select(departmentUpdate.getId()) == null){
             subResError.put(ID, ID_NOT_EXIST_ERROR);
-            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(MESSAGE, NOT_FOUND_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         }
@@ -173,7 +183,7 @@ public class DepartmentServiceImpl implements DepartmentService{
         Map<String, Object> resError = new HashMap<>();
         if(departmentMapper.select(id) == null){
             subResError.put(ID, ID_NOT_EXIST_ERROR);
-            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(MESSAGE, NOT_FOUND_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         }
