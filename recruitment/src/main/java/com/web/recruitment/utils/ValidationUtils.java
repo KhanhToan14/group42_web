@@ -197,4 +197,14 @@ public class ValidationUtils {
 
         return originalImageSizeInBytes <= MAX_IMAGE_SIZE_IN_BYTES;
     }
+
+    public static boolean validateSalary(Long salaryFrom, Long salaryTo){
+        if(salaryFrom == null && salaryTo == null){
+            return true;
+        } else if (salaryFrom != null && salaryTo != null ){
+            return salaryTo > salaryFrom;
+        } else {
+            return true;
+        }
+    }
 }

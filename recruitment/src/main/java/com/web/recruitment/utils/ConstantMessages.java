@@ -48,6 +48,12 @@ public class ConstantMessages {
     public static final String LOGO_INVALID_ERROR = "LogoMustBeInBase64FormatAndSizeLessThan512KBAndIsOneOfTheFollowingTypesPngJpgJpegSvg";
     public static final String LOGO_INVALID_SIZE_ERROR = "LogoSizeMustBeSmallerOrEqualTo512KB";
 
-
-
+    //
+    public static final String DEPARTMENT_ID = "departmentId";
+    public static final String DEPARTMENT_NOT_FOUND = "DepartmentNotFound";
+    public static final String COMPANY_ID = "companyId";
+    public static final String COMPANY_NOT_FOUND = "CompanyNotFound";
+    public static final String SUCCESS_INSERT_JOB = "SuccessInsertJob";
+    public static final String SALARY = "salary";
+    public static final String SALARY_INVALID = "SalaryInvalid";
 }

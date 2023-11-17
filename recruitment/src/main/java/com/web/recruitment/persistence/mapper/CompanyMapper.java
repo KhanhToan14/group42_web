@@ -1,7 +1,5 @@
 package com.web.recruitment.persistence.mapper;
 
-
-
 import com.web.recruitment.api.dto.company.CompanyInsert;
 import com.web.recruitment.api.dto.company.CompanyUpdate;
 import com.web.recruitment.persistence.dto.Company;
