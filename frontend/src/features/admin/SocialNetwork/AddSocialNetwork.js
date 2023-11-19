@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { addsocialNetwork, socialNetworkData, updatesocialNetwork } from '../Slice/socialNetworkSlice';
 import socialNetworkApi, { } from "../../../api/socialNetworkApi"
 export default function AddSocialNetwork() {
@@ -17,7 +17,7 @@ export default function AddSocialNetwork() {
     }, [])
 
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const actionResult = async (page) => { await dispatch(socialNetworkData(page)) }
 
     const onhandleSubmit = (data) => {
@@ -30,7 +30,7 @@ export default function AddSocialNetwork() {
         setTimeout(() => {
             actionResult({ page: localStorage.getItem("pageSocialNetwork") || 1 });
         }, 700);
-        history.push("/admin/socialNetwork");
+        navigate("/admin/socialNetwork");
     }
     return (
         <div id="admin">

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { GetCategoryHome } from "../../../utils/Functionjs";
 import "../../../styles/Home/ListCategories.scss";
 import SpinLoad from "../../Spin/Spin";
+import { typeWorkData } from "../../../features/admin/Slice/typeWorkSlice";
 export default function ListCategories() {
     const dispatch = useDispatch();
     const actionResult = () => {
@@ -38,7 +39,7 @@ export default function ListCategories() {
                                     <div className="categori__box">
                                         <div className="categori__title">{ok.name}</div>
                                         <div className="categori__icon">
-                                            {ok.icon ? renderHtml(ok.icon) : ""}
+                                            {/* {ok.icon ? renderHtml(ok.icon) : ""} */}
                                         </div>
                                         <div className="categori__total">{ok.length} công việc</div>
                                     </div>

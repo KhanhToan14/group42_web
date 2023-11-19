@@ -11,7 +11,7 @@ import {
 } from "../../../../admin/Slice/companySlice";
 import { useDispatch } from "react-redux";
 import SpinLoad from "../../../Spin/Spin";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 export default function Infor({ id }) {
     const [state, setState] = useState({
@@ -123,7 +123,7 @@ export default function Infor({ id }) {
             );
         }
     };
-    const history = useHistory();
+    const navigate = useNavigate();
     const onSubmit = async (data) => {
 
         if (
@@ -177,7 +177,7 @@ export default function Infor({ id }) {
             setTimeout(() => {
                 actionResult({ page: 1 });
             }, 800);
-            history.push(`/companys/${id}`);
+            navigate(`/companys/${id}`);
         }
     };
     const hangdelimage = (e) => {

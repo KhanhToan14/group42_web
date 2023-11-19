@@ -1,5 +1,5 @@
-import typeWorkApi from "../../../api/typeWorkApi";
-
+// import typeWorkApi from "../../../api/typeWorkApi";
+const typeWorkApi = null
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 export const typeWorkData = createAsyncThunk('typeWorks/typeWorkData', async (page) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,7 +28,7 @@ export default function SocialNetwork() {
         },
     ];
 
-    const match = useRouteMatch();
+    const match = useMatch();
     const socialNetwork = useSelector(
         (state) => state.socialNetworks.socialNetwork.data,
     );
@@ -45,7 +45,7 @@ export default function SocialNetwork() {
         localStorage.setItem("pageSocialNetwork", page);
         actionResult({ page: page });
     }, [page]);
-    const history = useHistory();
+    const navigate = useNavigate();
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatesocialNetwork({ status: 0, id: id }));
@@ -63,7 +63,7 @@ export default function SocialNetwork() {
         });
     };
     const hangdleEdit = (id) => {
-        history.replace(`${match.url}/editSocialNetwork/${id}`);
+        navigate(`${match.url}/editSocialNetwork/${id}`, {replace: true});
     };
     const hangdleDelete = (e) => {
         dispatch(removesocialNetwork(e));

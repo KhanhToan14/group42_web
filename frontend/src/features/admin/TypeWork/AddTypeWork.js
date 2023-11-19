@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { addtypeWork, typeWorkData, updatetypeWork } from '../Slice/typeWorkSlice';
 import typeWorkApi from "../../../api/typeWorkApi"
 export default function AddtypeWork() {
@@ -17,7 +17,7 @@ export default function AddtypeWork() {
     }, [])
 
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const actionResult = async (page) => { await dispatch(typeWorkData(page)) }
 
     const onhandleSubmit = (data) => {
@@ -30,7 +30,7 @@ export default function AddtypeWork() {
         setTimeout(() => {
             actionResult({ page: localStorage.getItem("pagetypeWork") || 1 });
         }, 700);
-        history.push("/admin/typeWork");
+        navigate("/admin/typeWork");
     }
     return (
         <div id="admin">

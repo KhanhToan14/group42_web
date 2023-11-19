@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { storage } from "../../../../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import SpinLoad from "../../../Spin/Spin";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import userApi from "../../../../../api/userApi";
 import { updateuser, userData } from "../../../../admin/Slice/userSlice";
 // import { typeWorkData } from "../../../../admin/Slice/typeWorkSlice";
@@ -133,7 +133,7 @@ export default function Information({ id }) {
         }
     };
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const onSubmit = async (data) => {
         if (
@@ -183,7 +183,7 @@ export default function Information({ id }) {
             setTimeout(() => {
                 actionResult({ page: 1 });
             }, 800);
-            history.push(`/candidates/${id}`);
+            navigate(`/candidates/${id}`);
         }
     };
     const hangdelimage = (e) => {

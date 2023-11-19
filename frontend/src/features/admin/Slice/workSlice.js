@@ -1,5 +1,5 @@
-import workApi from "../../../api/workApi";
-
+// import workApi from "../../../api/workApi";
+const workApi = null
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 export const workData = createAsyncThunk(

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { addcontact, contactData, updatecontact } from '../Slice/contactSlice';
 import contactApi, { } from "../../../api/contactApi"
 export default function Addcontact() {
@@ -17,7 +17,7 @@ export default function Addcontact() {
     }, [])
 
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const actionResult = async (page) => { await dispatch(contactData(page)) }
 
     const onhandleSubmit = (data) => {
@@ -30,7 +30,7 @@ export default function Addcontact() {
         setTimeout(() => {
             actionResult({ page: localStorage.getItem("pageContact") || 1 });
         }, 700);
-        history.push("/admin/contact");
+        navigate("/admin/contact");
     }
     return (
         <div id="admin">

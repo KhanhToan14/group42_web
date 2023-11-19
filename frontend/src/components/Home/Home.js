@@ -6,14 +6,15 @@ import ListCategories from "./ListCategories/ListCategories";
 import ListJobs from "./ListJobs/ListJobs";
 
 export default function Home() {
+    console.log("Home");
     return (
         <div>
             {/* <Menu /> */}
             <Banner />
-            <ListCategories />
+            {/* <ListCategories />
             <ListJobs />
-            <Contact />
-            <Footer />
+            <Contact /> */}
+            {/* <Footer /> */}
         </div>
     );
 }

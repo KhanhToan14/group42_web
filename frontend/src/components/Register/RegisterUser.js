@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { message, Radio, Select } from "antd";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function RegisterUser() {
     const schema = yup.object().shape({
         userName: yup.string().email().required(),
@@ -21,11 +21,11 @@ export default function RegisterUser() {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(schema),
+        // resolver: yupResolver(schema),
     });
     const avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
     const banner = "https://zeru.com/blog/wp-content/uploads/How-Do-You-Have-No-Profile-Picture-on-Facebook_25900";
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const onSubmit = (data) => {
         const asUserRole = [{ roleId: 2 }];
@@ -50,7 +50,7 @@ export default function RegisterUser() {
                     message.info("Email đã được đăng ký!");
                 } else {
                     message.success("Đăng ký tài khoản thành công!");
-                    history.push("/login");
+                    navigate("/login");
                 }
             })
             .catch((er) => {

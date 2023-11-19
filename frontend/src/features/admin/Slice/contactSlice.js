@@ -1,10 +1,10 @@
-import contactApi from "../../../api/contactApi";
-
+// import contactApi from "../../../api/contactApi";
+import {} from "react"
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
-
+const contactApi = null
 export const contactData = createAsyncThunk('contacts/contactData', async (page) => {
-    const contact = await contactApi.getAll(page);
-    return contact;
+    // const contact = await contactApi.getAll(page);
+    // return contact;
 })
 const Contact = createSlice({
     name: "contacts",

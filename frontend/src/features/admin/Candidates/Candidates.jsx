@@ -2,8 +2,8 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Image, Pagination, Popconfirm, Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
-import { Link, useHistory } from "react-router-dom";
+import { useMatch } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { removeuser, userData } from "../Slice/userSlice";
 export default function Candidates() {
     const columns = [
@@ -39,7 +39,7 @@ export default function Candidates() {
         actionResult({ page: page });
     }, [page]);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const onChangePage = (page) => {
         setState({
@@ -47,7 +47,7 @@ export default function Candidates() {
             pageCurent: page,
         });
     };
-    const match = useRouteMatch();
+    const match = useMatch();
     const hangdleDelete = (e) => {
         dispatch(removeuser(e));
         setTimeout(() => {

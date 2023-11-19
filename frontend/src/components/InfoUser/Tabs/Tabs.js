@@ -10,7 +10,7 @@ export default function Tab({ id }) {
                 {/* <TabPane tab="Các công việc đã tạo" key="1">
                     <Jobs />
                 </TabPane> */}
-                <TabPane tab="Công việc đã lưu" key="2">
+                {/* <TabPane tab="Công việc đã lưu" key="2">
                     <WorkSave id={id} />
                 </TabPane>
                 <TabPane tab="Công việc đã ứng tuyển" key="3">
@@ -21,7 +21,7 @@ export default function Tab({ id }) {
                 </TabPane>
                 <TabPane tab="Đổi mật khẩu" key="5">
                     <ChangePassword id={id} />
-                </TabPane>
+                </TabPane> */}
             </Tabs>
         </div>
     )

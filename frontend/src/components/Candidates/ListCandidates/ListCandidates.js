@@ -13,7 +13,7 @@ export default function ListCandidates() {
     const { page } = state;
     const dispatch = useDispatch();
     const actionResult = async (page) => {
-        await dispatch(userData(page));
+        // await dispatch(userData(page));
     };
     useEffect(() => {
         localStorage.setItem("pageUserHome", page);

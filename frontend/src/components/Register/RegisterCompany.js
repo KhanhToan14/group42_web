@@ -3,7 +3,7 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { companyData } from "../../routes/Slice/companySlice";
 export default function RegisterCompany() {
@@ -22,14 +22,14 @@ export default function RegisterCompany() {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(schema),
+        // resolver: yupResolver(schema),
     });
     const banner =
         "https://phuoc-associates.com/wp-content/uploads/2019/10/5-Things-To-Keep-In-Mind-When-Opening-A-Company-In-Vietnam.jpg";
     const avatar =
         "https://www.mintformations.co.uk/blog/wp-content/uploads/2020/05/shutterstock_583717939.jpg";
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const actionResult = () => {
         dispatch(companyData());
     };
@@ -58,7 +58,7 @@ export default function RegisterCompany() {
                     setTimeout(() => {
                         actionResult();
                     }, 700);
-                    history.push("/login");
+                    navigate("/login");
                 }
             })
             .catch((er) => {

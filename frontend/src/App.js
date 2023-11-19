@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  useRouteMatch
+  Routes,
+  useMatch
 } from "react-router-dom";
 import "./App.scss";
-import Company from "./components/Company/Company";
+// import Company from "./components/Company/Company";
 import Home from "./components/Home/Home";
-import InforCompany from "./components/InfoCompany/InfoCompany";
-import InforUser from "./components/InfoUser/InfoUser";
-import Login from "./components/Login/Login";
-import LoginAdmin from "./components/Login/LoginAdmin";
-import Register from "./components/Register/Register";
+// import InforCompany from "./components/InfoCompany/InfoCompany";
+// import InforUser from "./components/InfoUser/InfoUser";
+// import Login from "./components/Login/Login";
+// import LoginAdmin from "./components/Login/LoginAdmin";
+// import Register from "./components/Register/Register";
 import { checkBar } from "./utils/Functionjs";
+// import Candidates from "./components/Candidates/Candidates"
 function App() {
   useEffect(() => {
     checkBar();
@@ -26,39 +27,39 @@ function App() {
   };
 
   const [checkAdmin, setCheckAdmin] = useState();
-  useEffect(() => {
-    checkLoginApi.checkLogin().then((ok) => {
-      let user = ok.data.user.role;
-      if (user === "admin" || user === "grant") {
-        setCheckAdmin(
-          <Route path="/admin">
-            <Ladmin />
-          </Route>,
-        );
-      } else {
-        setCheckAdmin(
-          <Route path="/admin">
-            <Empty />
-          </Route>,
-        );
-      }
-    });
-  }, [isLoad]);
+  // useEffect(() => {
+  //   checkLoginApi.checkLogin().then((ok) => {
+  //     let user = ok.data.user.role;
+  //     if (user === "admin" || user === "grant") {
+  //       setCheckAdmin(
+  //         <Route path="/admin">
+  //           <Ladmin />
+  //         </Route>,
+  //       );
+  //     } else {
+  //       setCheckAdmin(
+  //         <Route path="/admin">
+  //           <Empty />
+  //         </Route>,
+  //       );
+  //     }
+  //   });
+  // }, [isLoad]);
 
   return (
     <div>
       <Router>
-        <Switch>
-          <Route path={["/admin", "/register", "/Login", "/checkadmin", "/loginAdmin", "/",]}>
+        {/* <Routes> */}
+          {/* <Route path={["/admin", "/register", "/Login", "/checkadmin", "/loginAdmin", "/",]}>
             <CheckMenu />
-          </Route>
-        </Switch>
+          </Route> */}
+        {/* </Routes> */}
 
-        <Switch>
-          <Route exact path="/">
-            <Home />
+        <Routes>
+          <Route exact path="/" element={<Home />}>
+            {/* <Home /> */}
           </Route>
-          {checkAdmin}
+          {/* {checkAdmin}
           <Route exact path="/jobs">
             <Jobs />
           </Route>
@@ -94,16 +95,16 @@ function App() {
           </Route>
           <Route exact path="/inforUser">
             <InforUser />
-          </Route>
+          </Route> */}
 
-        </Switch>
+        </Routes>
       </Router>
     </div>
   );
 }
-function Ladmin() {
-  let { path, url } = useRouteMatch();
+// function Ladmin() {
+//   let { path, url } = useMatch();
 
-  return <Admin path={path} url={url} />;
-}
+//   return <Admin path={path} url={url} />;
+// }
 export default App;

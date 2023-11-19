@@ -1,7 +1,7 @@
-import socialNetworkApi from "../../../api/socialNetworkApi";
+// import socialNetworkApi from "../../../api/socialNetworkApi";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
-
+const socialNetworkApi = null
 export const socialNetworkData = createAsyncThunk('socialNetworks/socialNetworkData', async (page) => {
     const socialNetwork = await socialNetworkApi.getAll(page);
     return socialNetwork;

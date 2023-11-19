@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,7 +29,7 @@ export default function CheckCompany() {
         },
     ];
 
-    const match = useRouteMatch();
+    const match = useMatch();
     const checkCompanys = useSelector(
         (state) => state.checkCompanys.checkCompany.data
     );

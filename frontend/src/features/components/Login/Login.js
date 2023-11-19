@@ -1,11 +1,11 @@
 import { Checkbox, message } from "antd";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/Login/Login.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import loginApi from "../../../api/loginApi";
+import loginApi from "../../../";
 export default function Login({ onLogin }) {
     const schema = yup.object().shape({
         userName: yup.string().email().required(),
@@ -18,7 +18,7 @@ export default function Login({ onLogin }) {
     } = useForm({
         resolver: yupResolver(schema),
     });
-    const history = useHistory();
+    const navigate = useNavigate();
     const onSumit = async (data) => {
         await loginApi
             .loginCompany({
@@ -41,14 +41,14 @@ export default function Login({ onLogin }) {
                                 localStorage.setItem("token", ok);
                                 message.success("Đăng nhập thành công!");
                                 onLogin();
-                                history.push("/");
+                                navigate("/");
                             }
                         });
                 } else {
                     localStorage.setItem("token", ok);
                     message.success("Đăng nhập thành công!");
                     onLogin();
-                    history.push("/");
+                    navigate("/");
                 }
             });
     };

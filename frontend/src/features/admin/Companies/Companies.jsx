@@ -2,8 +2,8 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Image, Pagination, Popconfirm, Spin, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
-import { Link, useHistory } from "react-router-dom";
+import { useMatch } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import companyApi from "../../../api/companyApi";
 import { removecompany, companyData } from "../Slice/companySlice";
 export default function Companies() {
@@ -71,7 +71,7 @@ export default function Companies() {
         }, 500);
     };
 
-    const match = useRouteMatch();
+    const match = useMatch();
 
     return (
         <div id="admin">

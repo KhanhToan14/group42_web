@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SpinLoad from "../../Spin/Spin";
 import { formatDateWork } from "../../../utils/Functionjs";
+import { workData } from "../../../features/admin/Slice/workSlice";
 export default function ListJobs() {
     const work = useSelector((state) => state.works.work.data);
     const loading = useSelector((state) => state.works.loading);

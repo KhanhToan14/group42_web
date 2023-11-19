@@ -1,7 +1,7 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
-import { Link, Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, Route, Routes, useNavigate, useMatch } from "react-router-dom";
 import "../../styles/Admin/Nav.scss";
 import CandidateInfor from "../Candidates/CandidateInfor";
 import Candidates from "../Candidates/Candidates";
@@ -18,8 +18,8 @@ import AddTypeWork from "../TypeWork/AddTypeWork";
 import TypeWork from "../TypeWork/TypeWork";
 import CheckJob from "../CheckJob/CheckJob"
 export default function Nav() {
-    const match = useRouteMatch();
-    const history = useHistory();
+    const match = useMatch();
+    const navigate = useNavigate();
 
     // console.log(match);
     const { Header, Sider, Content } = Layout;
@@ -40,7 +40,7 @@ export default function Nav() {
 
     const Logout = () => {
         localStorage.removeItem("token");
-        history.push("/loginAdmin")
+        navigate("/loginAdmin")
     }
 
     return (
@@ -215,7 +215,7 @@ export default function Nav() {
                             minHeight: 280,
                         }}
                     >
-                        <Switch>
+                        <Routes>
                             <Route exact path={match.path}>
                                 <Statistical />
                             </Route>
@@ -278,7 +278,7 @@ export default function Nav() {
                                 <AddTypeWork url={match.url} />
                             </Route>
 
-                        </Switch>
+                        </Routes>
                     </Content>
                 </Layout>
             </Layout>

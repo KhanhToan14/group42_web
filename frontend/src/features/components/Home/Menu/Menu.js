@@ -1,9 +1,9 @@
 import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useMatch } from "react-router-dom";
 import Mn from "./Mn";
 // import "./menujs"
 export default function ListMenu() {
-    const match = useRouteMatch();
+    const match = useMatch();
     let checkMenu = match.isExact;
     return (
         <div>

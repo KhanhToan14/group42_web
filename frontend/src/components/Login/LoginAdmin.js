@@ -1,7 +1,7 @@
 import { Checkbox, message } from "antd";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/Login/Login.scss";
 import * as yup from "yup";
 export default function LoginAdmin({ onLogin }) {
@@ -14,27 +14,27 @@ export default function LoginAdmin({ onLogin }) {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(schema),
+        // resolver: yupResolver(schema),
     });
-    const history = useHistory();
+    const navigate = useNavigate();
     const onSumit = async (data) => {
-        await loginApi
-            .loginAdmin({
-                email: data.userName,
-                password: data.password,
-                status: 1,
-            })
-            .then((ok) => {
-                if (ok !== "err") {
-                    console.log(ok);
-                    localStorage.setItem("token-admin", ok);
-                    message.success("Đăng nhập thành công!");
-                    onLogin();
-                    history.push("/admin");
-                } else {
-                    message.error("Sai tên đăng nhập hoặc mật khẩu!");
-                }
-            });
+        // await loginApi
+        //     .loginAdmin({
+        //         email: data.userName,
+        //         password: data.password,
+        //         status: 1,
+        //     })
+        //     .then((ok) => {
+        //         if (ok !== "err") {
+        //             console.log(ok);
+        //             localStorage.setItem("token-admin", ok);
+        //             message.success("Đăng nhập thành công!");
+        //             onLogin();
+        //             navigate("/admin");
+        //         } else {
+        //             message.error("Sai tên đăng nhập hoặc mật khẩu!");
+        //         }
+        //     });
     };
     return (
         <div className="login">

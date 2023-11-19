@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "../../../styles/Companys/Company.scss";
 import SpinLoad from "../../Spin/Spin";
+import { companyData } from "../../../features/admin/Slice/companySlice";
 export default function Companys() {
     const companys = useSelector((state) => state.companys.company.data);
     const loading = useSelector((state) => state.companys.loading);

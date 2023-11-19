@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import renderHTML from "react-render-html";
@@ -29,7 +29,7 @@ export default function TypeWork() {
         },
     ];
 
-    const match = useRouteMatch();
+    const match = useMatch();
     const typeWork = useSelector((state) => state.typeWorks.typeWork.data);
     const loading = useSelector((state) => state.typeWorks.loading);
     const dispatch = useDispatch();
@@ -44,7 +44,7 @@ export default function TypeWork() {
         localStorage.setItem("pagetypeWork", page);
         actionResult({ page: page });
     }, [page]);
-    const history = useHistory();
+    const navigate = useNavigate();
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatetypeWork({ status: 0, id: id }));
@@ -62,7 +62,7 @@ export default function TypeWork() {
         });
     };
     const hangdleEdit = (id) => {
-        history.replace(`${match.url}/edittypeWork/${id}`);
+        navigate(`${match.url}/edittypeWork/${id}`, { replace: true });
     };
     const hangdleDelete = (e) => {
         dispatch(removetypeWork(e));

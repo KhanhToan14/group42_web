@@ -1,7 +1,7 @@
 import { Checkbox, message } from "antd";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/Login/Login.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -18,7 +18,7 @@ export default function LoginAdmin({ onLogin }) {
     } = useForm({
         resolver: yupResolver(schema),
     });
-    const history = useHistory();
+    const navigate = useNavigate();
     const onSumit = async (data) => {
         await loginApi
             .loginAdmin({
@@ -32,7 +32,7 @@ export default function LoginAdmin({ onLogin }) {
                     localStorage.setItem("token-admin", ok);
                     message.success("Đăng nhập thành công!");
                     onLogin();
-                    history.push("/admin");
+                    navigate("/admin");
                 } else {
                     message.error("Sai tên đăng nhập hoặc mật khẩu!");
                 }

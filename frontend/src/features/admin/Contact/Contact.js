@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,7 +28,7 @@ export default function Contact() {
         },
     ];
 
-    const match = useRouteMatch();
+    const match = useMatch();
     const contact = useSelector((state) => state.contacts.contact.data);
     const loading = useSelector((state) => state.contacts.loading);
     const dispatch = useDispatch();
@@ -43,7 +43,7 @@ export default function Contact() {
         localStorage.setItem("pageContact", page);
         actionResult({ page: page });
     }, [page]);
-    const history = useHistory();
+    const navigate = useNavigate();
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatecontact({ status: 0, id: id }));
@@ -61,7 +61,7 @@ export default function Contact() {
         });
     };
     const hangdleEdit = (id) => {
-        history.replace(`${match.url}/editContact/${id}`);
+        na(`${match.url}/editContact/${id}`);
     };
     const hangdleDelete = (e) => {
         dispatch(removecontact(e));

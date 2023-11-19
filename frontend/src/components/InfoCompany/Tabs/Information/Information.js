@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import JoditEditor from "jodit-react";
 import { useEffect } from "react";
 import { storage } from "../../../../../src/firebase";
@@ -37,9 +38,9 @@ export default function Infor({ id }) {
     const { register, handleSubmit, reset } = useForm();
     const [content, setContent] = useState();
     const getApi = async () => {
-        return await companyApi.getOne(id).then((data) => {
-            return data;
-        });
+        // return await company.getOne(id).then((data) => {
+        //     return data;
+        // });
     };
     useEffect(() => {
         if (id) {
@@ -121,7 +122,7 @@ export default function Infor({ id }) {
             );
         }
     };
-    const history = useHistory();
+    const navigate = useNavigate();
     const onSubmit = async (data) => {
 
         if (
@@ -175,7 +176,7 @@ export default function Infor({ id }) {
             setTimeout(() => {
                 actionResult({ page: 1 });
             }, 800);
-            history.push(`/companys/${id}`);
+            navigate(`/companys/${id}`);
         }
     };
     const hangdelimage = (e) => {

@@ -15,14 +15,14 @@ export const lineSlide = () => {
     var line = $(".line_slide");
     if (line) {
         var tabItem = $$(".item");
-        tabItem.forEach((tab, index) => {
-            tab.onclick = function () {
-                $(".item.active")?.classList?.remove("active");
-                line.style.width = this.offsetWidth + "px";
-                line.style.left = this.offsetLeft + "px";
-                this.classList.add("active");
-            };
-        });
+        // tabItem.forEach((tab, index) => {
+        //     tab.onclick = () => {
+        //         $(".item.active")?.classList?.remove("active");
+        //         line.style.width = this.offsetWidth + "px";
+        //         line.style.left = this.offsetLeft + "px";
+        //         this.classList.add("active");
+        //     };
+        // });
     }
 };
 export const checkBar = (bar_ref, nav_ref, line_ref) => {

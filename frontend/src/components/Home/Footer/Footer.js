@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "../../../styles/Home/Footer.scss";
 import SpinLoad from "../../Spin/Spin";
+import {contactData} from "../../../features/admin/Slice/contactSlice"
+import { socialNetworkData } from "../../../features/admin/Slice/socialNetworkSlice";
 export default function Footer() {
     const dispatch = useDispatch();
     const actionResult = async () => {
