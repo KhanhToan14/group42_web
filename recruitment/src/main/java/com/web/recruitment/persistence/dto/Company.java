@@ -13,10 +13,14 @@ public class Company {
     private int id;
     private String code;
     private String name;
+    private String avatar;
+    private String banner;
     private String website;
+    private String phone;
+    private String email;
     private String description;
-    private String logo;
     private String skills;
+    private int status;
     private int delYn;
     private String createAt;
     private String updateAt;

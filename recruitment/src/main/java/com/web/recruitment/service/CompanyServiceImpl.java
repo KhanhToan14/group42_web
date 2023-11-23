@@ -5,7 +5,6 @@ import com.web.recruitment.api.dto.company.CompanyInsert;
 import com.web.recruitment.api.dto.company.CompanyUpdate;
 import com.web.recruitment.persistence.dto.Company;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
-import com.web.recruitment.utils.ConstantMessages;
 import com.web.recruitment.utils.ImageUtils;
 import com.web.recruitment.utils.ValidationUtils;
 import jakarta.annotation.Resource;
@@ -153,7 +152,8 @@ public class CompanyServiceImpl implements CompanyService{
 
         }
 
-        String logo = companyInsert.getLogo();
+
+        /*String logo = companyInsert.getLogo();
         if (logo == null || logo.isBlank()) {
             companyInsert.setLogo(null);
         } else {
@@ -174,6 +174,35 @@ public class CompanyServiceImpl implements CompanyService{
                 } catch (IOException ex) {
                     resError.put(ERRORS, SOME_THING_WENT_WRONG_MESSAGE);
                 }
+            }
+        }*/
+        String phone = companyInsert.getPhone();
+        if(phone == null || phone.isBlank()){
+            subResError.put(PHONE, PHONE_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            companyInsert.setPhone(validateVietnamesePhoneNumber(phone));
+            if(companyInsert.getPhone() == null){
+                subResError.put(PHONE, PHONE_INVALID);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
+        String email = companyInsert.getEmail();
+        if(email == null || email.isBlank()){
+            subResError.put(EMAIL, EMAIL_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            if(!validateEmail(email)){
+                subResError.put(EMAIL, EMAIL_INVALID);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
             }
         }
         companyMapper.insert(companyInsert);
@@ -238,29 +267,8 @@ public class CompanyServiceImpl implements CompanyService{
                 return resError;
             }
         }
-        String logo = companyUpdate.getLogo();
-        if (logo == null || logo.isBlank()) {
-            companyUpdate.setLogo(null);
-        } else {
-            // validate logo
-            if (!ValidationUtils.validateImageBase64(logo)){
-                subResError.put(LOGO, LOGO_INVALID_ERROR);
-                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
-                resError.put(ERRORS, subResError);
-                return resError;
-            } else if (!ValidationUtils.validateImageSize(logo)){
-                subResError.put(LOGO, LOGO_INVALID_SIZE_ERROR);
-                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
-                resError.put(ERRORS, subResError);
-                return resError;
-            } else {
-                try {
-                    companyUpdate.setLogo(ImageUtils.resize(logo));
-                } catch (IOException ex) {
-                    resError.put(ERRORS, SOME_THING_WENT_WRONG_MESSAGE);
-                }
-            }
-        }
+        String phone = companyUpdate.getPhone();
+        companyUpdate.setPhone(validateVietnamesePhoneNumber(phone));
         companyMapper.update(companyUpdate);
         resError.put(MESSAGE, SUCCESS_UPDATE_COMPANY);
         return resError;
@@ -300,7 +308,7 @@ public class CompanyServiceImpl implements CompanyService{
             }
         } else {
             subResError.put(DELETE_IDS, DELETE_IDS_MUST_NOT_NULL_OR_EMPTY);
-            resError.put(MESSAGE, ConstantMessages.INVALID_INPUT_MESSAGE);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         }

@@ -30,7 +30,10 @@
         <result column="SALARY_FROM" property="salaryFrom"/>
         <result column="SALARY_TO" property="salaryTo"/>
         <result column="CURRENCY" property="currency"/>
-        <result column="STATUS" property="status"/>
+    </resultMap>
+    <resultMap id="jobIntroduction" type="com.web.recruitment.api.dto.Job.JobIntroduction">
+        <result column="JOB_NM" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
     </resultMap>
     <sql id="select_job">
         SELECT *
@@ -72,8 +75,28 @@
     <select id="list" resultMap="jobInformation" parameterType="map">
         <include refid="select_job"></include>
         WHERE DEL_YN = 0
+            AND STATUS = 0
         <if test="keyword != null">
             AND JOB_NM LIKE CONCAT("%", #{keyword}, "%")
+        </if>
+        <if test="employmentType != null">
+            AND EMPLOYMENT_TYPE = #{employmentType}
+        </if>
+        <if test="experience != null">
+            AND EXPERIENCE = #{experience}
+        </if>
+        <if test="salaryFrom == null and salaryTo != null ">
+            AND SALARY_TO &lt; #{salaryTo}
+            AND CURRENCY = #{currency}
+        </if>
+        <if test="salaryFrom != null and salaryTo == null ">
+            AND SALARY_FROM &gt; #{salaryFrom}
+            AND CURRENCY = #{currency}
+        </if>
+        <if test="salaryFrom != null and salaryTo != null ">
+            AND SALARY_FROM &gt; #{salaryFrom}
+            AND SALARY_TO &lt; #{salaryTo}
+            AND CURRENCY = #{currency}
         </if>
         ORDER BY
         <if test="sortBy == 'time'">
@@ -96,6 +119,25 @@
         WHERE DEL_YN = 0
         <if test="keyword != null">
             AND JOB_NM LIKE CONCAT("%", #{keyword}, "%")
+        </if>
+        <if test="employmentType != null">
+            AND EMPLOYMENT_TYPE = #{employmentType}
+        </if>
+        <if test="experience != null">
+            AND EXPERIENCE = #{experience}
+        </if>
+        <if test="salaryFrom == null and salaryTo != null ">
+            AND SALARY_TO &lt; #{salaryTo}
+            AND CURRENCY = #{currency}
+        </if>
+        <if test="salaryFrom != null and salaryTo == null ">
+            AND SALARY_FROM &gt; #{salaryFrom}
+            AND CURRENCY = #{currency}
+        </if>
+        <if test="salaryFrom != null and salaryTo != null ">
+            AND SALARY_FROM &gt; #{salaryFrom}
+            AND SALARY_TO &lt; #{salaryTo}
+            AND CURRENCY = #{currency}
         </if>
     </select>
     <select id="selectByName" resultType="int" parameterType="map">
@@ -128,39 +170,59 @@
             keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
-        JOB_TB
-        (
-        DEPARTMENT_ID
-        , COMPANY_ID
-        , JOB_NM
-        , DESCRIPTION
-        , LOCATION
-        , EMPLOYMENT_TYPE
-        , EXPERIENCE
-        , SALARY_FROM
-        , SALARY_TO
-        , CURRENCY
-        , STATUS
-        , DEL_YN
-        , CREATE_AT
-        , UPDATE_AT
-        )
-        VALUES
-        (
-        #{departmentId}
-        , #{companyId}
-        , BINARY#{name}
-        , #{description}
-        , #{location}
-        , #{employmentType}
-        , #{experience}
-        , #{salaryFrom}
-        , #{salaryTo}
-        , #{currency}
-        , 0
-        , 0
-        , NOW()
-        , NOW()
-        )
+            JOB_TB
+            (
+                DEPARTMENT_ID
+                , COMPANY_ID
+                , JOB_NM
+                , DESCRIPTION
+                , LOCATION
+                , EMPLOYMENT_TYPE
+                , EXPERIENCE
+                , SALARY_FROM
+                , SALARY_TO
+                , CURRENCY
+                , STATUS
+                , DEL_YN
+                , CREATE_AT
+                , UPDATE_AT
+            )
+            VALUES
+            (
+                #{departmentId}
+                , #{companyId}
+                , BINARY#{name}
+                , #{description}
+                , #{location}
+                , #{employmentType}
+                , #{experience}
+                , #{salaryFrom}
+                , #{salaryTo}
+                , #{currency}
+                , 0
+                , 0
+                , NOW()
+                , NOW()
+            )
     </insert>
+    <select id="listJobInCompany" resultMap="jobIntroduction" parameterType="map">
+    <include refid="select_job"></include>
+    WHERE DEL_YN = 0
+        AND STATUS = 0
+        AND COMPANY_ID = #{companyId}
+    ORDER BY
+    <if test="sortBy == 'time'">
+        CREATE_AT
+    </if>
+    <if test="sortBy == 'name'">
+        JOB_NM
+    </if>
+    <if test="sortType == 'asc'">
+        ASC
+    </if>
+    <if test="sortType == 'desc'">
+        DESC
+    </if>
+    LIMIT #{limit} OFFSET #{offset}
+    </select>
 </mapper>

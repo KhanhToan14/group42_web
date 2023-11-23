@@ -11,6 +11,10 @@ public class ConstantMessages {
     public static final String DATA = "data";
     public static final String SORT_TYPE = "sortType";
     public static final String SORT_BY = "sortBy";
+    public static final String TIME = "time";
+    public static final String DESC = "desc";
+    public static final String ASC = "asc";
+    //
 
     public static final String MESSAGE = "message";
     public static final String NAME = "name";
@@ -28,6 +32,7 @@ public class ConstantMessages {
     public static final String IDS_INVALID = "IdsInvalid";
     public static final String NOT_FOUND_MESSAGE = "NotFound";
     public static final String SOME_THING_WENT_WRONG_MESSAGE = "SomeThingWentWrong";
+
     //
     public static final String DEPARTMENT = "department";
     public static final String SUCCESS_INSERT_DEPARTMENT = "SuccessInsertDepartment";
@@ -47,13 +52,29 @@ public class ConstantMessages {
     public static final String LOGO = "logo";
     public static final String LOGO_INVALID_ERROR = "LogoMustBeInBase64FormatAndSizeLessThan512KBAndIsOneOfTheFollowingTypesPngJpgJpegSvg";
     public static final String LOGO_INVALID_SIZE_ERROR = "LogoSizeMustBeSmallerOrEqualTo512KB";
+    public static final String PHONE = "phone";
+    public static final String AVATAR = "avatar";
+    public static final String BANNER = "banner";
+    public static final String PHONE_INVALID = "PhoneInvalid";
+    public static final String PHONE_NOT_NULL = "PhoneNotNull";
+    public static final String EMAIL = "email";
+    public static final String EMAIL_NOT_NULL = "EmailNotNull";
+    public static final String EMAIL_INVALID = "Email";
 
     //
     public static final String DEPARTMENT_ID = "departmentId";
     public static final String DEPARTMENT_NOT_FOUND = "DepartmentNotFound";
     public static final String COMPANY_ID = "companyId";
     public static final String COMPANY_NOT_FOUND = "CompanyNotFound";
-    public static final String SUCCESS_INSERT_JOB = "SuccessInsertJob";
     public static final String SALARY = "salary";
     public static final String SALARY_INVALID = "SalaryInvalid";
+    public static final String JOB = "job";
+    public static final String EMPLOYMENT_TYPE = "employmentType";
+    public static final String EXPERIENCE = "experience";
+    public static final String SALARY_FROM = "salaryFrom";
+    public static final String SALARY_TO = "salaryTo";
+    public static final String CURRENCY = "currency";
+    public static final String SUCCESS_INSERT_JOB = "SuccessInsertJob";
+    public static final String SUCCESS_UPDATE_JOB = "SuccessUpdateJob";
+    public static final String SUCCESS_DELETE_JOB = "SuccessDeleteJob";
 }
