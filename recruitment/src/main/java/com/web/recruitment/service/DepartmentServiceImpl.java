@@ -7,7 +7,6 @@ import com.web.recruitment.exception.NotFoundException;
 import com.web.recruitment.exception.ValidationException;
 import com.web.recruitment.persistence.dto.Department;
 import com.web.recruitment.persistence.mapper.DepartmentMapper;
-import com.web.recruitment.utils.ConstantMessages;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -211,7 +210,7 @@ public class DepartmentServiceImpl implements DepartmentService{
             }
         } else {
             subResError.put(DELETE_IDS, DELETE_IDS_MUST_NOT_NULL_OR_EMPTY);
-            resError.put(MESSAGE, ConstantMessages.INVALID_INPUT_MESSAGE);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         }

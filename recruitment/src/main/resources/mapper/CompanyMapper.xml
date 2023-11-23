@@ -5,10 +5,14 @@
         <result column="ID" property="id"/>
         <result column="CODE" property="code"/>
         <result column="COMPANY_NM" property="name"/>
+        <result column="AVATAR" property="avatar"/>
+        <result column="BANNER" property="banner"/>
         <result column="WEBSITE" property="website"/>
+        <result column="PHONE" property="phone"/>
+        <result column="EMAIL" property="email"/>
         <result column="DESCRIPTION" property="description"/>
-        <result column="LOGO" property="logo"/>
         <result column="SKILLS" property="skills"/>
+        <result column="STATUS" property="status"/>
         <result column="DEL_YN" property="delYn"/>
         <result column="CREATE_AT" property="createAt"/>
         <result column="UPDATE_AT" property="updateAt"/>
@@ -17,9 +21,12 @@
         <result column="ID" property="id"/>
         <result column="CODE" property="code"/>
         <result column="COMPANY_NM" property="name"/>
+        <result column="AVATAR" property="avatar"/>
+        <result column="BANNER" property="banner"/>
         <result column="WEBSITE" property="website"/>
+        <result column="PHONE" property="phone"/>
+        <result column="EMAIL" property="email"/>
         <result column="DESCRIPTION" property="description"/>
-        <result column="LOGO" property="logo"/>
         <result column="SKILLS" property="skills"/>
     </resultMap>
     <sql id="select_company">
@@ -31,9 +38,12 @@
         COMPANIES_TB
         SET CODE = #{code}
             , COMPANY_NM = BINARY#{name}
+            , AVATAR = #{avatar}
+            , BANNER = #{banner}
             , WEBSITE = #{website}
+            , PHONE = #{phone}
+            , EMAIL = #{email}
             , DESCRIPTION = #{description}
-            , LOGO = #{logo}
             , SKILLS = #{skills}
             , UPDATE_AT = NOW()
     </sql>
@@ -52,14 +62,15 @@
         <include refid="select_company"></include>
         WHERE ID = #{id}
         AND DEL_YN = 0
+<!--            AND STATUS = 1-->
     </select>
     <!-- list phân trang-->
     <select id="list" resultMap="companyInformation" parameterType="map">
         <include refid="select_company"></include>
         WHERE DEL_YN = 0
+<!--            AND STATUS = 1-->
         <if test="keyword != null">
             AND COMPANY_NM LIKE CONCAT("%", #{keyword}, "%")
-            OR CODE LIKE CONCAT("%", #{code}, "%")
         </if>
         ORDER BY
         <if test="sortBy == 'time'">
@@ -80,6 +91,7 @@
         SELECT COUNT(ID)
         FROM COMPANIES_TB
         WHERE DEL_YN = 0
+<!--            AND STATUS = 1-->
         <if test="keyword != null">
             AND COMPANY_NM LIKE CONCAT("%", #{keyword}, "%")
             OR CODE LIKE CONCAT("%", #{code}, "%")
@@ -93,10 +105,14 @@
             (
                 CODE
                 , COMPANY_NM
+                , AVATAR
+                , BANNER
                 , WEBSITE
+                , PHONE
+                , EMAIL
                 , DESCRIPTION
-                , LOGO
                 , SKILLS
+                , STATUS
                 , DEL_YN
                 , CREATE_AT
                 , UPDATE_AT
@@ -105,10 +121,14 @@
             (
                 #{code}
                 , BINARY#{name}
+                , #{avatar}
+                , #{banner}
                 , #{website}
+                , #{phone}
+                , #{email}
                 , #{description}
-                , #{logo}
                 , #{skills}
+                , 0
                 , 0
                 , NOW()
                 , NOW()
@@ -120,6 +140,7 @@
         FROM COMPANIES_TB
         WHERE COMPANY_NM = BINARY#{name}
             AND DEL_YN = 0
+<!--            AND STATUS = 1-->
     </select>
     <update id="update" parameterType="com.web.recruitment.api.dto.company.CompanyUpdate" keyColumn="id"
             keyProperty="id"
@@ -127,17 +148,20 @@
         <include refid="update_company"></include>
         WHERE ID = #{id}
             AND DEL_YN = 0
+<!--            AND STATUS = 1-->
     </update>
     <delete id="delete" parameterType="int">
         <include refid="delete_company"></include>
         WHERE ID = #{id}
             AND DEL_YN = 0
+<!--            AND STATUS = 1-->
     </delete>
     <update id="deleteChoice" parameterType="java.util.List">
         UPDATE
         COMPANIES_TB
         SET DEL_YN = 1
         WHERE DEL_YN = 0
+<!--            AND STATUS = 1-->
             AND ID IN
         <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
     </update>
@@ -146,11 +170,15 @@
         FROM COMPANIES_TB
         WHERE CODE = #{code}
             AND DEL_YN = 0
+<!--            AND STATUS = 1-->
     </select>
     <select id="selectCompanyByWebsite" resultType="int" parameterType="map">
         SELECT COUNT(ID)
         FROM COMPANIES_TB
         WHERE WEBSITE = #{website}
             AND DEL_YN = 0
+<!--            AND STATUS = 1-->
     </select>
+
+
 </mapper>

@@ -25,4 +25,5 @@ public interface JobMapper {
 
     int deleteChoice(List<Integer> id) throws Exception;
 
+    List<Job> listJobInCompany(Map<String, Object> reqMap) throws Exception;
 }

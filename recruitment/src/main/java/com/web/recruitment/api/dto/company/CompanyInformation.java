@@ -10,10 +10,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompanyInformation {
+    private String id;
     private String code;
     private String name;
+    private String avatar;
+    private String banner;
     private String website;
+    private String phone;
+    private String email;
     private String description;
-    private String logo;
     private String skills;
 }
