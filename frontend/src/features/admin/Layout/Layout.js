@@ -1,7 +1,7 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { useEffect, useState } from "react";
-import { Link, Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, Route, Routes, useNavigate, useMatch } from "react-router-dom";
 import "../../styles/Admin/Nav.scss";
 import CandidateInfor from "../Candidates/CandidateInfor";
 import Candidates from "../Candidates/Candidates";
@@ -17,9 +17,9 @@ import SocialNetwork from "../SocialNetwork/SocialNetwork";
 import AddTypeWork from "../TypeWork/AddTypeWork";
 import TypeWork from "../TypeWork/TypeWork";
 import CheckJob from "../CheckJob/CheckJob"
-export default function Nav() {
-    const match = useRouteMatch();
-    const history = useHistory();
+function Nav() {
+    const match = useMatch();
+    const history = useNavigate();
 
     // console.log(match);
     const { Header, Sider, Content } = Layout;
@@ -215,73 +215,34 @@ export default function Nav() {
                             minHeight: 280,
                         }}
                     >
-                        <Switch>
-                            <Route exact path={match.path}>
-                                <Statistical />
-                            </Route>
+                        <Routes>
+                            <Route exact path={match.path} element={<Statistical />} />
 
-                            {/* <Route exact path={`${match.path}/tag`}>
-                                <Tag url={match.url} />
-                            </Route> */}
-                            <Route exact path={`${match.path}/socialNetwork`}>
-                                <SocialNetwork url={match.url} />
-                            </Route>
-                            <Route exact path={`${match.path}/contact`}>
-                                <Contact url={match.url} />
-                            </Route>
-                            <Route exact path={`${match.path}/work`}>
-                                <Jobs url={match.url} />
-                            </Route>
-                            <Route exact path={`${match.path}/typeWork`}>
-                                <TypeWork url={match.url} />
-                            </Route>
-                            <Route exact path={`${match.path}/checkCompany`}>
-                                <CheckCompany url={match.url} />
-                            </Route>
-                            <Route exact path={`${match.path}/checkJobs`}>
-                                <CheckJob url={match.url} />
-                            </Route>
-                            <Route path={`${match.path}/socialNetwork/addSocialNetwork`}>
-                                <AddSocialNetwork url={match.url} />
-                            </Route>
-                            <Route path={`${match.path}/socialNetwork/editSocialNetwork/:id`}>
-                                <AddSocialNetwork url={match.url} />
-                            </Route>
-                            <Route path={`${match.path}/contact/addContact`}>
-                                <AddContact url={match.url} />
-                            </Route>
-                            <Route path={`${match.path}/contact/editContact/:id`}>
-                                <AddContact url={match.url} />
-                            </Route>
-                            <Route exact path={`${match.path}/candidate`}>
-                                <Candidates url={match.url} />
-                            </Route>
-                            <Route path={`${match.path}/candidate/infor/:id`}>
-                                <CandidateInfor url={match.url} />
-                            </Route>
-                            <Route exact path={`${match.path}/companies`}>
-                                <Companies url={match.url} />
-                            </Route>
-                            <Route path={`${match.path}/companies/infor/:id`}>
-                                <CompaniesInfor url={match.url} />
-                            </Route>
-                            {/* <Route path={`${match.path}/tag/addTag`}>
-                                <AddTag url={match.url} />
-                            </Route>
-                            <Route path={`${match.path}/tag/editTag/:id`}>
-                                <AddTag url={match.url} />
-                            </Route> */}
-                            <Route path={`${match.path}/typeWork/addTypeWork`}>
-                                <AddTypeWork url={match.url} />
-                            </Route>
-                            <Route path={`${match.path}/typeWork/editTypeWork/:id`}>
-                                <AddTypeWork url={match.url} />
-                            </Route>
-
-                        </Switch>
+                            {/* <Route exact path={`${match.path}/tag`} element= {<Tag url={match.url} />} /> */}
+                            <Route exact path={`${match.path}/socialNetwork`} element={<SocialNetwork url={match.url} />} />
+                            <Route exact path={`${match.path}/contact`} element={<Contact url={match.url} />} />
+                            <Route exact path={`${match.path}/work`} element={<Jobs url={match.url} />} />
+                            <Route exact path={`${match.path}/typeWork`} element={<TypeWork url={match.url} />} />
+                            <Route exact path={`${match.path}/checkCompany`} element={<CheckCompany url={match.url} />} />
+                            <Route exact path={`${match.path}/checkJobs`} element={<CheckJob url={match.url} />} />
+                            <Route path={`${match.path}/socialNetwork/addSocialNetwork`} element={<AddSocialNetwork url={match.url} />} />
+                            <Route path={`${match.path}/socialNetwork/editSocialNetwork/:id`} element={<AddSocialNetwork url={match.url} />} />
+                            <Route path={`${match.path}/contact/addContact`} element={<AddContact url={match.url} />} />
+                            <Route path={`${match.path}/contact/editContact/:id`} element={<AddContact url={match.url} />} />
+                            <Route exact path={`${match.path}/candidate`} element={<Candidates url={match.url} />} />
+                            <Route path={`${match.path}/candidate/infor/:id`} element={<CandidateInfor url={match.url} />} />
+                            <Route exact path={`${match.path}/companies`} element={<Companies url={match.url} />} />
+                            <Route path={`${match.path}/companies/infor/:id`} element={<CompaniesInfor url={match.url} />} />
+                            {/* <Route path={`${match.path}/tag/addTag`} element={<AddTag url={match.url} />} />
+                            <Route path={`${match.path}/tag/editTag/:id`} element={<AddTag url={match.url} />} /> */}
+                            <Route path={`${match.path}/typeWork/addTypeWork`} element={<AddTypeWork url={match.url} />} />
+                            <Route path={`${match.path}/typeWork/editTypeWork/:id`} element={<AddTypeWork url={match.url} />} />
+                        </Routes>
                     </Content>
                 </Layout>
             </Layout>
         </div>
     );
 }
+
+export default Nav;

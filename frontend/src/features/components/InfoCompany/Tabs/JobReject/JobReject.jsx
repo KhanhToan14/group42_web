@@ -1,12 +1,12 @@
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Pagination, Popconfirm } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import workApi from "../../../../../api/workApi";
 import { formatDateWork } from "../../../../container/Functionjs";
 import SpinLoad from "../../../Spin/Spin";
 
-export default function JobsReject({
+function JobsReject({
     id,
     heard,
     hident,
@@ -16,37 +16,37 @@ export default function JobsReject({
     statusJobs = true
 }) {
     const [data, setData] = useState();
-    const [state, setState] = useState({
+    const [state] = useState({
         page: localStorage.getItem("pageWorkHomeInfor") || 1,
     });
 
     const { page } = state;
     const [loadEffect, setLoadEffect] = useState(false);
 
-    const getApi = async () => {
+    const getApi = useCallback(async () => {
         await workApi.getAllRejectId({ page: page, id: id }).then((data) => {
             setData(data);
         });
-    };
+    }, [id, page]);
 
     useEffect(() => {
         localStorage.setItem("pageWorkHomeInfor", page);
         getApi();
-    }, [page, loadEffect, resetJob]);
+    }, [getApi, page, loadEffect, resetJob]);
 
     const hangdleDelete = async (e) => {
         await workApi.deletework(e);
         setLoadEffect(!loadEffect);
     };
 
-    const checkStatusCensorship = (status) => {
-        let obj = {
-            1: "Đã duyệt",
-            null: "Chờ duyệt",
-            0: "Từ chối",
-        }
-        return obj[status]
-    }
+    // const checkStatusCensorship = (status) => {
+    //     let obj = {
+    //         1: "Đã duyệt",
+    //         null: "Chờ duyệt",
+    //         0: "Từ chối",
+    //     }
+    //     return obj[status]
+    // }
 
     return (
         <div className="ListJob">
@@ -159,3 +159,5 @@ export default function JobsReject({
         </div>
     );
 }
+
+export default JobsReject;

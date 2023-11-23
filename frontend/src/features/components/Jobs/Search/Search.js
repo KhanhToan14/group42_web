@@ -70,4 +70,5 @@ Search.defaultProps = {
     name: "",
     address: "",
 };
+
 export default Search;

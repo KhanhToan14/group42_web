@@ -1,25 +1,24 @@
-import { Image, Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import { Spin } from "antd";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import userApi from "../../../api/userApi";
 import moment from "moment";
-import renderHTML from "react-render-html";
 import companyApi from "../../../api/companyApi";
+import RenderHTML from "react-native-render-html";
 
-export default function CompaniesInfor() {
+function CompaniesInfor() {
     let { id } = useParams();
     const [data, setData] = useState();
 
-    const getApi = async () => {
+    const getApi = useCallback(async () => {
         return await companyApi.getOne(id).then((data) => {
             setData(data);
         });
-    };
+    }, [id]);
 
     useEffect(() => {
         getApi();
         window.scrollTo(0, 0);
-    }, []);
+    }, [getApi])
 
     return (
         <div id="admin">
@@ -37,7 +36,7 @@ export default function CompaniesInfor() {
                 ) : (
                     <div className="infor-detail-admin">
                         <div className="content_img">
-                            <Image src={data.avatar} width="500px" />
+                            <img src={data.avatar} alt="Applicant's profile" width="500px" />
                         </div>
                         <div className="content-text">
                             <div className="box">
@@ -66,7 +65,7 @@ export default function CompaniesInfor() {
                             <div className="box">
                                 <div className="title">Giới thiệu:</div>
                                 <div className="detail">
-                                    {renderHTML(data.introduce ?? "Chưa cập nhật!")}
+                                    {RenderHTML(data.introduce ?? "Chưa cập nhật!")}
                                 </div>
                             </div>
                         </div>
@@ -76,3 +75,5 @@ export default function CompaniesInfor() {
         </div>
     );
 }
+
+export default CompaniesInfor;

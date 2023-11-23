@@ -1,21 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "../../../styles/Home/ListJobs.scss";
-import logo from "../../../images/logoNew2.png";
 import { useDispatch, useSelector } from "react-redux";
 import { workData } from "../../../admin/Slice/workSlice";
 import SpinLoad from "../../Spin/Spin";
 import { formatDateWork } from "../../../container/Functionjs";
-export default function ListJobs() {
+function ListJobs() {
     const work = useSelector((state) => state.works.work.data);
     const loading = useSelector((state) => state.works.loading);
     const dispatch = useDispatch();
-    const actionResult = async (page) => {
+    const actionResult = useCallback(async (page) => {
         await dispatch(workData(page));
-    };
+    }, [dispatch]);
+
     useEffect(() => {
         actionResult({ page: 1, status: 1 });
-    }, []);
+    }, [actionResult]);
+
     return (
         <div className="ListJob">
             <div className="heading">
@@ -84,3 +85,5 @@ export default function ListJobs() {
         </div>
     );
 }
+
+export default ListJobs;

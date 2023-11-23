@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import statisticalApi from "../../../api/statisticalApi";
 
-export default function Statistical() {
+function Statistical() {
     const [data, setData] = useState();
     console.log("data", data);
     useEffect(() => {
@@ -50,3 +50,5 @@ export default function Statistical() {
         </div>
     );
 }
+
+export default Statistical;

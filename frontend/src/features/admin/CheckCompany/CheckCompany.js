@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
+import { Pagination, Popconfirm, Spin, Table } from "antd";
+import { Link } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
     removecheckCompany,
     checkCompanyData,
-    updatecheckCompany,
 } from "../Slice/checkCompanySlice";
 import { updatecompany } from "../Slice/companySlice";
-export default function CheckCompany() {
+function CheckCompany() {
     const columns = [
         {
             title: "Công ty",
@@ -29,23 +28,28 @@ export default function CheckCompany() {
         },
     ];
 
-    const match = useRouteMatch();
+    // const match = useMatch();
+
     const checkCompanys = useSelector(
         (state) => state.checkCompanys.checkCompany.data
     );
+
     const loading = useSelector((state) => state.checkCompanys.loading);
     const dispatch = useDispatch();
     const [state, setState] = useState({
         page: localStorage.getItem("pageCheckCompany") || 1,
     });
     const { page } = state;
-    const actionResult = async (page) => {
-        await dispatch(checkCompanyData(page));
-    };
+
+    const actionResult = useCallback(() => {
+        dispatch(checkCompanyData(page));
+    }, [dispatch, page]);
+
     useEffect(() => {
         localStorage.setItem("pagecheckCompany", page);
-        actionResult({ page: page });
-    }, [page]);
+        actionResult();
+    }, [dispatch, page, actionResult]);
+
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatecompany({ status: 0, id: id }));
@@ -56,18 +60,21 @@ export default function CheckCompany() {
             actionResult({ page: page });
         }, 500);
     };
+
     const onChangePage = (page) => {
         setState({
             page: page,
             pageCurent: page,
         });
     };
+
     const hangdleDelete = (e) => {
         dispatch(removecheckCompany(e));
         setTimeout(() => {
             actionResult({ page: page });
         }, 500);
     };
+
     return (
         <div id="admin">
             <div className="heading">
@@ -135,3 +142,5 @@ export default function CheckCompany() {
         </div>
     );
 }
+
+export default CheckCompany;

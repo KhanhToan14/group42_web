@@ -1,11 +1,11 @@
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Image, Pagination, Popconfirm, Spin, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import { Pagination, Popconfirm, Spin, Table } from "antd";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
-import { Link, useHistory } from "react-router-dom";
+import { useMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { removeuser, userData } from "../Slice/userSlice";
-export default function Candidates() {
+function Candidates() {
     const columns = [
         {
             title: "Tên ứng viên",
@@ -30,16 +30,16 @@ export default function Candidates() {
     });
     const { page } = state;
 
-    const actionResult = (page) => {
+    const actionResult = useCallback(() => {
         dispatch(userData(page));
-    };
+    }, [page, dispatch]);
 
     useEffect(() => {
         localStorage.setItem("pageUser", page);
         actionResult({ page: page });
-    }, [page]);
+    }, [page, actionResult]);
 
-    const history = useHistory();
+    // const history = useNavigate();
 
     const onChangePage = (page) => {
         setState({
@@ -47,7 +47,7 @@ export default function Candidates() {
             pageCurent: page,
         });
     };
-    const match = useRouteMatch();
+    const match = useMatch();
     const hangdleDelete = (e) => {
         dispatch(removeuser(e));
         setTimeout(() => {
@@ -75,7 +75,7 @@ export default function Candidates() {
                             dataSource={users.rows.map((ok, index) => ({
                                 key: index + 1,
                                 name: <Link to={`${match.url}/infor/${ok.id}`}>{ok.name}</Link>,
-                                avatar: <Image src={ok.avatar} width="200px" />,
+                                avatar: <img src={ok.avatar} alt="profile" width="200px" />,
                                 action: (
                                     <div className="action">
                                         <Popconfirm
@@ -101,6 +101,8 @@ export default function Candidates() {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
+
+export default Candidates;

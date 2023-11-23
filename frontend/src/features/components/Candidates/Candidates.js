@@ -3,7 +3,7 @@ import Footer from "../Home/Footer/Footer";
 import Breadcrumb from "../Company/Breadcrumb/Breadcrumb";
 import ListCandidates from "./ListCandidates/ListCandidates";
 
-export default function Candidates() {
+function Candidates() {
     return (
         <div>
             <Breadcrumb />
@@ -12,3 +12,4 @@ export default function Candidates() {
         </div>
     );
 }
+export default Candidates;

@@ -1,27 +1,43 @@
 import { DatePicker, Input, message, Select, Space } from "antd";
 import JoditEditor from "jodit-react";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { getProvinces } from "sub-vn";
+import { getProvinces } from "sub-vi";
 import workApi from "../../../../../api/workApi";
 import workTypeOfWorkApi from "../../../../../api/workTypeOfWorkApi";
 import { typeWorkData } from "../../../../admin/Slice/typeWorkSlice";
 import { addwork, updatework } from "../../../../admin/Slice/workSlice";
 import { FormatProvince } from "../../../../container/Functionjs";
 import SpinLoad from "../../../Spin/Spin";
-export default function AddJob({ id, idEdit, onChangeTabs }) {
+function AddJob({ id, idEdit, onChangeTabs }) {
     const dispatch = useDispatch();
-
-    const actionResultTypeOfWork = () => {
+    const actionResultTypeOfWork = useCallback(() => {
         dispatch(typeWorkData({ status: 1 }));
-    };
+    }, [dispatch]);
+    const { register, handleSubmit, reset } = useForm();
+    const objDefault = useMemo(() => {
+        return {
+            load: false,
+            typeofworkId: 2,
+            address: "Hà Nội",
+            price1: "",
+            nature: "Full Time",
+            request: "Không yêu cầu",
+            price2: "",
+            date: undefined,
+        };
+    }, []);
 
-    useEffect(async () => {
-        if (idEdit) {
-            reset(
-                await workApi.getOne(idEdit).then((data) => {
+    const [state, setState] = useState({
+        ...objDefault,
+    });
+    useEffect(() => {
+        actionResultTypeOfWork();
+        async function fetchData() {
+            if (idEdit) {
+                const data = await workApi.getOne(idEdit).then((data) => {
                     setState({
                         ...state,
                         price1: String(data.price1),
@@ -36,36 +52,26 @@ export default function AddJob({ id, idEdit, onChangeTabs }) {
                     setForm(data.form);
                     setExprience(data.exprience);
                     return data;
-                }),
-            );
-        } else {
-            reset(objDefault);
-            setDescripton("");
-            setInterest("");
-            setForm("");
-            setExprience("");
+                });
+                return data;
+            } else {
+                reset(objDefault);
+                setDescripton("");
+                setInterest("");
+                setForm("");
+                setExprience("");
+            }
         }
-    }, [idEdit]);
+
+        fetchData();
+    }, [actionResultTypeOfWork, idEdit, objDefault, reset, state]);
+
     const typeWorks = useSelector((state) => state.typeWorks.typeWork.data);
     const loadingTypeWork = useSelector((state) => state.typeWorks.loading);
-    const { register, handleSubmit, reset } = useForm();
     const [interest, setInterest] = useState();
     const [exprience, setExprience] = useState();
     const [form, setForm] = useState();
     const [description, setDescripton] = useState();
-    let objDefault = {
-        load: false,
-        typeofworkId: 2,
-        address: "Hà Nội",
-        price1: "",
-        nature: "Full Time",
-        request: "Không yêu cầu",
-        price2: "",
-        date: undefined,
-    };
-    const [state, setState] = useState({
-        ...objDefault,
-    });
     const {
         price1,
         price2,
@@ -191,12 +197,12 @@ export default function AddJob({ id, idEdit, onChangeTabs }) {
             typeofworkId: e,
         });
     };
-    const onChangeRequest = (e) => {
-        setState({
-            ...state,
-            request: e,
-        });
-    };
+    // const onChangeRequest = (e) => {
+    //     setState({
+    //         ...state,
+    //         request: e,
+    //     });
+    // };
     const onChangeDate = (date, dateString) => {
         setState({
             ...state,
@@ -205,8 +211,8 @@ export default function AddJob({ id, idEdit, onChangeTabs }) {
     };
     useEffect(() => {
         actionResultTypeOfWork();
-    }, []);
-    const data = [];
+    }, [actionResultTypeOfWork]);
+    // const data = [];
 
 
     const onchangeAddress = (e) => {
@@ -444,3 +450,5 @@ export default function AddJob({ id, idEdit, onChangeTabs }) {
         </div>
     );
 }
+
+export default AddJob;

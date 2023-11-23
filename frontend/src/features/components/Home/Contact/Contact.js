@@ -1,6 +1,6 @@
 import React from 'react'
 import "../../../styles/Home/Contact.scss"
-export default function Contact() {
+function Contact() {
     return (
         <div className="contact">
             <div className="contact__title">
@@ -16,3 +16,5 @@ export default function Contact() {
         </div>
     )
 }
+
+export default Contact;

@@ -1,5 +1,6 @@
-@import "./styles/Variable.scss";
-@import "./styles/Admin/Statistical.scss";
+@import "antd/dist/antd.css";
+@import "./features/styles/Variable.scss";
+@import "./features/styles/Admin/Statistical.scss";
 
 .heading {
   padding: 2rem 0rem;

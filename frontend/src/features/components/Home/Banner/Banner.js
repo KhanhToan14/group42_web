@@ -3,7 +3,7 @@ import "../../../styles/Home/Banner.scss";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { removeVietnameseTones } from "../../../container/Functionjs";
-export default function Banner() {
+function Banner() {
     const [state, setState] = useState({ name: "", address: "" });
     const { name, address } = state;
     const onchange = (e) => {
@@ -57,3 +57,5 @@ export default function Banner() {
         </div>
     );
 }
+
+export default Banner;

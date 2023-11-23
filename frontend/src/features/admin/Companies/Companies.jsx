@@ -1,12 +1,12 @@
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Image, Pagination, Popconfirm, Spin, Table } from "antd";
+import { Pagination, Popconfirm, Spin, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
-import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import companyApi from "../../../api/companyApi";
-import { removecompany, companyData } from "../Slice/companySlice";
-export default function Companies() {
+import { removecompany } from "../Slice/companySlice";
+function Companies() {
     const columns = [
         {
             title: "Tên ứng viên",
@@ -41,7 +41,7 @@ export default function Companies() {
         companyApi.search({ page, name: nameCompanies, status: 1 }).then((data) => {
             setState({ ...state, companys: data.data, loading: false });
         });
-    }, [page, isLoad]);
+    }, [page, isLoad, nameCompanies, state]);
 
     const onChangePage = (page) => {
         setState({
@@ -71,7 +71,7 @@ export default function Companies() {
         }, 500);
     };
 
-    const match = useRouteMatch();
+    const match = useMatch();
 
     return (
         <div id="admin">
@@ -102,7 +102,7 @@ export default function Companies() {
                             dataSource={companys.rows.map((ok, index) => ({
                                 key: index + 1,
                                 name: <Link to={`${match.url}/infor/${ok.id}`}>{ok.name}</Link>,
-                                avatar: <Image src={ok.avatar} width="200px" />,
+                                avatar: <img src={ok.avatar} alt="profile" width="200px" />,
                                 action: (
                                     <div className="action">
                                         <Popconfirm
@@ -131,3 +131,5 @@ export default function Companies() {
         </div>
     );
 }
+
+export default Companies;

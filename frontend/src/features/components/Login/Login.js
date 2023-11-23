@@ -1,12 +1,12 @@
 import { Checkbox, message } from "antd";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/Login/Login.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import loginApi from "../../../api/loginApi";
-export default function Login({ onLogin }) {
+function Login({ onLogin }) {
     const schema = yup.object().shape({
         userName: yup.string().email().required(),
         password: yup.string().min(4).max(20).required(),
@@ -18,7 +18,7 @@ export default function Login({ onLogin }) {
     } = useForm({
         resolver: yupResolver(schema),
     });
-    const history = useHistory();
+    const history = useNavigate();
     const onSumit = async (data) => {
         await loginApi
             .loginCompany({
@@ -95,3 +95,5 @@ export default function Login({ onLogin }) {
         </div>
     );
 }
+
+export default Login;

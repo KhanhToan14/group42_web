@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,7 +8,7 @@ import {
     contactData,
     updatecontact,
 } from "../Slice/contactSlice";
-export default function Contact() {
+function Contact() {
     const columns = [
         {
             title: "email",
@@ -28,7 +28,7 @@ export default function Contact() {
         },
     ];
 
-    const match = useRouteMatch();
+    const match = useMatch();
     const contact = useSelector((state) => state.contacts.contact.data);
     const loading = useSelector((state) => state.contacts.loading);
     const dispatch = useDispatch();
@@ -36,14 +36,17 @@ export default function Contact() {
         page: localStorage.getItem("pageContact") || 1,
     });
     const { page } = state;
-    const actionResult = async (page) => {
+
+    const actionResult = useCallback(async (page) => {
         await dispatch(contactData(page));
-    };
+    }, [dispatch]);
+
     useEffect(() => {
         localStorage.setItem("pageContact", page);
         actionResult({ page: page });
-    }, [page]);
-    const history = useHistory();
+    }, [page, actionResult]);
+
+    const history = useNavigate();
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatecontact({ status: 0, id: id }));
@@ -160,3 +163,5 @@ export default function Contact() {
         </div>
     );
 }
+
+export default Contact;

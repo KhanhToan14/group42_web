@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import renderHTML from "react-render-html";
 import {
     removetypeWork,
     typeWorkData,
     updatetypeWork,
 } from "../Slice/typeWorkSlice";
-export default function TypeWork() {
+import RenderHTML from "react-native-render-html";
+function TypeWork() {
     const columns = [
         {
             title: "Loại công việc",
@@ -29,22 +29,26 @@ export default function TypeWork() {
         },
     ];
 
-    const match = useRouteMatch();
+    const match = useMatch();
     const typeWork = useSelector((state) => state.typeWorks.typeWork.data);
     const loading = useSelector((state) => state.typeWorks.loading);
     const dispatch = useDispatch();
     const [state, setState] = useState({
         page: localStorage.getItem("pagetypeWork") || 1,
     });
+
     const { page } = state;
-    const actionResult = async (page) => {
+    const actionResult = useCallback(async (page) => {
         await dispatch(typeWorkData(page));
-    };
+    }, [dispatch]);
+
     useEffect(() => {
         localStorage.setItem("pagetypeWork", page);
         actionResult({ page: page });
-    }, [page]);
-    const history = useHistory();
+    }, [page, actionResult]);
+
+    const history = useNavigate();
+
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatetypeWork({ status: 0, id: id }));
@@ -55,21 +59,25 @@ export default function TypeWork() {
             actionResult({ page: page });
         }, 500);
     };
+
     const onChangePage = (page) => {
         setState({
             page: page,
             pageCurent: page,
         });
     };
+
     const hangdleEdit = (id) => {
         history.replace(`${match.url}/edittypeWork/${id}`);
     };
+
     const hangdleDelete = (e) => {
         dispatch(removetypeWork(e));
         setTimeout(() => {
             actionResult({ page: page });
         }, 500);
     };
+
     return (
         <div id="admin">
             <div className="heading">
@@ -98,7 +106,7 @@ export default function TypeWork() {
                             dataSource={typeWork.rows.map((ok, index) => ({
                                 key: index + 1,
                                 name: ok.name,
-                                icon: <div className="iconTypeWork">{renderHTML(ok.icon)}</div>,
+                                icon: <div className="iconTypeWork">{RenderHTML(ok.icon)}</div>,
                                 status: (
                                     <div className="action">
                                         {ok.status === 1 ? (
@@ -161,3 +169,5 @@ export default function TypeWork() {
         </div>
     );
 }
+
+export default TypeWork;

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../../styles/Register/Register.scss";
 import RegisterCompany from "./RegisterCompany";
 import RegisterUser from "./RegisterUser";
-export default function Register() {
+function Register() {
     const UserEl = createRef();
     const CompanyEl = createRef();
 
@@ -63,3 +63,5 @@ export default function Register() {
         </div>
     );
 }
+
+export default Register;

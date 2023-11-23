@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Breadcrumb from "./Breadcrumb/Breadcrumb";
 import Footer from "../Home/Footer/Footer";
 import Menu from "../MenuNotHome/MenuNotHome";
@@ -8,18 +8,20 @@ import { useParams } from "react-router-dom";
 import userApi from "../../../api/userApi";
 import SpinLoad from "../Spin/Spin";
 
-export default function DetailCandidate() {
+function DetailCandidate() {
     const { id } = useParams();
     const [data, setData] = useState();
-    const getApi = async () => {
+    const getApi = useCallback(async () => {
         return await userApi.getOne(id).then((data) => {
             setData(data);
         });
-    };
+    }, [id]);
+
     useEffect(() => {
         getApi();
         window.scrollTo(0, 0);
-    }, []);
+    }, [getApi]);
+
     return (
         <div>
             {<Menu />}
@@ -41,3 +43,5 @@ export default function DetailCandidate() {
         </div>
     );
 }
+
+export default DetailCandidate;

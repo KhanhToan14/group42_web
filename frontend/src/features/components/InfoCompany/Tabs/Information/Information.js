@@ -11,9 +11,9 @@ import {
 } from "../../../../admin/Slice/companySlice";
 import { useDispatch } from "react-redux";
 import SpinLoad from "../../../Spin/Spin";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-export default function Infor({ id }) {
+function Infor({ id }) {
     const [state, setState] = useState({
         loading: false,
         linkImg: "",
@@ -38,24 +38,17 @@ export default function Infor({ id }) {
     } = state;
     const { register, handleSubmit, reset } = useForm();
     const [content, setContent] = useState();
-    const getApi = async () => {
-        return await companyApi.getOne(id).then((data) => {
-            return data;
-        });
-    };
     useEffect(() => {
-        if (id) {
-            Promise.all([getApi()]).then(function (data) {
-                setContent(data[0].introduce);
-                reset(data[0]);
-                setState({
-                    ...state,
-                    anh: data[0].avatar,
-                    anhBanner: data[0].banner,
-                });
-            });
-        }
-    }, []);
+        const fetchData = async () => {
+            if (id) {
+                const data = await companyApi.getOne(id);
+                setContent(data.introduce);
+                reset(data);
+                setState({ ...state, anh: data.avatar, anhBanner: data.banner });
+            }
+        };
+        fetchData();
+    }, [id, reset, state]);
     const dispatch = useDispatch();
     const actionResult = (page) => {
         dispatch(companyData(page));
@@ -123,7 +116,7 @@ export default function Infor({ id }) {
             );
         }
     };
-    const history = useHistory();
+    const history = useNavigate();
     const onSubmit = async (data) => {
 
         if (
@@ -375,3 +368,5 @@ export default function Infor({ id }) {
         </div>
     );
 }
+
+export default Infor;

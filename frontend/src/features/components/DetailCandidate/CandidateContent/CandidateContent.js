@@ -1,10 +1,10 @@
 import React from "react";
-import renderHTML from "react-render-html";
 import { Link } from "react-router-dom";
-import { checkDateCompany, formatDateWork } from "../../../container/Functionjs";
+import RenderHTML from "react-native-render-html";
+import { formatDateWork } from "../../../container/Functionjs";
 import "../../../styles/DetailCandidate/CandidateContent.scss";
 
-export default function CandidateContent({ data }) {
+function CandidateContent({ data }) {
     console.log('data', data)
     return (
         <div className="candidateContent">
@@ -31,7 +31,7 @@ export default function CandidateContent({ data }) {
                         <div className="candidate__box">
                             <div className="candidate__box__title">Giới thiệu</div>
                             <div className="candidate__box__content">
-                                {data.introduce ? renderHTML(data.introduce) : ""}
+                                {data.introduce ? RenderHTML(data.introduce) : ""}
                             </div>
                         </div>
                     </div>
@@ -135,3 +135,4 @@ export default function CandidateContent({ data }) {
     );
 }
 
+export default CandidateContent;

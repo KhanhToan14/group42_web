@@ -1,17 +1,18 @@
-import firebase from "firebase";
+import firebase from "./firebase";
 import "firebase/storage"
-const config = {
-    apiKey: "AIzaSyD-dyDXwc3-KSesEi6Jouf_t0jUeoQTvSg",
-    authDomain: "my-job-react-with-node.firebaseapp.com",
-    databaseURL: "https://my-job-react-with-node-default-rtdb.firebaseio.com",
-    projectId: "my-job-react-with-node",
-    storageBucket: "my-job-react-with-node.appspot.com",
-    messagingSenderId: "774668644719",
-    appId: "1:774668644719:web:6ea0ad3ca69777caf5b89a",
-    measurementId: "G-J0GC6P88Z4"
+
+const firebaseConfig = {
+    apiKey: "AIzaSyD_d33kwP_J0yGggnNKa_vHku_7qT7VVtk",
+    authDomain: "my-job-react-with-node-1d763.firebaseapp.com",
+    databaseURL: "https://my-job-react-with-node-1d763-default-rtdb.firebaseio.com",
+    projectId: "my-job-react-with-node-1d763",
+    storageBucket: "my-job-react-with-node-1d763.appspot.com",
+    messagingSenderId: "812630800877",
+    appId: "1:812630800877:web:568c335964ac3d1abe4fe4"
 };
 
-firebase.initializeApp(config)
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 const storage = firebase.storage()
 export { storage, firebase as default }

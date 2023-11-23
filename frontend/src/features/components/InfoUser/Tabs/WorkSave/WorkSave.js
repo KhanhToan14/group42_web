@@ -4,16 +4,18 @@ import userApi from "../../../../../api/userApi";
 import { formatDateWork } from "../../../../container/Functionjs";
 import SpinLoad from "../../../Spin/Spin";
 
-export default function WorkSave({ id }) {
+function WorkSave({ id }) {
     const [data, setData] = useState();
-    const getApi = async () => {
-        await userApi.getUserSaveWork(id).then((data) => {
-            setData(data.Works);
-        });
-    };
+
     useEffect(() => {
+        async function getApi() {
+            await userApi.getUserSaveWork(id).then((data) => {
+                setData(data.Works);
+            });
+        }
         getApi();
-    }, []);
+    }, [id]);
+
     return (
         <div className="ListJob">
             <div className="heading">
@@ -80,3 +82,5 @@ export default function WorkSave({ id }) {
         </div>
     );
 }
+
+export default WorkSave;

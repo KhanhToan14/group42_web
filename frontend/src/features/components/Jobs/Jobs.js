@@ -4,9 +4,8 @@ import { getQueryVariable } from "../../container/Functionjs";
 import Footer from "../Home/Footer/Footer";
 import Breadcrumbs from "./Breadcrumb/Breadcrumb";
 import Job from "./ListJobs/Job";
-import { useParams } from "react-router-dom";
 import Search from "./Search/Search";
-export default function Jobs() {
+function Jobs() {
     const [state, setState] = useState({
         name: getQueryVariable("name") || "",
         address: getQueryVariable("address") || "",
@@ -35,24 +34,26 @@ export default function Jobs() {
     const onChangeTypeWork = (e) => {
         setTypeWorkValue(e);
     };
-    useEffect(async () => {
-        await workApi
-            .search({
+    useEffect(() => {
+        async function fetchData() {
+            const response = await workApi.search({
                 name: name,
                 nature: time,
                 address: address,
                 status: 1,
                 typeWordId: typeWorkValue,
-            })
-            .then((ok) => {
-                console.log("ok", ok);
-                setState({
-                    ...state,
-                    data: ok.data,
-                });
             });
-        window.scrollTo(0, 0);
-    }, [name, address, time, typeWorkValue]);
+
+            console.log("ok", response);
+            setState({
+                ...state,
+                data: response.data,
+            });
+        }
+
+        fetchData();
+    }, [name, address, time, typeWorkValue, state]);
+
     return (
         <div>
             <Breadcrumbs />
@@ -78,3 +79,5 @@ export default function Jobs() {
         </div>
     );
 }
+
+export default Jobs;

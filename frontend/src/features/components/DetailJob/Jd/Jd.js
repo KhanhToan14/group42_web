@@ -1,7 +1,6 @@
 import { message } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React, { useEffect, useState } from "react";
-import renderHTML from "react-render-html";
 import { Link } from "react-router-dom";
 import checkLoginApi from "../../../../api/checkLogin";
 import saveWorkApi from "../../../../api/saveWorkApi";
@@ -11,10 +10,10 @@ import {
     checkDateDealtime,
     formatDateWork,
 } from "../../../container/Functionjs";
-import qc from "../../../images/1227.gif";
 import "../../../styles/DetailJob/Jd.scss";
 import KeyTag from "../../Jobs/ListJobs/KeyTag";
-export default function Jd(props) {
+import RenderHTML from "react-native-render-html";
+function Jd(props) {
     let { data, id, isAdmin } = props;
     const [user, setUser] = useState();
     const [load, setLoad] = useState(false);
@@ -52,7 +51,7 @@ export default function Jd(props) {
                 setNotSave(false);
             }
         });
-    }, [user, load]);
+    }, [user, load, data.name, id]);
     const onSaveWork = async () => {
         if (user) {
             await saveWorkApi.postsaveWork([{ userId: user, workId: id }]);
@@ -106,14 +105,14 @@ export default function Jd(props) {
             await storage.ref(`fileCv/${file.name}`).put(file);
             const file1 = await storage.ref("fileCv").child(tenFile).getDownloadURL();
             console.log('getStatusActive(data.WorkApplies)', getStatusActive(data.WorkApplies))
-            if (getStatusActive(data.WorkApplies) == "empty") {
+            if (getStatusActive(data.WorkApplies) === "empty") {
                 await workApplyApi.postworkApply([
                     { userId: user, workId: +id, message: messager, link: file1, status: 0, statusActive: null },
                 ]).then(ok => {
                     props.reload()
                 })
             } else {
-                let index = data.WorkApplies.findIndex(b => b.userId == user)
+                let index = data.WorkApplies.findIndex(b => b.userId === user)
                 console.log('index', index);
                 if (index < 0) {
                     await workApplyApi.postworkApply([
@@ -142,7 +141,7 @@ export default function Jd(props) {
 
     const getStatusActive = (data) => {
         if (data.length) {
-            let index = data.findIndex(x => x.userId == user)
+            let index = data.findIndex(x => x.userId === user)
             if (index >= 0) {
                 return data[index].statusActive
             }
@@ -153,20 +152,20 @@ export default function Jd(props) {
 
     const renderButtonApply = () => {
         if (!isAdmin && user) {
-            if (getStatusActive(data.WorkApplies) == 1) {
+            if (getStatusActive(data.WorkApplies) === 1) {
                 return (<div
                     className="apply "
                 >
                     <Link to="#" className="green">Phỏng vấn</Link>
                 </div>)
-            } else if (getStatusActive(data.WorkApplies) == 2) {
+            } else if (getStatusActive(data.WorkApplies) === 2) {
                 return (<div
                     className="apply "
                 >
                     <Link to="#" className="green">Được nhận</Link>
                 </div>)
 
-            } else if (getStatusActive(data.WorkApplies) == 3) {
+            } else if (getStatusActive(data.WorkApplies) === 3) {
                 return (
                     <div className="apply d-flex">
                         <div style={{ marginRight: 20 }}>
@@ -261,7 +260,7 @@ export default function Jd(props) {
                                     <p>Mô tả công việc</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {renderHTML(data.description ?? "")}
+                                    {RenderHTML(data.description ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -269,7 +268,7 @@ export default function Jd(props) {
                                     <p>Yêu cầu công việc</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {renderHTML(data.form ?? "")}
+                                    {RenderHTML(data.form ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -277,7 +276,7 @@ export default function Jd(props) {
                                     <p>Quyền lợi được hưởng</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {renderHTML(data.interest ?? "")}
+                                    {RenderHTML(data.interest ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -291,7 +290,7 @@ export default function Jd(props) {
                                     <p>Tính chất công việc</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {renderHTML(data.nature ?? "")}
+                                    {RenderHTML(data.nature ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -299,7 +298,7 @@ export default function Jd(props) {
                                     <p>Yêu cầu bằng cấp(tối thiểu)</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {renderHTML(data.request ?? "")}
+                                    {RenderHTML(data.request ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -307,7 +306,7 @@ export default function Jd(props) {
                                     <p>Yêu cầu kinh nghiệm</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {renderHTML(data.exprience ?? "")}
+                                    {RenderHTML(data.exprience ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -320,7 +319,7 @@ export default function Jd(props) {
                                         className="z-depth-1-half map-container"
                                         style={{ width: "100%" }}
                                     >
-                                        {renderHTML(data.addressGoogle ?? "")}
+                                        {RenderHTML(data.addressGoogle ?? "")}
                                     </div>
                                 </div>
                             </div>
@@ -382,3 +381,5 @@ export default function Jd(props) {
         </div>
     );
 }
+
+export default Jd;

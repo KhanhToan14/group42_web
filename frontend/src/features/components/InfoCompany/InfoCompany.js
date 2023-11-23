@@ -5,7 +5,7 @@ import SpinLoad from "../Spin/Spin";
 import Breadcrumb from "./Breadcrumb/Breadcrumb";
 import Tabs from "./Tabs/Tabs";
 import Footer from "../Home/Footer/Footer";
-export default function InforCompany() {
+function InforCompany() {
     const [user, setUser] = useState();
     useEffect(() => {
         checkLoginApi.checkLogin().then((ok) => {
@@ -28,3 +28,5 @@ export default function InforCompany() {
         </div>
     );
 }
+
+export default InforCompany;

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,7 +8,7 @@ import {
     socialNetworkData,
     updatesocialNetwork,
 } from "../Slice/socialNetworkSlice";
-export default function SocialNetwork() {
+function SocialNetwork() {
     const columns = [
         {
             title: "tên mạng xã hội",
@@ -28,7 +28,7 @@ export default function SocialNetwork() {
         },
     ];
 
-    const match = useRouteMatch();
+    const match = useMatch();
     const socialNetwork = useSelector(
         (state) => state.socialNetworks.socialNetwork.data,
     );
@@ -38,14 +38,17 @@ export default function SocialNetwork() {
         page: localStorage.getItem("pageSocialNetwork") || 1,
     });
     const { page } = state;
-    const actionResult = async (page) => {
+
+    const actionResult = useCallback(async (page) => {
         await dispatch(socialNetworkData(page));
-    };
+    }, [dispatch]);
+
     useEffect(() => {
         localStorage.setItem("pageSocialNetwork", page);
         actionResult({ page: page });
-    }, [page]);
-    const history = useHistory();
+    }, [page, actionResult]);
+
+    const history = useNavigate();
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatesocialNetwork({ status: 0, id: id }));
@@ -56,21 +59,25 @@ export default function SocialNetwork() {
             actionResult({ page: page });
         }, 500);
     };
+
     const onChangePage = (page) => {
         setState({
             page: page,
             pageCurent: page,
         });
     };
+
     const hangdleEdit = (id) => {
         history.replace(`${match.url}/editSocialNetwork/${id}`);
     };
+
     const hangdleDelete = (e) => {
         dispatch(removesocialNetwork(e));
         setTimeout(() => {
             actionResult({ page: page });
         }, 500);
     };
+
     return (
         <div id="admin">
             <div className="heading">
@@ -167,3 +174,5 @@ export default function SocialNetwork() {
         </div>
     );
 }
+
+export default SocialNetwork;

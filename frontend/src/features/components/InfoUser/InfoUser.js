@@ -4,7 +4,7 @@ import Footer from "../Home/Footer/Footer";
 import SpinLoad from "../Spin/Spin";
 import Breadcrumb from "./Breadcrumb/Breadcrumb";
 import Tabs from "./Tabs/Tabs";
-export default function InforUser() {
+function InforUser() {
     const [user, setUser] = useState();
     useEffect(() => {
         checkLoginApi.checkLogin().then((ok) => {
@@ -27,3 +27,5 @@ export default function InforUser() {
         </div>
     );
 }
+
+export default InforUser;

@@ -1,23 +1,24 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { typeWorkData } from "../../../admin/Slice/typeWorkSlice";
 import { GetCategoryHome } from "../../../container/Functionjs";
 import "../../../styles/Home/ListCategories.scss";
 import SpinLoad from "../../Spin/Spin";
-import renderHtml from "react-render-html";
-export default function ListCategories() {
+import RenderHTML from "react-native-render-html";
+function ListCategories() {
     const dispatch = useDispatch();
-    const actionResult = () => {
+    const actionResult = useCallback(() => {
         dispatch(typeWorkData({ status: 1 }));
-    };
+    }, [dispatch]);
+
     const typework = useSelector((state) => state.typeWorks.typeWork.data);
     const loading = useSelector((state) => state.typeWorks.loading);
 
     useEffect(() => {
         actionResult();
-    }, []);
+    }, [actionResult]);
+
     return (
         <div className="categori">
             <div className="container">
@@ -40,7 +41,7 @@ export default function ListCategories() {
                                     <div className="categori__box">
                                         <div className="categori__title">{ok.name}</div>
                                         <div className="categori__icon">
-                                            {ok.icon ? renderHtml(ok.icon) : ""}
+                                            {ok.icon ? RenderHTML(ok.icon) : ""}
                                         </div>
                                         <div className="categori__total">{ok.length} công việc</div>
                                     </div>
@@ -53,3 +54,5 @@ export default function ListCategories() {
         </div>
     );
 }
+
+export default ListCategories;

@@ -1,23 +1,25 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { addtypeWork, typeWorkData, updatetypeWork } from '../Slice/typeWorkSlice';
 import typeWorkApi from "../../../api/typeWorkApi"
-export default function AddtypeWork() {
+function AddtypeWork() {
     const { id } = useParams();
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    useEffect(async () => {
-        if (id) {
-            reset(await typeWorkApi.getOne(id).then(data => {
-                return data
-            }));
+    useEffect(() => {
+        async function fetchData() {
+            if (id) {
+                const data = await typeWorkApi.getOne(id);
+                reset(data);
+            }
         }
-    }, [])
+        fetchData();
+    }, [id, reset])
 
     const dispatch = useDispatch();
-    const history = useHistory();
+    const history = useNavigate();
     const actionResult = async (page) => { await dispatch(typeWorkData(page)) }
 
     const onhandleSubmit = (data) => {
@@ -63,3 +65,5 @@ export default function AddtypeWork() {
         </div>
     )
 }
+
+export default AddtypeWork;

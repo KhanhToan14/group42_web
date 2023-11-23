@@ -1,9 +1,9 @@
 import { Pagination, Spin, Table } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { updatework, workData } from "../Slice/workSlice";
-export default function Work() {
+function Work() {
     const columns = [
         {
             title: "Tên công việc",
@@ -25,14 +25,17 @@ export default function Work() {
         page: localStorage.getItem("pagework") || 1,
     });
     const { page } = state;
-    const actionResult = async (page, name) => {
+
+    const actionResult = useCallback(async (page, name) => {
         await dispatch(workData(page, name));
-    };
+    }, [dispatch]);
+
     const [nameCompanies, setNameCompanies] = useState("");
     useEffect(() => {
         localStorage.setItem("pagework", page);
         actionResult({ page: page, name: nameCompanies });
-    }, [page, isLoad]);
+    }, [page, isLoad, actionResult, nameCompanies]);
+
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatework({ status: 0, id: id }));
@@ -43,6 +46,7 @@ export default function Work() {
             actionResult({ page: page });
         }, 500);
     };
+
     const onChangePage = (page) => {
         setState({
             page: page,
@@ -125,3 +129,5 @@ export default function Work() {
         </div>
     );
 }
+
+export default Work;

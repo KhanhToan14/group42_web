@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
+import { Pagination, Popconfirm, Spin, Table } from "antd";
+import { Link } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { workCensorshipData, updateWorkCensorship } from "../Slice/workCensorshipSlice";
-export default function CheckJob() {
+function CheckJob() {
     const columns = [
         {
             title: "Tên Công việc",
@@ -30,14 +30,15 @@ export default function CheckJob() {
         page: localStorage.getItem("pageCheckJob") || 1,
     });
     const { page } = state;
-    const actionResult = (page) => {
+
+    const actionResult = useCallback(() => {
         dispatch(workCensorshipData(page));
-    };
+    }, [dispatch, page]);
 
     useEffect(() => {
         localStorage.setItem("pagecheckJob", page);
-        actionResult({ page: page });
-    }, [page]);
+        actionResult();
+    }, [dispatch, page, actionResult]);
 
     const handleCensorship = (id) => {
         dispatch(updateWorkCensorship({ censorship: 1, id: id }));
@@ -129,3 +130,5 @@ export default function CheckJob() {
         </div>
     );
 }
+
+export default CheckJob;

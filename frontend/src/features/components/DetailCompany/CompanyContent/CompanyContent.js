@@ -1,9 +1,8 @@
 import React from "react";
-import renderHTML from "react-render-html";
-import { checkDateCompany } from "../../../container/Functionjs";
 import "../../../styles/DetailCompany/ContentCompany.scss";
 import Jobs from "../../InfoCompany/Tabs/Jobs/Jobs";
-export default function ContentCompany({ data }) {
+import RenderHTML from "react-native-render-html";
+function ContentCompany({ data }) {
     return (
         <div className="contentCompany">
             <div className="container">
@@ -12,7 +11,7 @@ export default function ContentCompany({ data }) {
                         <div className="company__box">
                             <div className="company__box__title">Giới thiệu</div>
                             <div className="company__box__content">
-                                {data.introduce ? renderHTML(data.introduce) : ""}
+                                {data.introduce ? RenderHTML(data.introduce) : ""}
                             </div>
                         </div>
                         <div className="job">
@@ -123,3 +122,5 @@ export default function ContentCompany({ data }) {
         </div>
     );
 }
+
+export default ContentCompany;

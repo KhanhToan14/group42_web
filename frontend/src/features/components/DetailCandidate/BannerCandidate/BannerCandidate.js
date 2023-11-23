@@ -1,7 +1,6 @@
-import { Image } from 'antd'
 import React from 'react'
 import "../../../styles/DetailCompany/BannerCompany.scss"
-export default function BannerCompany({ avatar, banner, name, address }) {
+function BannerCompany({ avatar, banner, name, address }) {
 
     return (
         <div className="bannerCompany" style={{
@@ -10,7 +9,7 @@ export default function BannerCompany({ avatar, banner, name, address }) {
         }}>
             <div className="bannerCompany__content">
                 <div className="bannerCompany__content__img">
-                    <Image src={avatar} height="100%" />
+                    <img src={avatar} alt="profile" height="100%" />
                 </div>
                 <div className="company__margin">
                     <div className="bannerCompany__content__title">
@@ -24,3 +23,5 @@ export default function BannerCompany({ avatar, banner, name, address }) {
         </div>
     )
 }
+
+export default BannerCompany;

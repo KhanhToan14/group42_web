@@ -1,19 +1,17 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import JoditEditor from "jodit-react";
 import { message, Select } from "antd";
+import JoditEditor from "jodit-react";
 import { Option } from "antd/lib/mentions";
-import { useEffect } from "react";
 import { storage } from "../../../../../firebase";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import SpinLoad from "../../../Spin/Spin";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import userApi from "../../../../../api/userApi";
 import { updateuser, userData } from "../../../../admin/Slice/userSlice";
 // import { typeWorkData } from "../../../../admin/Slice/typeWorkSlice";
 // import { checkArrayEquar } from "../../../../container/Functionjs";
-export default function Information({ id }) {
+function Information({ id }) {
     const [state, setState] = useState({
         loading: false,
         linkImg: "",
@@ -43,18 +41,18 @@ export default function Information({ id }) {
     const [male, setMale] = useState("");
     const [date, setDate] = useState("");
 
-    const getApi = async () => {
+    const getApi = useCallback(async () => {
         return await userApi.getOne(id).then((data) => {
             return data;
         });
-    };
+    }, [id]);
 
     useEffect(() => {
         if (id) {
-            Promise.all([getApi()]).then(function (data) {
-                setContent(data[0].introduce);
-                setMale(data[0].male);
-                setDate(data[0].date)
+            getApi().then((data) => {
+                setContent(data.introduce);
+                setMale(data.male);
+                setDate(data[0].date);
                 reset(data[0]);
                 setState({
                     ...state,
@@ -63,7 +61,8 @@ export default function Information({ id }) {
                 });
             });
         }
-    }, []);
+    }, [id, getApi, reset, state]);
+
 
     const actionResult = (page) => {
         dispatch(userData(page));
@@ -133,7 +132,7 @@ export default function Information({ id }) {
         }
     };
 
-    const history = useHistory();
+    const history = useNavigate();
 
     const onSubmit = async (data) => {
         if (
@@ -370,3 +369,5 @@ export default function Information({ id }) {
         </div>
     );
 }
+
+export default Information;

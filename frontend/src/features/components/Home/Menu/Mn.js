@@ -10,7 +10,7 @@ import {
 } from "../../../container/Functionjs";
 import logo from "../../../images/logossss.png";
 import "../../../styles/Home/Menu.scss";
-export default function Mn(props) {
+function Mn(props) {
     const okok = (bar_ref, nav_ref, line_ref) => {
         setTimeout(() => {
             lineSlide();
@@ -38,12 +38,12 @@ export default function Mn(props) {
             let ListMenu = nav_el.current.querySelectorAll(".item");
             nav_el.current.querySelector(".item.active").classList.remove("active");
             for (let i = 0; i < ListMenu.length; i++) {
-                if (ListMenu[i].id == idClass) {
+                if (ListMenu[i].id === idClass) {
                     ListMenu[i].classList.add("active");
                 }
             }
         }
-    }, []);
+    }, [nav_el, pathname]);
 
     const inforCompany = (
         <Menu.Item key="1">
@@ -115,3 +115,5 @@ export default function Mn(props) {
         </div>
     );
 }
+
+export default Mn;

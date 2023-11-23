@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { updateuser } from '../../../../admin/Slice/userSlice';
 
-export default function ChangePassword({ id }) {
+function ChangePassword({ id }) {
     const { register, handleSubmit } = useForm();
 
     const dispatch = useDispatch()
@@ -101,3 +101,5 @@ export default function ChangePassword({ id }) {
         </div >
     )
 }
+
+export default ChangePassword;

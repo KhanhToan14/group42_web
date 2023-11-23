@@ -1,6 +1,6 @@
 import React from "react";
 import "../../../styles/DetailJob/BannerJob.scss";
-export default function BannerJob(props) {
+function BannerJob(props) {
     return (
         <div className="bannerJob">
             <div
@@ -23,3 +23,5 @@ export default function BannerJob(props) {
         </div>
     );
 }
+
+export default BannerJob;

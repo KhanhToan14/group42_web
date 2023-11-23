@@ -1,5 +1,5 @@
 import { Pagination } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { workData } from "../../../admin/Slice/workSlice";
@@ -9,7 +9,7 @@ import { formatDateWork } from "../../../container/Functionjs";
 import "../../../styles/SearchJobs/ListJob.scss";
 import SpinLoad from "../../Spin/Spin";
 import KeyTag from "./KeyTag";
-export default function Job({
+function Job({
     searchData,
     onTime,
     onAmout,
@@ -32,22 +32,19 @@ export default function Job({
         });
     };
 
-    const actionResult = (page) => {
+    const actionResult = useCallback((page) => {
         dispatch(workData(page));
         dispatch(typeWorkData({ status: 1 }));
-    };
+    }, [dispatch]);
     useEffect(() => {
         localStorage.setItem("pageWorkHome", page);
         actionResult({ page: page, status: 1 });
-    }, [page]);
+    }, [page, dispatch, actionResult]);
     const onChangeTime = (e) => {
         onTime(e.target.value);
     };
     const onChangeTypeWork = (e) => {
         onTypeWork(+e.target.value !== 0 ? e.target.value : "");
-    };
-    const onChangeAmount = (e) => {
-        onAmout(e.target.value);
     };
     return (
         <div className="ListJobSearch">
@@ -220,3 +217,5 @@ export default function Job({
         </div>
     );
 }
+
+export default Job;

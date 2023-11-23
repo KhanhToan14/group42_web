@@ -1,15 +1,15 @@
-import { Modal, Popover, DatePicker, Space } from "antd";
-import React, { useEffect, useState } from "react";
+import { Modal, Popover } from "antd";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import workApplyApi from "../../../../../api/workApplyApi";
 import "../../../../styles/InfoCompany/UserApply.scss";
 import SpinLoad from "../../../Spin/Spin";
 import moment from "moment";
 import sendMailApi from "../../../../../api/sendMail";
-export default function UserApply({ id }) {
+function UserApply({ id }) {
     const [data, setData] = useState();
     const [isLoad, setIsLoad] = useState(false);
-    const [numReload, setNumReload] = useState(1);
+    const [numReload] = useState(1);
     const [state, setState] = useState({
         isModalUserVisible: false,
         titleModal: "",
@@ -23,19 +23,23 @@ export default function UserApply({ id }) {
     const {
         isModalUserVisible,
         titleModal,
-        date,
+        // date,
         textSendMail,
         email,
         userId,
-        workId,
+        // workId,
     } = state;
 
-    const getApi = async () => {
+    const getApi = useCallback(async () => {
         await workApplyApi.checkWorkApply({ id, userId }).then((data) => {
             console.log('data.Works', data.Works)
             setData(data.Works);
         });
-    };
+    }, [id, userId]);
+
+    useEffect(() => {
+        getApi();
+    }, [id, userId, getApi]);
 
     const handleOk = () => {
         setState({ ...state, isModalUserVisible: false });
@@ -87,7 +91,7 @@ export default function UserApply({ id }) {
 
     useEffect(() => {
         getApi();
-    }, [numReload, isLoad]);
+    }, [getApi, numReload, isLoad]);
 
     let styleTextarea = {
         width: "100%",
@@ -115,15 +119,15 @@ export default function UserApply({ id }) {
     }
 
     const clearWorksReject = (data) => {
-        return data.filter(item => item.WorkApplies.statusActive != 3)
+        return data.filter(item => item.WorkApplies.statusActive !== 3)
     }
 
     const getTitle = (statusActive) => {
         if (statusActive == null) {
             return "Mới Ứng Tuyển";
-        } else if (statusActive == 1) {
+        } else if (statusActive === 1) {
             return "Chờ Phỏng Vấn";
-        } else if (statusActive == 2) {
+        } else if (statusActive === 2) {
             return "Đã Nhận Ứng Viên";
         }
     }
@@ -165,6 +169,7 @@ export default function UserApply({ id }) {
                                                             <div className="content___box---user---img">
                                                                 <img
                                                                     src={oki.avatar}
+                                                                    alt="content_im"
                                                                     title={oki.name}
                                                                     width={150}
                                                                 />
@@ -218,7 +223,7 @@ export default function UserApply({ id }) {
                                                                             transform: "translateX(-50%)"
                                                                         }}
                                                                     >{getTitle(oki.WorkApplies.statusActive)}</div>
-                                                                    {oki.WorkApplies.link && oki.WorkApplies.statusActive != 2 && (
+                                                                    {oki.WorkApplies.link && oki.WorkApplies.statusActive !== 2 && (
                                                                         <button
                                                                             className="btn-link"
                                                                             onClick={() => {
@@ -228,7 +233,7 @@ export default function UserApply({ id }) {
                                                                             Xem CV
                                                                         </button>
                                                                     )}
-                                                                    {oki.WorkApplies.statusActive != 2
+                                                                    {oki.WorkApplies.statusActive !== 2
                                                                         &&
                                                                         <>
                                                                             <button
@@ -252,7 +257,7 @@ export default function UserApply({ id }) {
                                                                                 Từ chối
                                                                             </button>
                                                                             {
-                                                                                oki.WorkApplies.statusActive != 1 ?
+                                                                                oki.WorkApplies.statusActive !== 1 ?
                                                                                     <button
                                                                                         className="btn-link"
                                                                                         onClick={() => handleAccept(oki.id, ok.id)}
@@ -288,7 +293,7 @@ export default function UserApply({ id }) {
                                                                     ></textarea>
                                                                 </Modal>
 
-                                                                {oki.WorkApplies.statusActive != 2 &&
+                                                                {oki.WorkApplies.statusActive !== 2 &&
                                                                     <Popover
                                                                         content={oki.WorkApplies.message}
                                                                         title="Lời nhắn"
@@ -315,3 +320,5 @@ export default function UserApply({ id }) {
         </div>
     );
 }
+
+export default UserApply;

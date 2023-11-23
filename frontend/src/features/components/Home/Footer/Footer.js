@@ -1,31 +1,34 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { contactData } from "../../../admin/Slice/contactSlice";
 import { socialNetworkData } from "../../../admin/Slice/socialNetworkSlice";
 import "../../../styles/Home/Footer.scss";
 import SpinLoad from "../../Spin/Spin";
-export default function Footer() {
+function Footer() {
     const dispatch = useDispatch();
-    const actionResult = async () => {
+    const actionResult = useCallback(async () => {
         await dispatch(contactData({ status: 1 }));
-    };
+    }, [dispatch]);
+
     const contact = useSelector((state) => state.contacts.contact.data);
     const loadingContact = useSelector((state) => state.contacts.loading);
     const ok = !loadingContact ? contact.rows[0] : [];
-    const actionResultMxh = async () => {
+    const actionResultMxh = useCallback(async () => {
         await dispatch(socialNetworkData({ status: 1 }));
-    };
+    }, [dispatch]);
+
     const mxh = useSelector((state) => state.socialNetworks.socialNetwork.data);
     const loadMxh = useSelector((state) => state.socialNetworks.loading);
     useEffect(() => {
         actionResult();
         actionResultMxh();
-    }, []);
+    }, [actionResult, actionResultMxh]);
     const chuyentrang = (url) => {
         window.open(url);
     };
+
     return (
         <div className="footer">
             <div className="container-footer">
@@ -150,3 +153,5 @@ export default function Footer() {
         </div>
     );
 }
+
+export default Footer;

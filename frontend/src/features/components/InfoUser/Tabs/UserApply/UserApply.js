@@ -3,7 +3,7 @@ import workApplyApi from "../../../../../api/workApplyApi";
 import SpinLoad from "../../../Spin/Spin";
 import { Link } from "react-router-dom";
 import { formatDateWork } from "../../../../container/Functionjs";
-export default function UserApply({ id }) {
+function UserApply({ id }) {
     const [data, setData] = useState();
     const getApi = async () => {
         await workApplyApi.checkUserApply(id).then((data) => {
@@ -12,7 +12,7 @@ export default function UserApply({ id }) {
     };
     useEffect(() => {
         getApi();
-    }, []);
+    }, [getApi]);
     return (
         <div className="ListJob">
             <div className="heading">
@@ -79,3 +79,5 @@ export default function UserApply({ id }) {
         </div>
     );
 }
+
+export default UserApply;

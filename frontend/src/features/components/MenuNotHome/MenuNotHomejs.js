@@ -11,7 +11,6 @@
 //         nav.classList.remove("menu--hident")
 //         bar.style.display = "none";
 //     }
-
 import { checkBar } from "../../container/Functionjs";
 
 // }

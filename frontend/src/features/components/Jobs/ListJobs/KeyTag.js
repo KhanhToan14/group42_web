@@ -1,7 +1,7 @@
 import React from "react"
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 import "../../../styles/SearchJobs/KeyTag.scss"
-export default function KeyTag() {
+function KeyTag() {
     return (
         <div className="box__key">
             <div className="key__title">
@@ -27,3 +27,5 @@ export default function KeyTag() {
         </div>
     )
 }
+
+export default KeyTag;

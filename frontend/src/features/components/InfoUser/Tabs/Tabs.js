@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 import { Tabs } from 'antd';
 import UserApply from './UserApply/UserApply';
 import Information from './Information/Information';
 import WorkSave from './WorkSave/WorkSave';
 import ChangePassword from './ChangePassword/ChangePassword';
-export default function Tab({ id }) {
+function Tab({ id }) {
     const { TabPane } = Tabs;
     return (
         <div className="container mt-2">
@@ -28,3 +28,5 @@ export default function Tab({ id }) {
         </div>
     )
 }
+
+export default Tab;

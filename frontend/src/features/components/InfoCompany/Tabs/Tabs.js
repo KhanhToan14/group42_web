@@ -6,7 +6,7 @@ import UserApply from "./UserApply/UserApply";
 import Infor from "./Information/Information";
 import JobsReject from "./JobReject/JobReject";
 import ChangePassword from "./ChangePassword/ChangePassword";
-export default function Tab({ id }) {
+function Tab({ id }) {
     const { TabPane } = Tabs;
     const [numTab, setNumTab] = useState("1");
     const [idEdit, setIdEdit] = useState(null);
@@ -73,3 +73,5 @@ export default function Tab({ id }) {
         </div>
     );
 }
+
+export default Tab;

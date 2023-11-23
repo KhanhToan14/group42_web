@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "../../../styles/Home/ListNew.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { newData } from "../../../admin/Slice/newSlice";
-export default function ListNew() {
+function ListNew() {
     const dispatch = useDispatch();
-    const actionResult = async (page) => {
+    const actionResult = useCallback(async (page) => {
         await dispatch(newData(page));
-    };
+    }, [dispatch]);
+
     useEffect(() => {
         actionResult({ page: 1 });
     }, []);
+
     const news = useSelector((state) => state.news.new.data);
     const new1 = [];
     const new2 = [];
@@ -26,6 +28,7 @@ export default function ListNew() {
             }
         }
     }
+
     return (
         <div id="news">
             <div className="heading">
@@ -102,3 +105,5 @@ export default function ListNew() {
         </div>
     );
 }
+
+export default ListNew;

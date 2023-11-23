@@ -1,7 +1,7 @@
 import React from 'react'
 import "../../../styles/Breadcrumb.scss"
 import { Link } from 'react-router-dom';
-export default function Breadcrumb(props) {
+function Breadcrumb(props) {
 
     return (
         <div className="breadcrumb">
@@ -15,3 +15,5 @@ export default function Breadcrumb(props) {
         </div>
     )
 }
+
+export default Breadcrumb;

@@ -1,11 +1,11 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
-import { message } from "antd";
+import { message } from 'antd';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { updatecompany } from '../../../../admin/Slice/companySlice';
 
-export default function ChangePassword({ id }) {
+function ChangePassword({ id }) {
     const { register, handleSubmit } = useForm();
 
     const dispatch = useDispatch()
@@ -101,3 +101,5 @@ export default function ChangePassword({ id }) {
         </div >
     )
 }
+
+export default ChangePassword;

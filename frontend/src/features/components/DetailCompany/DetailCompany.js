@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import companyApi from "../../../api/companyApi";
@@ -8,19 +8,21 @@ import BannerCompany from "./BannerCompany/BannerCompany";
 import Breadcrumb from "./Breadcrumb/Breadcrumb";
 import CompanyContent from "./CompanyContent/CompanyContent";
 
-export default function DetailCompany() {
+function DetailCompany() {
     const { id } = useParams();
     const [data, setData] = useState();
-    const getApi = async () => {
+    const getApi = useCallback(async () => {
         return await companyApi.getOne(id).then((data) => {
             setData(data);
         });
-    };
+    }, [id]);
+
     useEffect(() => {
         getApi();
         window.scrollTo(0, 0);
-    }, []);
+    }, [getApi]);
     // console.log(data);
+
     return (
         <div>
             {/* <Menu /> */}
@@ -42,3 +44,5 @@ export default function DetailCompany() {
         </div>
     );
 }
+
+export default DetailCompany;

@@ -1,26 +1,28 @@
 import { Pagination } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { companyData } from "../../../admin/Slice/companySlice";
 import "../../../styles/Companys/Company.scss";
 import SpinLoad from "../../Spin/Spin";
-export default function Companys() {
+function Companys() {
     const companys = useSelector((state) => state.companys.company.data);
     const loading = useSelector((state) => state.companys.loading);
-    const [state, setState] = useState({
+    const [state] = useState({
         page: localStorage.getItem("pagecompanyHome") || 1,
     });
     const { page } = state;
     const dispatch = useDispatch();
-    const actionResult = async (page) => {
+
+    const actionResult = useCallback(async (page) => {
         await dispatch(companyData(page));
-    };
+    }, [dispatch]);
+
     useEffect(() => {
         localStorage.setItem("pagecompanyHome", page);
         actionResult({ page: page, status: 1 });
         window.scrollTo(0, 0);
-    }, [page]);
+    }, [page, actionResult]);
 
     return (
         <div className="companys">
@@ -72,3 +74,5 @@ export default function Companys() {
         </div>
     );
 }
+
+export default Companys;

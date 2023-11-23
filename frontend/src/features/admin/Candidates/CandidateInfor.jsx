@@ -1,25 +1,24 @@
-import { Image, Spin } from "antd";
+import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import userApi from "../../../api/userApi";
 import moment from "moment";
-import renderHTML from "react-render-html";
+import RenderHTML from "react-native-render-html";
 
-export default function CandidateInfor() {
+function CandidateInfor() {
     let { id } = useParams();
     const [data, setData] = useState();
     console.log("data", data);
 
-    const getApi = async () => {
-        return await userApi.getOne(id).then((data) => {
-            setData(data);
-        });
-    };
-
     useEffect(() => {
+        async function getApi() {
+            await userApi.getOne(id).then((data) => {
+                setData(data);
+            });
+        }
         getApi();
         window.scrollTo(0, 0);
-    }, []);
+    }, [id]);
 
     return (
         <div id="admin">
@@ -37,7 +36,7 @@ export default function CandidateInfor() {
                 ) : (
                     <div className="infor-detail-admin">
                         <div className="content_img">
-                            <Image src={data.avatar} width="500px" />
+                            <img src={data.avatar} alt="Applicant's profile" width="500px" />
                         </div>
                         <div className="content-text">
                             <div className="box">
@@ -81,7 +80,7 @@ export default function CandidateInfor() {
                             <div className="box">
                                 <div className="title">Giới thiệu:</div>
                                 <div className="detail">
-                                    {renderHTML(data.introduce ?? "Chưa cập nhật!")}
+                                    {RenderHTML(data.introduce ?? "Chưa cập nhật!")}
                                 </div>
                             </div>
                         </div>
@@ -91,3 +90,5 @@ export default function CandidateInfor() {
         </div>
     );
 }
+
+export default CandidateInfor;

@@ -1,26 +1,29 @@
 import { Pagination } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { userData } from "../../../admin/Slice/userSlice";
 import "../../../styles/Candidates/Candidates.scss";
 import SpinLoad from "../../Spin/Spin";
-export default function ListCandidates() {
+import userData from "../../../admin/Slice/userSlice"
+function ListCandidates() {
     const users = useSelector((state) => state.users.user.data);
     const loading = useSelector((state) => state.users.loading);
-    const [state, setState] = useState({
+    const [state] = useState({
         page: localStorage.getItem("pageUserHome") || 1,
     });
     const { page } = state;
     const dispatch = useDispatch();
-    const actionResult = async (page) => {
-        await dispatch(userData(page));
-    };
+
+    const actionResult = useCallback(async (page) => {
+        await dispatch(userData(page, 1));
+    }, [dispatch]);
+
     useEffect(() => {
         localStorage.setItem("pageUserHome", page);
-        actionResult({ page: page, status: 1 });
+        actionResult({ page: page });
         window.scrollTo(0, 0);
-    }, [page]);
+    }, [page, actionResult]);
+
     return (
         <div className="listCandidates">
             <div className="heading">
@@ -62,3 +65,5 @@ export default function ListCandidates() {
         </div>
     );
 }
+
+export default ListCandidates;
