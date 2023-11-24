@@ -76,10 +76,10 @@
         <include refid="select_user"></include>
         WHERE DEL_YN = 0
         <!--            AND STATUS = 1-->
-        AND ((USERNAME LIKE CONCAT("%", #{username}, "%"))
-        OR (EMAIL LIKE CONCAT("%", #{email}, "%"))
-        OR (FIRST_NAME LIKE CONCAT("%", #{firstName}, "%"))
-        OR (LAST_NAME LIKE CONCAT("%", #{lastName}, "%")))
+        AND ((USERNAME LIKE CONCAT("%", #{keyword}, "%"))
+        OR (EMAIL LIKE CONCAT("%", #{keyword}, "%"))
+        OR (FIRST_NAME LIKE CONCAT("%", #{keyword}, "%"))
+        OR (LAST_NAME LIKE CONCAT("%", #{keyword}, "%")))
         ORDER BY
         <if test="sortBy == 'username'">
             USERNAME

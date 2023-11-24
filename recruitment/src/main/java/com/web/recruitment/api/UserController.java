@@ -50,7 +50,7 @@ public class UserController {
 
     @Operation(summary = "Get list user API", description = "get list user")
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getListDepartment(
+    public ResponseEntity<Object> getListUser(
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
             @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
             @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
