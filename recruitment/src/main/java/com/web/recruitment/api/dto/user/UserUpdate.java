@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserUpdate {
     private int id;
-    private int companyId;
     private String username;
     private String firstName;
     private String lastName;
@@ -22,5 +21,6 @@ public class UserUpdate {
     private String avatar;
     private String password;
     private String role;
+    private Integer companyId;
     private String skills;
 }

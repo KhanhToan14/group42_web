@@ -100,8 +100,12 @@ public class DepartmentController {
         res = new JSONObject(resError);
         if (resError.get(MESSAGE).equals(SUCCESS_INSERT_DEPARTMENT)){
             return new ResponseEntity<>(res, HttpStatus.OK);
+        } else if (resError.get(MESSAGE).equals(NOT_FOUND_MESSAGE)){
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        } else{
+            return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+
     }
 
     @Operation(summary = "Update department API", description = "Update department")

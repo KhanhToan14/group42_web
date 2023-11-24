@@ -3,7 +3,6 @@
 <mapper namespace="com.web.recruitment.persistence.mapper.UserMapper">
     <resultMap id="user" type="com.web.recruitment.persistence.dto.User">
         <result column="ID" property="id"/>
-        <result column="COMPANY_ID" property="companyId"/>
         <result column="USERNAME" property="username"/>
         <result column="FIRST_NAME" property="firstName"/>
         <result column="LAST_NAME" property="lastName"/>
@@ -14,6 +13,7 @@
         <result column="AVATAR" property="avatar"/>
         <result column="HASH_PASSWORD" property="password"/>
         <result column="ROLE" property="role"/>
+        <result column="COMPANY_ID" property="companyId"/>
         <result column="SKILLS" property="skills"/>
         <result column="STATUS" property="status"/>
         <result column="DEL_YN" property="delYn"/>
@@ -32,6 +32,7 @@
         <result column="ADDRESS" property="address"/>
         <result column="AVATAR" property="avatar"/>
         <result column="ROLE" property="role"/>
+        <result column="COMPANY_ID" property="companyId"/>
         <result column="SKILLS" property="skills"/>
     </resultMap>
     <sql id="select_user">
@@ -41,8 +42,7 @@
     <sql id="update_user">
         UPDATE
         USER_TB
-        SET COMPANY_ID = #{companyId}
-        , USERNAME = BINARY#{username}
+        SET USERNAME = BINARY#{username}
         , FIRST_NAME = BINARY#{firstName}
         , LAST_NAME = BINARY#{lastName}
         , DATE_OF_BIRTH = #{dateOfBirth}
@@ -51,6 +51,7 @@
         , ADDRESS = #{address}
         , HASH_PASSWORD = #{password}
         , ROLE = #{role}
+        , COMPANY_ID = #{companyId}
         , UPDATE_AT = NOW()
     </sql>
     <sql id="delete_user">
@@ -75,10 +76,10 @@
         <include refid="select_user"></include>
         WHERE DEL_YN = 0
         <!--            AND STATUS = 1-->
-        AND (USERNAME LIKE CONCAT("%", #{username}, "%"))
+        AND ((USERNAME LIKE CONCAT("%", #{username}, "%"))
         OR (EMAIL LIKE CONCAT("%", #{email}, "%"))
         OR (FIRST_NAME LIKE CONCAT("%", #{firstName}, "%"))
-        OR (LAST_NAME LIKE CONCAT("%", #{lastName}, "%"))
+        OR (LAST_NAME LIKE CONCAT("%", #{lastName}, "%")))
         ORDER BY
         <if test="sortBy == 'username'">
             USERNAME
@@ -137,8 +138,7 @@
         INSERT INTO
         USER_TB
         (
-        COMPANY_ID
-        , USERNAME
+        USERNAME
         , FIRST_NAME
         , LAST_NAME
         , DATE_OF_BIRTH
@@ -148,6 +148,7 @@
         , AVATAR
         , HASH_PASSWORD
         , ROLE
+        , COMPANY_ID
         , SKILLS
         , STATUS
         , DEL_YN
@@ -156,8 +157,7 @@
         )
         VALUES
         (
-        #{companyId}
-        , BINARY#{username}
+        BINARY#{username}
         , BINARY#{firstName}
         , BINARY#{lastName}
         , #{dateOfBirth}
@@ -167,6 +167,7 @@
         , #{avatar}
         , #{password}
         , #{role}
+        , #{companyId}
         , #{skills}
         , 0
         , 0
@@ -175,7 +176,7 @@
         )
     </insert>
 
-    <select id="selectByName" resultType="int" parameterType="map">
+    <select id="selectByUsername" resultType="int" parameterType="map">
         SELECT COUNT(ID)
         FROM USER_TB
         WHERE USERNAME = BINARY#{username}
@@ -205,4 +206,10 @@
         AND ID IN
         <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
     </update>
+    <select id="selectUserByEmail" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM USER_TB
+        WHERE EMAIL = #{email}
+            AND DEL_YN = 0
+    </select>
 </mapper>

@@ -178,6 +178,12 @@
             AND DEL_YN = 0
 <!--            AND STATUS = 1-->
     </select>
-
+    <select id="selectCompanyByEmail" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM COMPANIES_TB
+        WHERE EMAIL = #{email}
+        AND DEL_YN = 0
+        <!--            AND STATUS = 1-->
+    </select>
 
 </mapper>
