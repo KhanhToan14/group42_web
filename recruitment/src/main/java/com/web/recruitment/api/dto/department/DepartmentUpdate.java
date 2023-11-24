@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DepartmentUpdate {
     private Integer id;
+    private int companyId;
     private String name;
     private String description;
 }

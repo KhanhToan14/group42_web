@@ -1,11 +1,9 @@
-package com.web.recruitment.api.dto.Job;
+package com.web.recruitment.api.dto.job;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +12,6 @@ import java.util.List;
 public class JobInformation {
     private int id;
     private int departmentId;
-    private int companyId;
     private String name;
     private String description;
     private String location;

@@ -4,7 +4,6 @@
     <resultMap id="job" type="com.web.recruitment.persistence.dto.Job">
         <result column="ID" property="id"/>
         <result column="DEPARTMENT_ID" property="departmentId"/>
-        <result column="COMPANY_ID" property="companyId"/>
         <result column="JOB_NM" property="name"/>
         <result column="DESCRIPTION" property="description"/>
         <result column="LOCATION" property="location"/>
@@ -18,10 +17,9 @@
         <result column="CREATE_AT" property="createAt"/>
         <result column="UPDATE_AT" property="updateAt"/>
     </resultMap>
-    <resultMap id="jobInformation" type="com.web.recruitment.api.dto.Job.JobInformation">
+    <resultMap id="jobInformation" type="com.web.recruitment.api.dto.job.JobInformation">
         <result column="ID" property="id"/>
         <result column="DEPARTMENT_ID" property="departmentId"/>
-        <result column="COMPANY_ID" property="companyId"/>
         <result column="JOB_NM" property="name"/>
         <result column="DESCRIPTION" property="description"/>
         <result column="LOCATION" property="location"/>
@@ -31,7 +29,7 @@
         <result column="SALARY_TO" property="salaryTo"/>
         <result column="CURRENCY" property="currency"/>
     </resultMap>
-    <resultMap id="jobIntroduction" type="com.web.recruitment.api.dto.Job.JobIntroduction">
+    <resultMap id="jobIntroduction" type="com.web.recruitment.api.dto.job.JobIntroduction">
         <result column="JOB_NM" property="name"/>
         <result column="DESCRIPTION" property="description"/>
     </resultMap>
@@ -43,7 +41,6 @@
         UPDATE
         JOB_TB
         SET DEPARTMENT_ID = #{departmentId}
-        , COMPANY_ID = #{companyId}
         , JOB_NM = BINARY#{name}
         , DESCRIPTION = #{description}
         , LOCATION = #{location}
@@ -146,7 +143,7 @@
         WHERE JOB_NM = BINARY#{name}
         AND DEL_YN = 0
     </select>
-    <update id="update" parameterType="com.web.recruitment.api.dto.Job.JobUpdate" keyColumn="id"
+    <update id="update" parameterType="com.web.recruitment.api.dto.job.JobUpdate" keyColumn="id"
             keyProperty="id"
             useGeneratedKeys="true">
         <include refid="update_job"></include>
@@ -166,14 +163,13 @@
         AND ID IN
         <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
     </update>
-    <insert id="insert" parameterType="com.web.recruitment.api.dto.Job.JobInsert" keyColumn="id"
+    <insert id="insert" parameterType="com.web.recruitment.api.dto.job.JobInsert" keyColumn="id"
             keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
             JOB_TB
             (
                 DEPARTMENT_ID
-                , COMPANY_ID
                 , JOB_NM
                 , DESCRIPTION
                 , LOCATION
@@ -190,7 +186,6 @@
             VALUES
             (
                 #{departmentId}
-                , #{companyId}
                 , BINARY#{name}
                 , #{description}
                 , #{location}
@@ -206,16 +201,18 @@
             )
     </insert>
     <select id="listJobInCompany" resultMap="jobIntroduction" parameterType="map">
-    <include refid="select_job"></include>
-    WHERE DEL_YN = 0
-        AND STATUS = 0
-        AND COMPANY_ID = #{companyId}
+    SELECT *
+    FROM JOB_TB AS j, DEPARTMENT_TB AS d
+    WHERE j.DEPARTMENT = d.ID
+        AND j.DEL_YN = 0
+        AND j.STATUS = 0
+        AND d.COMPANY_ID = #{companyId}
     ORDER BY
     <if test="sortBy == 'time'">
         CREATE_AT
     </if>
     <if test="sortBy == 'name'">
-        JOB_NM
+        j.JOB_NM
     </if>
     <if test="sortType == 'asc'">
         ASC

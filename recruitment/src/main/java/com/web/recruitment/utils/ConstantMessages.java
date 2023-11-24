@@ -65,6 +65,7 @@ public class ConstantMessages {
     public static final String DEPARTMENT_ID = "departmentId";
     public static final String DEPARTMENT_NOT_FOUND = "DepartmentNotFound";
     public static final String COMPANY_ID = "companyId";
+    public static final String COMPANY_ID_NOT_EXIST = "CompanyIdNotExist";
     public static final String COMPANY_NOT_FOUND = "CompanyNotFound";
     public static final String SALARY = "salary";
     public static final String SALARY_INVALID = "SalaryInvalid";
@@ -77,4 +78,11 @@ public class ConstantMessages {
     public static final String SUCCESS_INSERT_JOB = "SuccessInsertJob";
     public static final String SUCCESS_UPDATE_JOB = "SuccessUpdateJob";
     public static final String SUCCESS_DELETE_JOB = "SuccessDeleteJob";
+
+    //
+    public static final String USER = "user";
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME = "lastName";
+    public static final String DATE_OF_BIRTH = "dateOfBirth";
+    public static final String PASSWORD = "password";
 }

@@ -1,18 +1,15 @@
 package com.web.recruitment.service;
 
-import ch.qos.logback.core.html.NOPThrowableRenderer;
 import com.web.recruitment.api.dto.department.DepartmentInsert;
 import com.web.recruitment.api.dto.department.DepartmentUpdate;
-import com.web.recruitment.exception.NotFoundException;
-import com.web.recruitment.exception.ValidationException;
 import com.web.recruitment.persistence.dto.Department;
+import com.web.recruitment.persistence.mapper.CompanyMapper;
 import com.web.recruitment.persistence.mapper.DepartmentMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static com.web.recruitment.utils.ConstantMessages.*;
@@ -24,8 +21,12 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Resource
     private final DepartmentMapper departmentMapper;
 
-    public DepartmentServiceImpl(DepartmentMapper departmentMapper) {
+    @Resource
+    private final CompanyMapper companyMapper;
+
+    public DepartmentServiceImpl(DepartmentMapper departmentMapper, CompanyMapper companyMapper) {
         this.departmentMapper = departmentMapper;
+        this.companyMapper = companyMapper;
     }
 
     @Override
@@ -56,7 +57,6 @@ public class DepartmentServiceImpl implements DepartmentService{
         if (pageSize <= 0) {
             pageSize = 30;
         }
-        int total = departmentMapper.total(filter);
         int limit = pageSize;
         int offset = pageSize * (currentPage - 1);
         filter.put(LIMIT, limit);
@@ -86,6 +86,7 @@ public class DepartmentServiceImpl implements DepartmentService{
         filter.replace(SORT_BY, sortBy);
         filter.replace(SORT_TYPE, sortType);
         retList = departmentMapper.list(filter);
+        int total = retList.size();
         reqInfo.put(CURRENT_PAGE, currentPage);
         reqInfo.put(PAGE_SIZE, pageSize);
         reqInfo.put(DATA, retList);
@@ -98,6 +99,13 @@ public class DepartmentServiceImpl implements DepartmentService{
     public Map<String, Object> insert(DepartmentInsert departmentInsert) throws Exception{
         Map<String, Object> subResError = new HashMap<>();
         Map<String, Object> resError = new HashMap<>();
+        int companyId = departmentInsert.getCompanyId();
+        if(companyMapper.select(companyId) == null){
+            subResError.put(COMPANY_ID, COMPANY_ID_NOT_EXIST);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        }
         departmentInsert.setName(autoCorrectFormatName(departmentInsert.getName()));
         String name = departmentInsert.getName();
         if(name == null || name.isBlank()){
@@ -142,6 +150,13 @@ public class DepartmentServiceImpl implements DepartmentService{
         if(departmentMapper.select(departmentUpdate.getId()) == null){
             subResError.put(ID, ID_NOT_EXIST_ERROR);
             resError.put(MESSAGE, NOT_FOUND_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        }
+        int companyId = departmentUpdate.getCompanyId();
+        if(companyMapper.select(companyId) == null){
+            subResError.put(COMPANY_ID, COMPANY_ID_NOT_EXIST);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         }

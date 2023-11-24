@@ -3,6 +3,7 @@
 <mapper namespace="com.web.recruitment.persistence.mapper.DepartmentMapper">
     <resultMap id="department" type="com.web.recruitment.persistence.dto.Department">
         <result column="ID" property="id"/>
+        <result column="COMPANY_ID" property="companyId"/>
         <result column="DEPARTMENT_NM" property="name"/>
         <result column="DESCRIPTION" property="description"/>
         <result column="DEL_YN" property="delYn"/>
@@ -11,6 +12,7 @@
     </resultMap>
     <resultMap id="departmentInformation" type="com.web.recruitment.api.dto.department.DepartmentInformation">
         <result column="ID" property="id"/>
+        <result column="COMPANY_ID" property="companyId"/>
         <result column="DEPARTMENT_NM" property="name"/>
         <result column="DESCRIPTION" property="description"/>
     </resultMap>
@@ -21,7 +23,8 @@
     <sql id="update_department">
         UPDATE
             DEPARTMENT_TB
-        SET DEPARTMENT_NM = BINARY#{name}
+        SET COMPANY_ID = #{companyId}
+            , DEPARTMENT_NM = BINARY#{name}
             , DESCRIPTION = #{description}
             , UPDATE_AT = NOW()
     </sql>
@@ -77,7 +80,8 @@
         INSERT INTO
             DEPARTMENT_TB
             (
-                DEPARTMENT_NM
+                COMPANY_ID
+                , DEPARTMENT_NM
                 , DESCRIPTION
                 , DEL_YN
                 , CREATE_AT
@@ -85,7 +89,8 @@
             )
         VALUES
             (
-                BINARY#{name}
+                #{companyId}
+                , BINARY#{name}
                 , #{description}
                 , 0
                 , NOW()
@@ -119,4 +124,11 @@
             AND ID IN
         <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
     </update>
+<!--    <select id="selectDepartmentByCompanyId" resultType="int" parameterType="map">-->
+<!--        SELECT COUNT(*)-->
+<!--        FROM DEPARTMENT_TB AS d, COMPANIES_TB AS c-->
+<!--        WHERE d.COMPANY_ID = c.ID-->
+<!--        AND c.ID = #{companyId}-->
+<!--            AND c.DEL_YN = 0-->
+<!--    </select>-->
 </mapper>

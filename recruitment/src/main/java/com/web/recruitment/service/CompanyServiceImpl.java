@@ -59,7 +59,6 @@ public class CompanyServiceImpl implements CompanyService{
         if (pageSize <= 0) {
             pageSize = 30;
         }
-        int total = companyMapper.total(filter);
         int limit = pageSize;
         int offset = pageSize * (currentPage - 1);
         filter.put(LIMIT, limit);
@@ -89,6 +88,7 @@ public class CompanyServiceImpl implements CompanyService{
         filter.replace(SORT_BY, sortBy);
         filter.replace(SORT_TYPE, sortType);
         retList = companyMapper.list(filter);
+        int total = retList.size();
         reqInfo.put(CURRENT_PAGE, currentPage);
         reqInfo.put(PAGE_SIZE, pageSize);
         reqInfo.put(DATA, retList);
@@ -268,7 +268,34 @@ public class CompanyServiceImpl implements CompanyService{
             }
         }
         String phone = companyUpdate.getPhone();
-        companyUpdate.setPhone(validateVietnamesePhoneNumber(phone));
+        if(phone == null || phone.isBlank()){
+            subResError.put(PHONE, PHONE_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            companyUpdate.setPhone(validateVietnamesePhoneNumber(phone));
+            if(companyUpdate.getPhone() == null){
+                subResError.put(PHONE, PHONE_INVALID);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
+        String email = companyUpdate.getEmail();
+        if(email == null || email.isBlank()){
+            subResError.put(EMAIL, EMAIL_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            if(!validateEmail(email)){
+                subResError.put(EMAIL, EMAIL_INVALID);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
         companyMapper.update(companyUpdate);
         resError.put(MESSAGE, SUCCESS_UPDATE_COMPANY);
         return resError;

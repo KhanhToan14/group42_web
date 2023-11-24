@@ -94,7 +94,6 @@
 <!--            AND STATUS = 1-->
         <if test="keyword != null">
             AND COMPANY_NM LIKE CONCAT("%", #{keyword}, "%")
-            OR CODE LIKE CONCAT("%", #{code}, "%")
         </if>
     </select>
     <insert id="insert" parameterType="com.web.recruitment.api.dto.company.CompanyInsert" keyColumn="id"

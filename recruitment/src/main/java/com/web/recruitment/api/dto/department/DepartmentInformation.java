@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DepartmentInformation {
     private int id;
+    private int companyId;
     private String name;
     private String description;
 }

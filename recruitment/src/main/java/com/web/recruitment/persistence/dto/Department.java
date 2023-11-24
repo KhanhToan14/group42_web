@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class Department {
     private int id;
+    private int companyId;
     private String name;
     private String description;
     private int delYn;

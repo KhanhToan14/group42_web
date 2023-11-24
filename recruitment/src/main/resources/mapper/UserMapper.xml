@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.recruitment.persistence.mapper.UserMapper">
+    <resultMap id="user" type="com.web.recruitment.persistence.dto.User">
+        <result column="ID" property="id"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="USERNAME" property="username"/>
+        <result column="FIRST_NAME" property="firstName"/>
+        <result column="LAST_NAME" property="lastName"/>
+        <result column="DATE_OF_BIRTH" property="dateOfBirth"/>
+        <result column="PHONE" property="phone"/>
+        <result column="EMAIL" property="email"/>
+        <result column="ADDRESS" property="address"/>
+        <result column="AVATAR" property="avatar"/>
+        <result column="HASH_PASSWORD" property="password"/>
+        <result column="ROLE" property="role"/>
+        <result column="SKILLS" property="skills"/>
+        <result column="STATUS" property="status"/>
+        <result column="DEL_YN" property="delYn"/>
+        <result column="CREATE_AT" property="createAt"/>
+        <result column="UPDATE_AT" property="updateAt"/>
+    </resultMap>
+    <resultMap id="userInformation" type="com.web.recruitment.api.dto.user.UserInformation">
+        <result column="ID" property="id"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="USERNAME" property="username"/>
+        <result column="FIRST_NAME" property="firstName"/>
+        <result column="LAST_NAME" property="lastName"/>
+        <result column="DATE_OF_BIRTH" property="dateOfBirth"/>
+        <result column="PHONE" property="phone"/>
+        <result column="EMAIL" property="email"/>
+        <result column="ADDRESS" property="address"/>
+        <result column="AVATAR" property="avatar"/>
+        <result column="ROLE" property="role"/>
+        <result column="SKILLS" property="skills"/>
+    </resultMap>
+    <sql id="select_user">
+        SELECT *
+        FROM USER_TB
+    </sql>
+    <sql id="update_user">
+        UPDATE
+        USER_TB
+        SET COMPANY_ID = #{companyId}
+        , USERNAME = BINARY#{username}
+        , FIRST_NAME = BINARY#{firstName}
+        , LAST_NAME = BINARY#{lastName}
+        , DATE_OF_BIRTH = #{dateOfBirth}
+        , PHONE = #{phone}
+        , EMAIL = #{email}
+        , ADDRESS = #{address}
+        , HASH_PASSWORD = #{password}
+        , ROLE = #{role}
+        , UPDATE_AT = NOW()
+    </sql>
+    <sql id="delete_user">
+        UPDATE
+        USER_TB
+        SET DEL_YN = 1
+        , UPDATE_AT = NOW()
+    </sql>
+    <select id="list_user" resultMap="user" parameterType="map">
+        <include refid="select_user"></include>
+        WHERE DEL_YN = 0
+        ORDER BY CREATE_DT DESC
+    </select>
+    <select id="select" resultMap="user" parameterType="map">
+        <include refid="select_user"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+        <!--            AND STATUS = 1-->
+    </select>
+    <!-- list phân trang-->
+    <select id="list" resultMap="userInformation" parameterType="map">
+        <include refid="select_user"></include>
+        WHERE DEL_YN = 0
+        <!--            AND STATUS = 1-->
+        AND (USERNAME LIKE CONCAT("%", #{username}, "%"))
+        OR (EMAIL LIKE CONCAT("%", #{email}, "%"))
+        OR (FIRST_NAME LIKE CONCAT("%", #{firstName}, "%"))
+        OR (LAST_NAME LIKE CONCAT("%", #{lastName}, "%"))
+        ORDER BY
+        <if test="sortBy == 'username'">
+            USERNAME
+        </if>
+        <if test="sortBy == 'email'">
+            EMAIL
+        </if>
+        <if test="sortBy == 'firstName'">
+            FIRST_NAME
+        </if>
+        <if test="sortBy == 'lastName'">
+            LAST_NAME
+        </if>
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="total" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM USER_TB
+        WHERE DEL_YN = 0
+        <!--            AND STATUS = 1-->
+        AND (USERNAME LIKE CONCAT("%", #{username}, "%"))
+        OR (EMAIL LIKE CONCAT("%", #{email}, "%"))
+        OR (FIRST_NAME LIKE CONCAT("%", #{firstName}, "%"))
+        OR (LAST_NAME LIKE CONCAT("%", #{lastName}, "%"))
+    </select>
+    <select id="listRole" resultMap="userInformation" parameterType="map">
+        <include refid="select_user"></include>
+        WHERE DEL_YN = 0
+        <!--            AND STATUS = 1-->
+        AND ROLE = #{role}
+        ORDER BY
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="totalRole" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM USER_TB
+        WHERE DEL_YN = 0
+        <!--            AND STATUS = 1-->
+        AND ROLE = #{role}
+    </select>
+    <insert id="insert" parameterType="com.web.recruitment.api.dto.user.UserInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        USER_TB
+        (
+        COMPANY_ID
+        , USERNAME
+        , FIRST_NAME
+        , LAST_NAME
+        , DATE_OF_BIRTH
+        , PHONE
+        , EMAIL
+        , ADDRESS
+        , AVATAR
+        , HASH_PASSWORD
+        , ROLE
+        , SKILLS
+        , STATUS
+        , DEL_YN
+        , CREATE_AT
+        , UPDATE_AT
+        )
+        VALUES
+        (
+        #{companyId}
+        , BINARY#{username}
+        , BINARY#{firstName}
+        , BINARY#{lastName}
+        , #{dateOfBirth}
+        , #{phone}
+        , #{email}
+        , #{address}
+        , #{avatar}
+        , #{password}
+        , #{role}
+        , #{skills}
+        , 0
+        , 0
+        , NOW()
+        , NOW()
+        )
+    </insert>
+
+    <select id="selectByName" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM USER_TB
+        WHERE USERNAME = BINARY#{username}
+        AND DEL_YN = 0
+        <!--            AND STATUS = 1-->
+    </select>
+    <update id="update" parameterType="com.web.recruitment.api.dto.user.UserUpdate" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        <include refid="update_user"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+        <!--            AND STATUS = 1-->
+    </update>
+    <delete id="delete" parameterType="int">
+        <include refid="delete_user"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+        <!--            AND STATUS = 1-->
+    </delete>
+    <update id="deleteChoice" parameterType="java.util.List">
+        UPDATE
+        USER_TB
+        SET DEL_YN = 1
+        WHERE DEL_YN = 0
+        <!--            AND STATUS = 1-->
+        AND ID IN
+        <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
+    </update>
+</mapper>
