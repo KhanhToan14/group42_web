@@ -102,7 +102,7 @@ public class DepartmentServiceImpl implements DepartmentService{
         int companyId = departmentInsert.getCompanyId();
         if(companyMapper.select(companyId) == null){
             subResError.put(COMPANY_ID, COMPANY_ID_NOT_EXIST);
-            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(MESSAGE, NOT_FOUND_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         }

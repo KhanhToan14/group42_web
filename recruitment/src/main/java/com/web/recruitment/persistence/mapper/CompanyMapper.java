@@ -27,4 +27,6 @@ public interface CompanyMapper {
     int selectCompanyByCode(Map<String, Object> reqMap) throws Exception;
 
     int selectCompanyByWebsite(Map<String, Object> reqMap) throws Exception;
+
+    int selectCompanyByEmail(Map<String, Object> reqMap) throws Exception;
 }

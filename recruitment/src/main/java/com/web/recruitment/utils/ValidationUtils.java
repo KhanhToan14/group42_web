@@ -207,4 +207,23 @@ public class ValidationUtils {
             return true;
         }
     }
+    public static boolean validateOnyLowercaseNumber(String str) {
+        for (int i = 0; i < str.length(); ++i) {
+            int characterCode = str.charAt(i);
+            if (!((48 <= characterCode && characterCode <= 57) || (97 <= characterCode && characterCode <= 122))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean validateOnlyAlphanumericWhiteSpace(String str) {
+        for (int i = 0; i < str.length(); ++i) {
+            int characterCode = str.charAt(i);
+            if (!((48 <= characterCode && characterCode <= 57) || (65 <= characterCode && characterCode <= 90) || (97 <= characterCode && characterCode <= 122) || characterCode == 32)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

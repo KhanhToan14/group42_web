@@ -59,7 +59,8 @@ public class ConstantMessages {
     public static final String PHONE_NOT_NULL = "PhoneNotNull";
     public static final String EMAIL = "email";
     public static final String EMAIL_NOT_NULL = "EmailNotNull";
-    public static final String EMAIL_INVALID = "Email";
+    public static final String EMAIL_INVALID = "EmailInvalid";
+    public static final String EMAIL_EXIST = "EmailExist";
 
     //
     public static final String DEPARTMENT_ID = "departmentId";
@@ -81,8 +82,24 @@ public class ConstantMessages {
 
     //
     public static final String USER = "user";
+    public static final String USERNAME = "username";
+    public static final String USERNAME_MUST_NOT_NULL = "UsernameMustNotNull";
+    public static final String USERNAME_EXIST = "UsernameExist";
+    public static final String USERNAME_INVALID_ERROR = "UsernameMustContainOnlyLowercaseCharacterNumber";
     public static final String FIRST_NAME = "firstName";
+    public static final String FIRST_NAME_MUST_NOT_NULL = "FirstNameMustNotNull";
+    public static final String FIRSTNAME_INVALID_ERROR = "FirstNameMustContainOnlyAlphabetCharacterNumberWhiteSpace";
     public static final String LAST_NAME = "lastName";
+    public static final String LAST_NAME_MUST_NOT_NULL = "LastNameMustNotNull";
+    public static final String LASTNAME_INVALID_ERROR = "LastNameMustContainOnlyAlphabetCharacterNumberWhiteSpace";
     public static final String DATE_OF_BIRTH = "dateOfBirth";
+    public static final String DATE_OF_BIRTH_NOT_NULL_ERROR = "DateOfBirthMustNotNull";
+    public static final String DATE_OF_BIRTH_MUST_BEFORE_NOW_ERROR = "DateOfBirthMustBeBeforeNow";
+    public static final String DATE_OF_BIRTH_INVALID_FORMAT_ERROR = "InvalidDateInput";
     public static final String PASSWORD = "password";
+    public static final String PASSWORD_NOT_NULL_ERROR = "PasswordMustNotNull";
+    public static final String PASSWORD_INVALID_ERROR = "PasswordInvalid";
+    public static final String SUCCESS_INSERT_USER = "SuccessInsertUser";
+    public static final String SUCCESS_UPDATE_USER = "SuccessUpdateUser";
+    public static final String SUCCESS_DELETE_USER = "SuccessDeleteUser";
 }

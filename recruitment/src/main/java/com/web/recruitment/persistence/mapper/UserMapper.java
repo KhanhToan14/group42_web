@@ -17,7 +17,7 @@ public interface UserMapper {
 
     int insert(UserInsert userInsert) throws Exception;
 
-    int selectByName(Map<String, Object> reqMap) throws Exception;
+    int selectByUsername(Map<String, Object> reqMap) throws Exception;
 
     int update(UserUpdate userUpdate) throws Exception;
 
@@ -28,4 +28,6 @@ public interface UserMapper {
     List<User> listRole(Map<String, Object> reqMap) throws Exception;
 
     int totalRole(Map<String, Object> reqMap) throws Exception;
+
+    int selectUserByEmail(Map<String, Object> reqMap) throws Exception;
 }

@@ -1,8 +1,7 @@
 package com.web.recruitment.api;
 
-import com.web.recruitment.api.dto.Enum.JobEnum.CurrencyEnum;
-import com.web.recruitment.api.dto.Enum.JobEnum.EmploymentTypeEnum;
-import com.web.recruitment.api.dto.Enum.JobEnum.ExperienceEnum;
+import com.web.recruitment.api.dto.Enum.UserEnum.RoleEnum;
+import com.web.recruitment.api.dto.user.UserInsert;
 import com.web.recruitment.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,7 +54,7 @@ public class UserController {
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
             @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
             @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
-            @RequestParam(value = "sortBy", required = false, defaultValue = "time") String sortBy,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "username") String sortBy,
             @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
     ) throws Exception{
         int pageSizeInt;
@@ -87,5 +86,43 @@ public class UserController {
         responseBody = userService.listUser(filter);
         res = new JSONObject(responseBody);
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Insert user API", description = "Insert user")
+    @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> insertUser(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "firstName") String firstName,
+            @RequestParam(name = "lastName") String lastName,
+            @RequestParam(name = "dateOfBirth") String dateOfBirth,
+            @RequestParam(name = "phone") String phone,
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "address", required = false) String address,
+            @RequestParam(name = "avatar", required = false) String avatar,
+            @RequestParam(name = "password") String password,
+            @RequestParam(name = "role") RoleEnum role,
+            @RequestParam(name = "companyId", required = false) Integer companyId
+    ) throws Exception{
+        JSONObject res;
+        Map<String, Object> resError;
+        UserInsert userInsert = new UserInsert();
+        userInsert.setUsername(username);
+        userInsert.setFirstName(firstName);
+        userInsert.setLastName(lastName);
+        userInsert.setDateOfBirth(dateOfBirth);
+        userInsert.setPhone(phone);
+        userInsert.setEmail(email);
+        userInsert.setAddress(address);
+        userInsert.setAvatar(avatar);
+        userInsert.setPassword(password);
+        userInsert.setRole(role);
+        userInsert.setCompanyId(companyId);
+
+        resError = userService.insert(userInsert);
+        res = new JSONObject(resError);
+        if (resError.get(MESSAGE).equals(SUCCESS_INSERT_USER)){
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

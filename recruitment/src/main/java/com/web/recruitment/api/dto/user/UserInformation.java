@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserInformation {
     private int id;
-    private int companyId;
     private String username;
     private String firstName;
     private String lastName;
@@ -21,5 +20,6 @@ public class UserInformation {
     private String address;
     private String avatar;
     private String role;
+    private Integer companyId;
     private String skills;
 }

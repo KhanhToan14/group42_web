@@ -198,11 +198,20 @@ public class CompanyServiceImpl implements CompanyService{
             resError.put(ERRORS, subResError);
             return resError;
         } else {
+            email = email.trim();
+            Map<String, Object> map = new HashMap<>();
             if(!validateEmail(email)){
                 subResError.put(EMAIL, EMAIL_INVALID);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
+            } else if (companyMapper.selectCompanyByEmail(map) != 0){
+                subResError.put(EMAIL, EMAIL_EXIST);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            } else {
+                companyInsert.setEmail(email);
             }
         }
         companyMapper.insert(companyInsert);
@@ -289,11 +298,21 @@ public class CompanyServiceImpl implements CompanyService{
             resError.put(ERRORS, subResError);
             return resError;
         } else {
+            email = email.trim();
+            Map<String, Object> map = new HashMap<>();
+            map.put(EMAIL, email);
             if(!validateEmail(email)){
                 subResError.put(EMAIL, EMAIL_INVALID);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
+            } else if (companyMapper.selectCompanyByEmail(map) != 0){
+                subResError.put(EMAIL, EMAIL_EXIST);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            } else {
+                companyUpdate.setEmail(email);
             }
         }
         companyMapper.update(companyUpdate);
