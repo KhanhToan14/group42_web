@@ -1,7 +1,7 @@
 package com.web.recruitment.service;
 
-import com.web.recruitment.api.dto.Job.JobInsert;
-import com.web.recruitment.api.dto.Job.JobUpdate;
+import com.web.recruitment.api.dto.job.JobInsert;
+import com.web.recruitment.api.dto.job.JobUpdate;
 import com.web.recruitment.persistence.dto.Job;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
 import com.web.recruitment.persistence.mapper.DepartmentMapper;
@@ -40,13 +40,6 @@ public class JobServiceImpl implements JobService{
         int departmentId = jobInsert.getDepartmentId();
         if(departmentMapper.select(departmentId) == null){
             subResError.put(DEPARTMENT_ID, DEPARTMENT_NOT_FOUND);
-            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
-            resError.put(ERRORS, subResError);
-            return resError;
-        }
-        int companyId = jobInsert.getCompanyId();
-        if(companyMapper.select(companyId) == null){
-            subResError.put(COMPANY_ID, COMPANY_NOT_FOUND);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
@@ -108,13 +101,6 @@ public class JobServiceImpl implements JobService{
         int departmentId = jobUpdate.getDepartmentId();
         if(departmentMapper.select(departmentId) == null){
             subResError.put(DEPARTMENT_ID, DEPARTMENT_NOT_FOUND);
-            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
-            resError.put(ERRORS, subResError);
-            return resError;
-        }
-        int companyId = jobUpdate.getCompanyId();
-        if(companyMapper.select(companyId) == null){
-            subResError.put(COMPANY_ID, COMPANY_NOT_FOUND);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
@@ -185,7 +171,6 @@ public class JobServiceImpl implements JobService{
         if (pageSize <= 0) {
             pageSize = 30;
         }
-        int total = jobMapper.total(filter);
         int limit = pageSize;
         int offset = pageSize * (currentPage - 1);
         filter.put(LIMIT, limit);
@@ -215,6 +200,7 @@ public class JobServiceImpl implements JobService{
         filter.replace(SORT_BY, sortBy);
         filter.replace(SORT_TYPE, sortType);
         retList = jobMapper.list(filter);
+        int total = retList.size();
         reqInfo.put(CURRENT_PAGE, currentPage);
         reqInfo.put(PAGE_SIZE, pageSize);
         reqInfo.put(DATA, retList);

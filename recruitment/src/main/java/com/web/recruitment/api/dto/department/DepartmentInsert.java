@@ -13,6 +13,7 @@ import lombok.Setter;
 public class DepartmentInsert {
     @JsonIgnore
     private int id;
+    private int companyId;
     private String name;
     private String description;
 }

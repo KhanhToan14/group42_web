@@ -1,8 +1,7 @@
 package com.web.recruitment.persistence.mapper;
 
-import com.web.recruitment.api.dto.Job.JobInsert;
-import com.web.recruitment.api.dto.Job.JobUpdate;
-import com.web.recruitment.persistence.dto.Department;
+import com.web.recruitment.api.dto.job.JobInsert;
+import com.web.recruitment.api.dto.job.JobUpdate;
 import com.web.recruitment.persistence.dto.Job;
 
 import java.util.List;

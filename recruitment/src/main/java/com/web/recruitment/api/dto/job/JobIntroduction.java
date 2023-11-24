@@ -1,4 +1,4 @@
-package com.web.recruitment.api.dto.Job;
+package com.web.recruitment.api.dto.job;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

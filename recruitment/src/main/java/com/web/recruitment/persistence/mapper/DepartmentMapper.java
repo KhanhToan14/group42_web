@@ -21,4 +21,6 @@ public interface DepartmentMapper {
 
     int deleteChoice(List<Integer> id) throws Exception;
 
+//    int selectDepartmentByCompanyId(Map<String, Object> reqMap) throws Exception;
+
 }

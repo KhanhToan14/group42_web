@@ -3,10 +3,8 @@ package com.web.recruitment.api;
 import com.web.recruitment.api.dto.Enum.JobEnum.CurrencyEnum;
 import com.web.recruitment.api.dto.Enum.JobEnum.EmploymentTypeEnum;
 import com.web.recruitment.api.dto.Enum.JobEnum.ExperienceEnum;
-import com.web.recruitment.api.dto.Enum.TypeEnum;
-import com.web.recruitment.api.dto.Job.JobInsert;
-import com.web.recruitment.api.dto.Job.JobUpdate;
-import com.web.recruitment.api.dto.department.DepartmentUpdate;
+import com.web.recruitment.api.dto.job.JobInsert;
+import com.web.recruitment.api.dto.job.JobUpdate;
 import com.web.recruitment.service.JobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,7 +39,6 @@ public class JobController {
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> insertJob(
             @RequestParam(name = "departmentId") int departmentId,
-            @RequestParam(name = "companyId") int companyId,
             @RequestParam(name = "name") String name,
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "location", required = false) String location,
@@ -55,7 +52,6 @@ public class JobController {
         Map<String, Object> resError;
         JobInsert jobInsert = new JobInsert();
         jobInsert.setDepartmentId(departmentId);
-        jobInsert.setCompanyId(companyId);
         jobInsert.setName(name);
         jobInsert.setDescription(description);
         jobInsert.setLocation(location);
@@ -91,61 +87,12 @@ public class JobController {
         }
     }
 
-    @Operation(summary = "Get list job API", description = "get list job")
-    @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getListDepartment(
-            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-            @RequestParam(value = "employmentType", required = false) EmploymentTypeEnum employmentType,
-            @RequestParam(value = "experience", required = false) ExperienceEnum experience,
-            @RequestParam(name = "salaryFrom", required = false) Long salaryFrom,
-            @RequestParam(name = "salaryTo", required = false) Long salaryTo,
-            @RequestParam(name = "currency") CurrencyEnum currency,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
-            @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
-            @RequestParam(value = "sortBy", required = false, defaultValue = "time") String sortBy,
-            @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
-    ) throws Exception{
-        int pageSizeInt;
-        int currentPageInt;
-        if (!isNumeric(pageSize)) {
-            pageSizeInt = 30;
-        } else {
-            pageSizeInt = Integer.parseInt(pageSize);
-        }
-        if (!isNumeric(currentPage)) {
-            currentPageInt = 1;
-        } else {
-            currentPageInt = Integer.parseInt(currentPage);
-        }
-        JSONObject res;
-        Map<String, Object> filter = new HashMap<>();
-        filter.put(PAGE_SIZE, pageSizeInt);
-        filter.put(CURRENT_PAGE, currentPageInt);
-        filter.put(SORT_BY, sortBy);
-        filter.put(SORT_TYPE, sortType);
-        if (keyword == null || keyword.trim().equals("")) {
-            filter.put(KEYWORD, null);
-        }
-        else {
-            filter.put(KEYWORD, keyword);
-        }
-        filter.put(EMPLOYMENT_TYPE, employmentType);
-        filter.put(EXPERIENCE, experience);
-        filter.put(SALARY_FROM, salaryFrom);
-        filter.put(SALARY_TO, salaryTo);
-        filter.put(CURRENCY, currency);
-        Map<String, Object> responseBody;
-        responseBody = jobService.listDepartment(filter);
-        res = new JSONObject(responseBody);
-        return new ResponseEntity<>(res, HttpStatus.OK);
-    }
 
     @Operation(summary = "Update job API", description = "Update job")
     @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateJob(
             @RequestParam(name = "id") int id,
             @RequestParam(name = "departmentId") int departmentId,
-            @RequestParam(name = "companyId") int companyId,
             @RequestParam(name = "name") String name,
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "location", required = false) String location,
@@ -160,7 +107,6 @@ public class JobController {
         JobUpdate jobUpdate = new JobUpdate();
         jobUpdate.setId(id);
         jobUpdate.setDepartmentId(departmentId);
-        jobUpdate.setCompanyId(companyId);
         jobUpdate.setName(name);
         jobUpdate.setDescription(description);
         jobUpdate.setLocation(location);

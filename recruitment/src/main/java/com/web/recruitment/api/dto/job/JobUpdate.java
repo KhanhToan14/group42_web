@@ -1,7 +1,8 @@
-package com.web.recruitment.api.dto.Job;
+package com.web.recruitment.api.dto.job;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.web.recruitment.api.dto.Enum.JobEnum.*;
+import com.web.recruitment.api.dto.Enum.JobEnum.CurrencyEnum;
+import com.web.recruitment.api.dto.Enum.JobEnum.EmploymentTypeEnum;
+import com.web.recruitment.api.dto.Enum.JobEnum.ExperienceEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,9 @@ import javax.persistence.Enumerated;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class JobInsert {
-    @JsonIgnore
-    private int id;
+public class JobUpdate {
+    private Integer id;
     private int departmentId;
-    private int companyId;
     private String name;
     private String description;
     private String location;

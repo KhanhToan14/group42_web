@@ -1,8 +1,8 @@
 package com.web.recruitment.service;
 
 
-import com.web.recruitment.api.dto.Job.JobInsert;
-import com.web.recruitment.api.dto.Job.JobUpdate;
+import com.web.recruitment.api.dto.job.JobInsert;
+import com.web.recruitment.api.dto.job.JobUpdate;
 
 import java.util.List;
 import java.util.Map;
