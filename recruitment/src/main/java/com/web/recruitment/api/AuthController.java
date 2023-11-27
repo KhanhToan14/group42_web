@@ -32,9 +32,6 @@ public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    // @Autowired
-    // UserSignup userSignup;
-
     @Autowired
     PasswordEncoder encoder;
 
@@ -68,52 +65,6 @@ public class AuthController {
                         userDetails.getEmail(),
                         roles));
     }
-
-    // @PostMapping("/signup")
-    // public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest
-    // signUpRequest) {
-    // if (userMapper.existsByUsername(signUpRequest.getUsername())) {
-    // return ResponseEntity.badRequest().body(new MessageResponse("Error: Username
-    // is already taken!"));
-    // }
-
-    // if (userMapper.existsByEmail(signUpRequest.getEmail())) {
-    // return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is
-    // already in use!"));
-    // }
-
-    // // Create new user's account
-    // UserSignup user = new UserSignup();
-    // user.setUsername(signUpRequest.getUsername());
-    // user.setEmail(signUpRequest.getEmail());
-    // user.setPassword(encoder.encode(signUpRequest.getPassword()));
-
-    // // Xác định giá trị enum từ chuỗi role
-    // RoleEnum userRole;
-    // String strRole = signUpRequest.getRole();
-
-    // if (strRole == null) {
-    // userRole = RoleEnum.CANDIDATE; // Nếu không có role, mặc định là CANDIDATE
-    // } else {
-    // switch (strRole.toLowerCase()) {
-    // case "admin":
-    // userRole = RoleEnum.ADMIN;
-    // break;
-    // case "employer":
-    // userRole = RoleEnum.EMPLOYER;
-    // break;
-    // default:
-    // userRole = RoleEnum.CANDIDATE;
-    // }
-    // }
-
-    // user.setRole(userRole.name()); // Lưu tên enum vào thuộc tính role
-
-    // userMapper.insert(user);
-
-    // return ResponseEntity.ok(new MessageResponse("User registered
-    // successfully!"));
-    // }
 
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser() {
