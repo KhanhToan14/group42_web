@@ -6,6 +6,10 @@ server:
   servlet:
     context-path: /
 
+jwtSecret: =======================Spring===========================
+jwtExpirationMs: 86400000
+jwtCookieName: btl_app
+
 # ----------------------------------------
 # Spring Setting
 # ----------------------------------------
@@ -26,7 +30,7 @@ spring-doc:
   swagger-ui:
     path: /swagger-ui.html
     display-request-duration: true
-    groups-order:  DESC
+    groups-order: DESC
     operations-sorter: method
     disable-swagger-default-url: true
   show-actuator: false
