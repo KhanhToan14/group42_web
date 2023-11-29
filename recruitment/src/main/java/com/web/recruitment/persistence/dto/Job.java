@@ -29,6 +29,10 @@ public class Job {
     private Long salaryFrom;
     private Long salaryTo;
     private String currency;
+    private String email;
+    private String phone;
+    private int quantity;
+    private String dealTime;
     private int status;
     private int delYn;
     private String createAt;

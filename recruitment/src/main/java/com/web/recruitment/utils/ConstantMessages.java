@@ -102,4 +102,9 @@ public class ConstantMessages {
     public static final String SUCCESS_INSERT_USER = "SuccessInsertUser";
     public static final String SUCCESS_UPDATE_USER = "SuccessUpdateUser";
     public static final String SUCCESS_DELETE_USER = "SuccessDeleteUser";
+    public static final String ROLE = "role";
+    public static final String DEAL_TIME = "dealTime";
+    public static final String DEAL_TIME_NOT_NULL_ERROR = "DealTimeMustNotNull";
+    public static final String DEAL_TIME_MUST_AFTER_NOW_ERROR = "DealTimeMustBeAfterNow";
+    public static final String DEAL_TIME_INVALID_FORMAT_ERROR = "InvalidDealTimeInput";
 }

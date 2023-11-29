@@ -1,5 +1,6 @@
 package com.web.recruitment.api;
 
+import com.web.recruitment.api.dto.DeleteRequest;
 import com.web.recruitment.api.dto.Enum.JobEnum.CurrencyEnum;
 import com.web.recruitment.api.dto.Enum.JobEnum.EmploymentTypeEnum;
 import com.web.recruitment.api.dto.Enum.JobEnum.ExperienceEnum;
@@ -46,7 +47,11 @@ public class JobController {
             @RequestParam(name = "experience", required = false) ExperienceEnum experience,
             @RequestParam(name = "salaryFrom", required = false) Long salaryFrom,
             @RequestParam(name = "salaryTo", required = false) Long salaryTo,
-            @RequestParam(name = "currency") CurrencyEnum currency
+            @RequestParam(name = "currency") CurrencyEnum currency,
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "phone") String phone,
+            @RequestParam(name = "quantity") int quantity,
+            @RequestParam(name = "dealTime") String dealTime
     ) throws Exception{
         JSONObject res;
         Map<String, Object> resError;
@@ -60,6 +65,10 @@ public class JobController {
         jobInsert.setSalaryFrom(salaryFrom);
         jobInsert.setSalaryTo(salaryTo);
         jobInsert.setCurrency(currency);
+        jobInsert.setEmail(email);
+        jobInsert.setPhone(phone);
+        jobInsert.setQuantity(quantity);
+        jobInsert.setDealTime(dealTime);
 
         resError = jobService.insert(jobInsert);
         res = new JSONObject(resError);
@@ -101,7 +110,11 @@ public class JobController {
             @RequestParam(name = "experience", required = false) ExperienceEnum experience,
             @RequestParam(name = "salaryFrom", required = false) Long salaryFrom,
             @RequestParam(name = "salaryTo", required = false) Long salaryTo,
-            @RequestParam(name = "currency") CurrencyEnum currency
+            @RequestParam(name = "currency") CurrencyEnum currency,
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "phone") String phone,
+            @RequestParam(name = "quantity") int quantity,
+            @RequestParam(name = "dealTime") String dealTime
     ) throws Exception{
         JSONObject res;
         Map<String, Object> resError;
@@ -116,6 +129,10 @@ public class JobController {
         jobUpdate.setSalaryFrom(salaryFrom);
         jobUpdate.setSalaryTo(salaryTo);
         jobUpdate.setCurrency(currency);
+        jobUpdate.setEmail(email);
+        jobUpdate.setPhone(phone);
+        jobUpdate.setQuantity(quantity);
+        jobUpdate.setDealTime(dealTime);
         resError = jobService.update(jobUpdate);
         res = new JSONObject(resError);
         if (resError.get(MESSAGE).equals(SUCCESS_UPDATE_JOB)){
@@ -123,6 +140,35 @@ public class JobController {
         }
         else if (resError.get(MESSAGE).equals(NOT_FOUND_MESSAGE)){
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @Operation(summary = "Delete job API", description = "Delete job")
+    @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteJob(
+            @PathVariable("id") int id
+    ) throws Exception{
+        JSONObject res;
+        Map<String, Object> resError;
+        resError = jobService.delete(id);
+        res = new JSONObject(resError);
+        if(resError.get(MESSAGE).equals(SUCCESS_DELETE_JOB)){
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+    }
+    @Operation(summary = "Delete jobs API", description = "Delete jobs")
+    @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteJobs(
+            @RequestBody DeleteRequest deleteRequest
+    ) throws Exception{
+        JSONObject res;
+        Map<String, Object> resError;
+        resError = jobService.deleteChoice(deleteRequest.getDeleteIds());
+        res = new JSONObject(resError);
+        if(resError.get(MESSAGE).equals(SUCCESS_DELETE_JOB)){
+            return new ResponseEntity<>(res, HttpStatus.OK);
         }
         return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
     }

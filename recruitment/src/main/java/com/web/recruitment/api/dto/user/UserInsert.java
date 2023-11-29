@@ -1,6 +1,7 @@
 package com.web.recruitment.api.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.web.recruitment.api.dto.Enum.UserEnum.GenderEnum;
 import com.web.recruitment.api.dto.Enum.UserEnum.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,8 @@ public class UserInsert {
     private String username;
     private String firstName;
     private String lastName;
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
     private String dateOfBirth;
     private String phone;
     private String email;

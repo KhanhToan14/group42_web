@@ -6,6 +6,7 @@
         <result column="USERNAME" property="username"/>
         <result column="FIRST_NAME" property="firstName"/>
         <result column="LAST_NAME" property="lastName"/>
+        <result column="GENDER" property="gender"/>
         <result column="DATE_OF_BIRTH" property="dateOfBirth"/>
         <result column="PHONE" property="phone"/>
         <result column="EMAIL" property="email"/>
@@ -26,6 +27,7 @@
         <result column="USERNAME" property="username"/>
         <result column="FIRST_NAME" property="firstName"/>
         <result column="LAST_NAME" property="lastName"/>
+        <result column="GENDER" property="gender"/>
         <result column="DATE_OF_BIRTH" property="dateOfBirth"/>
         <result column="PHONE" property="phone"/>
         <result column="EMAIL" property="email"/>
@@ -45,6 +47,7 @@
         SET USERNAME = BINARY#{username}
         , FIRST_NAME = BINARY#{firstName}
         , LAST_NAME = BINARY#{lastName}
+        , GENDER = #{gender}
         , DATE_OF_BIRTH = #{dateOfBirth}
         , PHONE = #{phone}
         , EMAIL = #{email}
@@ -76,10 +79,12 @@
         <include refid="select_user"></include>
         WHERE DEL_YN = 0
         <!--            AND STATUS = 1-->
-        AND ((USERNAME LIKE CONCAT("%", #{keyword}, "%"))
-        OR (EMAIL LIKE CONCAT("%", #{keyword}, "%"))
-        OR (FIRST_NAME LIKE CONCAT("%", #{keyword}, "%"))
-        OR (LAST_NAME LIKE CONCAT("%", #{keyword}, "%")))
+        <if test="keyword != null">
+            AND ((USERNAME LIKE CONCAT("%", #{keyword}, "%"))
+            OR (EMAIL LIKE CONCAT("%", #{keyword}, "%"))
+            OR (FIRST_NAME LIKE CONCAT("%", #{keyword}, "%"))
+            OR (LAST_NAME LIKE CONCAT("%", #{keyword}, "%")))
+        </if>
         ORDER BY
         <if test="sortBy == 'username'">
             USERNAME
@@ -141,6 +146,7 @@
         USERNAME
         , FIRST_NAME
         , LAST_NAME
+        , GENDER
         , DATE_OF_BIRTH
         , PHONE
         , EMAIL
@@ -160,6 +166,7 @@
         BINARY#{username}
         , BINARY#{firstName}
         , BINARY#{lastName}
+        , #{gender}
         , #{dateOfBirth}
         , #{phone}
         , #{email}
