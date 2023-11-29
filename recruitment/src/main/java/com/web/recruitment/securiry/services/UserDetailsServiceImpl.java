@@ -16,14 +16,19 @@
  @Autowired
  UserMapper userMapper;
 
- @Override
- @Transactional
- public UserDetails loadUserByUsername(String username) throws
- UsernameNotFoundException {
- User user = userMapper.findByUsername(username)
- .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+  @Override
+  @Transactional
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+   try {
+    User user = userMapper.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
- return UserDetailsImpl.build(user);
- }
+    return UserDetailsImpl.build(user);
+   } catch (Exception e) {
+    // Log the error
+    e.printStackTrace();
+    throw e; // Rethrow the exception to let Spring Security handle it
+   }
+  }
 
  }

@@ -3,6 +3,7 @@ package com.web.recruitment.persistence.mapper;
 import com.web.recruitment.api.dto.user.UserInsert;
 import com.web.recruitment.api.dto.user.UserUpdate;
 import com.web.recruitment.persistence.dto.User;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,6 @@ public interface UserMapper {
 
     int selectUserByEmail(Map<String, Object> reqMap) throws Exception;
 
-    Optional<User> findByUsername(String username);
+    Optional<User> findByUsername(String username) ;
 
 }

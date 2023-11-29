@@ -217,17 +217,4 @@
         WHERE USERNAME = BINARY#{username}
         AND DEL_YN = 0
     </select>
-    <select id="existsByUsername" resultType="boolean" parameterType="map">
-        <include refid="select_user"/>
-        SELECT COUNT(ID) > 0
-        WHERE USERNAME = BINARY#{username}
-        AND DEL_YN = 0
-    </select>
-    <select id="existsByEmail" resultType="boolean" parameterType="map">
-        <include refid="select_user"/>
-        SELECT COUNT(ID) > 0
-        WHERE EMAIL = #{email}
-        AND DEL_YN = 0
-    </select>
-
 </mapper>
