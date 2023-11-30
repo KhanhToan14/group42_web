@@ -28,8 +28,6 @@ public class AuthController {
     JwtUtils jwtUtils;
     @PostMapping("/login")
     public ResponseEntity<?> postExample(@Valid @RequestBody LoginRequest loginRequest) {
-        // Xử lý dữ liệu nhận được từ yêu cầu POST
-        // Ở đây, đơn giản là trả về dữ liệu đã nhận được
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
