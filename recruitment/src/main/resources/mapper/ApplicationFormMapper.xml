@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.recruitment.persistence.mapper.ApplicationFormMapper">
+    <resultMap id="applicationForm" type="com.web.recruitment.persistence.dto.ApplicationForm">
+        <result column="ID" property="id"/>
+        <result column="JOB_ID" property="jobId"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="CV_ID" property="cvId"/>
+        <result column="DEL_YN" property="delYn"/>
+        <result column="CREATE_AT" property="createAt"/>
+        <result column="UPDATE_AT" property="updateAt"/>
+    </resultMap>
+    <resultMap id="applicationFormInformation" type="com.web.recruitment.persistence.dto.ApplicationForm">
+        <result column="ID" property="id"/>
+        <result column="JOB_ID" property="jobId"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="CV_ID" property="cvId"/>
+    </resultMap>
+    <sql id="select_application_form">
+        SELECT *
+        FROM APPLICATION_FORM_TB
+    </sql>
+    <sql id="update_application_form">
+        UPDATE
+        APPLICATION_FORM_TB
+        SET JOB_ID = #{jobId}
+        , USER_ID = #{userId}
+        , CV_ID = #{cvId}
+        , UPDATE_AT = NOW()
+    </sql>
+    <sql id="delete_application_form">
+        UPDATE
+        APPLICATION_FORM_TB
+        SET DEL_YN = 1
+        , UPDATE_AT = NOW()
+    </sql>
+    <select id="list_application_form" resultMap="applicationForm" parameterType="map">
+        <include refid="select_application_form"></include>
+        WHERE DEL_YN = 0
+        ORDER BY CREATE_DT DESC
+    </select>
+    <select id="select" resultMap="applicationForm" parameterType="map">
+        <include refid="select_application_form"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
+    <!-- list phân trang-->
+    <select id="list" resultMap="applicationFormInformation" parameterType="map">
+        <include refid="select_application_form"></include>
+        WHERE DEL_YN = 0
+        <if test="jobId != null">
+            AND JOB_ID = #{jobId}
+        </if>
+        ORDER BY
+        CREATE_AT
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <insert id="insert" parameterType="com.web.recruitment.api.dto.applicationForm.ApplicationFormInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        APPLICATION_FORM_TB
+        (
+        JOB_ID
+        , USER_ID
+        , CV_ID
+        , DEL_YN
+        , CREATE_AT
+        , UPDATE_AT
+        )
+        VALUES
+        (
+        #{jobId}
+        , #{userId}
+        , #{cvId}
+        , 0
+        , NOW()
+        , NOW()
+        )
+    </insert>
+
+    <update id="update" parameterType="com.web.recruitment.api.dto.applicationForm.ApplicationFormInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        <include refid="update_application_form"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </update>
+    <delete id="delete" parameterType="int">
+        <include refid="delete_application_form"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </delete>
+</mapper>
