@@ -117,4 +117,12 @@ public class ConstantMessages {
     public static final String FILE_EXTENSION = "fileExtension";
     public static final String FILE_SIZE = "fileSize";
     public static final String CV = "CV";
+
+    //
+    public static final String APPLICANT_FORM = "applicationForm";
+    public static final String JOB_ID = "jobId";
+    public static final String USER_ID = "userId";
+    public static final String SUCCESS_INSERT_APPLICANT_FORM = "SuccessInsertApplicantForm";
+    public static final String SUCCESS_UPDATE_APPLICANT_FORM = "SuccessUpdateApplicantForm";
+    public static final String SUCCESS_DELETE_APPLICANT_FORM = "SuccessDeleteApplicantForm";
 }

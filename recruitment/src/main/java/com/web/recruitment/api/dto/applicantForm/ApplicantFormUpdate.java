@@ -1,4 +1,4 @@
-package com.web.recruitment.persistence.dto;
+package com.web.recruitment.api.dto.applicantForm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationForm {
+public class ApplicantFormUpdate {
+    private int id;
     private int jobId;
     private int userId;
-    private String CV;
+    private int cvId;
 }
