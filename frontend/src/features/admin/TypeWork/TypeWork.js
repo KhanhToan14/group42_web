@@ -8,7 +8,7 @@ import {
     typeWorkData,
     updatetypeWork,
 } from "../Slice/typeWorkSlice";
-import RenderHTML from "react-native-render-html";
+import renderHTML from "react-render-html"
 function TypeWork() {
     const columns = [
         {
@@ -106,7 +106,7 @@ function TypeWork() {
                             dataSource={typeWork.rows.map((ok, index) => ({
                                 key: index + 1,
                                 name: ok.name,
-                                icon: <div className="iconTypeWork">{RenderHTML(ok.icon)}</div>,
+                                icon: <div className="iconTypeWork">{renderHTML(ok.icon)}</div>,
                                 status: (
                                     <div className="action">
                                         {ok.status === 1 ? (

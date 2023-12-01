@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { message, Select } from "antd";
 import JoditEditor from "jodit-react";
 import { Option } from "antd/lib/mentions";
-import { storage } from "../../../../../firebase";
+// import { storage } from "../../../../../firebase";
 import { useDispatch } from "react-redux";
 import SpinLoad from "../../../Spin/Spin";
 import { useNavigate } from "react-router-dom";
@@ -147,38 +147,38 @@ function Information({ id }) {
                 ...state,
                 loading: true,
             });
-            if (img !== "" || imgBanner !== "") {
-                if (img !== "" && imgBanner === "") {
-                    await storage.ref(`imagesuser/${img.name}`).put(img);
-                    const anh = await storage
-                        .ref("imagesuser")
-                        .child(img.name)
-                        .getDownloadURL();
-                    edit({ data, anh });
-                } else if (imgBanner !== "" && img === "") {
-                    await storage.ref(`imagesuser/${imgBanner.name}`).put(imgBanner);
-                    const anhBanner = await storage
-                        .ref("imagesuser")
-                        .child(imgBanner.name)
-                        .getDownloadURL();
-                    edit({ data, anhBanner });
-                } else {
-                    await storage.ref(`imagesuser/${img.name}`).put(img);
-                    const anh = await storage
-                        .ref("imagesuser")
-                        .child(img.name)
-                        .getDownloadURL();
-                    await storage.ref(`imagesuser/${imgBanner.name}`).put(imgBanner);
-                    const anhBanner = await storage
-                        .ref("imagesuser")
-                        .child(imgBanner.name)
-                        .getDownloadURL();
+            // if (img !== "" || imgBanner !== "") {
+            //     if (img !== "" && imgBanner === "") {
+            //         await storage.ref(`imagesuser/${img.name}`).put(img);
+            //         const anh = await storage
+            //             .ref("imagesuser")
+            //             .child(img.name)
+            //             .getDownloadURL();
+            //         edit({ data, anh });
+            //     } else if (imgBanner !== "" && img === "") {
+            //         await storage.ref(`imagesuser/${imgBanner.name}`).put(imgBanner);
+            //         const anhBanner = await storage
+            //             .ref("imagesuser")
+            //             .child(imgBanner.name)
+            //             .getDownloadURL();
+            //         edit({ data, anhBanner });
+            //     } else {
+            //         await storage.ref(`imagesuser/${img.name}`).put(img);
+            //         const anh = await storage
+            //             .ref("imagesuser")
+            //             .child(img.name)
+            //             .getDownloadURL();
+            //         await storage.ref(`imagesuser/${imgBanner.name}`).put(imgBanner);
+            //         const anhBanner = await storage
+            //             .ref("imagesuser")
+            //             .child(imgBanner.name)
+            //             .getDownloadURL();
 
-                    edit({ data, anh, anhBanner });
-                }
-            } else {
-                edit(data);
-            }
+            //         edit({ data, anh, anhBanner });
+            //     }
+            // } else {
+            //     edit(data);
+            // }
             setTimeout(() => {
                 actionResult({ page: 1 });
             }, 800);

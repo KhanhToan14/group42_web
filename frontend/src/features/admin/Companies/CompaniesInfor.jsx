@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import companyApi from "../../../api/companyApi";
-import RenderHTML from "react-native-render-html";
+import renderHTML from "react-render-html"
 
 function CompaniesInfor() {
     let { id } = useParams();
@@ -65,7 +65,7 @@ function CompaniesInfor() {
                             <div className="box">
                                 <div className="title">Giới thiệu:</div>
                                 <div className="detail">
-                                    {RenderHTML(data.introduce ?? "Chưa cập nhật!")}
+                                    {renderHTML(data.introduce ?? "Chưa cập nhật!")}
                                 </div>
                             </div>
                         </div>

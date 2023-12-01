@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import checkLoginApi from "../../../api/checkLogin";
-import MenuNotHome from "../MenuNotHome/MenuNotHome";
+// import MenuNotHome from "../MenuNotHome/MenuNotHome";
 import SpinLoad from "../Spin/Spin";
 import Breadcrumb from "./Breadcrumb/Breadcrumb";
 import Tabs from "./Tabs/Tabs";

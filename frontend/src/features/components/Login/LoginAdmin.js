@@ -1,7 +1,7 @@
 import { Checkbox, message } from "antd";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../styles/Login/Login.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";

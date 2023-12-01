@@ -8,7 +8,7 @@ import {
     lineSlide,
     openMenu,
 } from "../../../container/Functionjs";
-import logo from "../../../images/logossss.png";
+import logo from "../../../images/jobs.png";
 import "../../../styles/Home/Menu.scss";
 function Mn(props) {
     const okok = (bar_ref, nav_ref, line_ref) => {

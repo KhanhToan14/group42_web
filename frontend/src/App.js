@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter as Routes,
   Route,
   useMatch
 } from "react-router-dom";
@@ -52,23 +52,23 @@ function App() {
 
   return (
     <div>
-      <Router>
-        <Route path={["/admin", "/register", "/Login", "/checkadmin", "/loginAdmin", "/",]} element={<CheckMenu />} />
+      <Routes>
+        {/* <Route path={["/admin", "/register", "/Login", "/checkadmin", "/loginAdmin", "/",]} element={<CheckMenu />} /> */}
         <Route exact path="/" element={<Home />} />
         {checkAdmin}
         <Route exact path="/jobs" element={<Jobs />} />
-        <Route exact path="/jobs/work/:id" element={<DetailJob />} />
-        <Route exact path="/checkadmin/jobs/work/:id" element={<DetailJob isAdmin />} />
+        {/* < exact path="/jobs/work/:id" element={<DetailJob />} /> */}
+        {/* < exact path="/checkadmin/jobs/work/:id" element={<DetailJob isAdmin />} /> */}
         <Route exact path="/companys" element={<Company />} />
         <Route exact path="/companys/:id" element={<DetailCompany />} />
         <Route exact path="/candidates" element={<Candidates />} />
         <Route exact path="/candidates/:id" element={<DetailCandidate />} />
         <Route exact path="/login" element={<Login onLogin={handleLogin} />} />
         <Route exact path="/loginAdmin" element={<LoginAdmin onLogin={handleLogin} />} />
-        <Route exact path="/register" element={<Register />} />
-        <Route exact path="/inforCompany" element={<InforCompany />} />
-        <Route exact path="/inforUser" element={<InforUser />} />
-      </Router>
+        {/* <Route exact path="/register" element={<Register />} /> */}
+        {/* <Route exact path="/inforCompany" element={<InforCompany />} /> */}
+        {/* <Route exact path="/inforUser" element={<InforUser />} /> */}
+      </Routes>
     </div>
   );
 }

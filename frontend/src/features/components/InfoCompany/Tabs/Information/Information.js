@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import JoditEditor from "jodit-react";
 import { useEffect } from "react";
 import companyApi from "../../../../../api/companyApi";
-import { storage } from "../../../../../firebase";
+// import { storage } from "../../../../../firebase";
 import {
     companyData,
-    updatecompany,
+    // updatecompany,
 } from "../../../../admin/Slice/companySlice";
 import { useDispatch } from "react-redux";
 import SpinLoad from "../../../Spin/Spin";
@@ -29,11 +29,11 @@ function Infor({ id }) {
         loading,
         linkImg,
         tenanh,
-        img,
+        // img,
         anh,
         linkImgBanner,
         tenanhBanner,
-        imgBanner,
+        // imgBanner,
         anhBanner,
     } = state;
     const { register, handleSubmit, reset } = useForm();
@@ -53,69 +53,69 @@ function Infor({ id }) {
     const actionResult = (page) => {
         dispatch(companyData(page));
     };
-    const edit = async (data) => {
-        if (data.anh && data.anhBanner === undefined) {
-            await dispatch(
-                updatecompany({
-                    avatar: data.anh,
-                    name: data.name,
-                    address: data.address,
-                    quantity: data.quantity,
-                    website: data.website,
-                    phone: data.phone,
-                    email: data.email,
-                    // //password: data.newPassword,
-                    introduce: content,
-                    id: id,
-                }),
-            );
-        } else if (data.anhBanner && data.anh === undefined) {
-            await dispatch(
-                updatecompany({
-                    banner: data.anhBanner,
-                    name: data.name,
-                    address: data.address,
-                    quantity: data.quantity,
-                    website: data.website,
-                    phone: data.phone,
-                    email: data.email,
-                    //password: data.newPassword,
-                    introduce: content,
-                    id: id,
-                }),
-            );
-        } else if (data.anhBanner && data.anh) {
-            await dispatch(
-                updatecompany({
-                    avatar: data.anh,
-                    banner: data.anhBanner,
-                    name: data.name,
-                    address: data.address,
-                    quantity: data.quantity,
-                    website: data.website,
-                    phone: data.phone,
-                    email: data.email,
-                    //password: data.newPassword,
-                    introduce: content,
-                    id: id,
-                }),
-            );
-        } else {
-            await dispatch(
-                updatecompany({
-                    name: data.name,
-                    address: data.address,
-                    quantity: data.quantity,
-                    website: data.website,
-                    phone: data.phone,
-                    email: data.email,
-                    //password: data.newPassword,
-                    introduce: content,
-                    id: id,
-                }),
-            );
-        }
-    };
+    // const edit = async (data) => {
+    //     if (data.anh && data.anhBanner === undefined) {
+    //         await dispatch(
+    //             updatecompany({
+    //                 avatar: data.anh,
+    //                 name: data.name,
+    //                 address: data.address,
+    //                 quantity: data.quantity,
+    //                 website: data.website,
+    //                 phone: data.phone,
+    //                 email: data.email,
+    //                 // //password: data.newPassword,
+    //                 introduce: content,
+    //                 id: id,
+    //             }),
+    //         );
+    //     } else if (data.anhBanner && data.anh === undefined) {
+    //         await dispatch(
+    //             updatecompany({
+    //                 banner: data.anhBanner,
+    //                 name: data.name,
+    //                 address: data.address,
+    //                 quantity: data.quantity,
+    //                 website: data.website,
+    //                 phone: data.phone,
+    //                 email: data.email,
+    //                 //password: data.newPassword,
+    //                 introduce: content,
+    //                 id: id,
+    //             }),
+    //         );
+    //     } else if (data.anhBanner && data.anh) {
+    //         await dispatch(
+    //             updatecompany({
+    //                 avatar: data.anh,
+    //                 banner: data.anhBanner,
+    //                 name: data.name,
+    //                 address: data.address,
+    //                 quantity: data.quantity,
+    //                 website: data.website,
+    //                 phone: data.phone,
+    //                 email: data.email,
+    //                 //password: data.newPassword,
+    //                 introduce: content,
+    //                 id: id,
+    //             }),
+    //         );
+    //     } else {
+    //         await dispatch(
+    //             updatecompany({
+    //                 name: data.name,
+    //                 address: data.address,
+    //                 quantity: data.quantity,
+    //                 website: data.website,
+    //                 phone: data.phone,
+    //                 email: data.email,
+    //                 //password: data.newPassword,
+    //                 introduce: content,
+    //                 id: id,
+    //             }),
+    //         );
+    //     }
+    // };
     const history = useNavigate();
     const onSubmit = async (data) => {
 
@@ -135,38 +135,38 @@ function Infor({ id }) {
                 ...state,
                 loading: true,
             });
-            if (img !== "" || imgBanner !== "") {
-                if (img !== "" && imgBanner === "") {
-                    await storage.ref(`imagescompany/${img.name}`).put(img);
-                    const anh = await storage
-                        .ref("imagescompany")
-                        .child(img.name)
-                        .getDownloadURL();
-                    edit({ data, anh });
-                } else if (imgBanner !== "" && img === "") {
-                    await storage.ref(`imagescompany/${imgBanner.name}`).put(imgBanner);
-                    const anhBanner = await storage
-                        .ref("imagescompany")
-                        .child(imgBanner.name)
-                        .getDownloadURL();
-                    edit({ data, anhBanner });
-                } else {
-                    await storage.ref(`imagescompany/${img.name}`).put(img);
-                    const anh = await storage
-                        .ref("imagescompany")
-                        .child(img.name)
-                        .getDownloadURL();
-                    await storage.ref(`imagescompany/${imgBanner.name}`).put(imgBanner);
-                    const anhBanner = await storage
-                        .ref("imagescompany")
-                        .child(imgBanner.name)
-                        .getDownloadURL();
+            // if (img !== "" || imgBanner !== "") {
+            //     if (img !== "" && imgBanner === "") {
+            //         await storage.ref(`imagescompany/${img.name}`).put(img);
+            //         const anh = await storage
+            //             .ref("imagescompany")
+            //             .child(img.name)
+            //             .getDownloadURL();
+            //         edit({ data, anh });
+            //     } else if (imgBanner !== "" && img === "") {
+            //         await storage.ref(`imagescompany/${imgBanner.name}`).put(imgBanner);
+            //         const anhBanner = await storage
+            //             .ref("imagescompany")
+            //             .child(imgBanner.name)
+            //             .getDownloadURL();
+            //         edit({ data, anhBanner });
+            //     } else {
+            //         await storage.ref(`imagescompany/${img.name}`).put(img);
+            //         const anh = await storage
+            //             .ref("imagescompany")
+            //             .child(img.name)
+            //             .getDownloadURL();
+            //         await storage.ref(`imagescompany/${imgBanner.name}`).put(imgBanner);
+            //         const anhBanner = await storage
+            //             .ref("imagescompany")
+            //             .child(imgBanner.name)
+            //             .getDownloadURL();
 
-                    edit({ data, anh, anhBanner });
-                }
-            } else {
-                edit(data);
-            }
+            //         edit({ data, anh, anhBanner });
+            //     }
+            // } else {
+            //     edit(data);
+            // }
             setTimeout(() => {
                 actionResult({ page: 1 });
             }, 800);

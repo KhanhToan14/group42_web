@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import workApplyApi from "../../../../../api/workApplyApi";
 import SpinLoad from "../../../Spin/Spin";
 import { Link } from "react-router-dom";
 import { formatDateWork } from "../../../../container/Functionjs";
 function UserApply({ id }) {
     const [data, setData] = useState();
-    const getApi = async () => {
+    const getApi = useCallback(async () => {
         await workApplyApi.checkUserApply(id).then((data) => {
             setData(data.workapply);
         });
-    };
+    }, [id]);
     useEffect(() => {
         getApi();
     }, [getApi]);

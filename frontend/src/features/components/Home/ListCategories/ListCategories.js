@@ -5,7 +5,7 @@ import { typeWorkData } from "../../../admin/Slice/typeWorkSlice";
 import { GetCategoryHome } from "../../../container/Functionjs";
 import "../../../styles/Home/ListCategories.scss";
 import SpinLoad from "../../Spin/Spin";
-import RenderHTML from "react-native-render-html";
+import renderHTML from "react-render-html";
 function ListCategories() {
     const dispatch = useDispatch();
     const actionResult = useCallback(() => {
@@ -41,7 +41,7 @@ function ListCategories() {
                                     <div className="categori__box">
                                         <div className="categori__title">{ok.name}</div>
                                         <div className="categori__icon">
-                                            {ok.icon ? RenderHTML(ok.icon) : ""}
+                                            {ok.icon ? renderHTML(ok.icon) : ""}
                                         </div>
                                         <div className="categori__total">{ok.length} công việc</div>
                                     </div>

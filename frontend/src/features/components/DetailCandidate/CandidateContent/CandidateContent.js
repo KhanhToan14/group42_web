@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import RenderHTML from "react-native-render-html";
+import renderHTML from "react-render-html";
 import { formatDateWork } from "../../../container/Functionjs";
 import "../../../styles/DetailCandidate/CandidateContent.scss";
 
@@ -31,7 +31,7 @@ function CandidateContent({ data }) {
                         <div className="candidate__box">
                             <div className="candidate__box__title">Giới thiệu</div>
                             <div className="candidate__box__content">
-                                {data.introduce ? RenderHTML(data.introduce) : ""}
+                                {data.introduce ? renderHTML(data.introduce) : ""}
                             </div>
                         </div>
                     </div>

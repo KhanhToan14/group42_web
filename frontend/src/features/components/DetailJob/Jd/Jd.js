@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 import checkLoginApi from "../../../../api/checkLogin";
 import saveWorkApi from "../../../../api/saveWorkApi";
 import workApplyApi from "../../../../api/workApplyApi";
-import { storage } from "../../../../firebase";
+// import { storage } from "../../../../firebase";
 import {
     checkDateDealtime,
     formatDateWork,
 } from "../../../container/Functionjs";
 import "../../../styles/DetailJob/Jd.scss";
 import KeyTag from "../../Jobs/ListJobs/KeyTag";
-import RenderHTML from "react-native-render-html";
+import renderHTML from "react-render-html";
 function Jd(props) {
     let { data, id, isAdmin } = props;
     const [user, setUser] = useState();
@@ -102,12 +102,12 @@ function Jd(props) {
         } else {
             setConfirmLoading(true);
 
-            await storage.ref(`fileCv/${file.name}`).put(file);
-            const file1 = await storage.ref("fileCv").child(tenFile).getDownloadURL();
+            // await storage.ref(`fileCv/${file.name}`).put(file);
+            // const file1 = await storage.ref("fileCv").child(tenFile).getDownloadURL();
             console.log('getStatusActive(data.WorkApplies)', getStatusActive(data.WorkApplies))
             if (getStatusActive(data.WorkApplies) === "empty") {
                 await workApplyApi.postworkApply([
-                    { userId: user, workId: +id, message: messager, link: file1, status: 0, statusActive: null },
+                    { userId: user, workId: +id, message: messager, status: 0, statusActive: null },
                 ]).then(ok => {
                     props.reload()
                 })
@@ -116,13 +116,13 @@ function Jd(props) {
                 console.log('index', index);
                 if (index < 0) {
                     await workApplyApi.postworkApply([
-                        { userId: user, workId: +id, message: messager, link: file1, status: 0, statusActive: null },
+                        { userId: user, workId: +id, message: messager, status: 0, statusActive: null },
                     ]).then(ok => {
                         props.reload()
                     })
                 } else {
                     await workApplyApi.editworkApply(
-                        { id: data.WorkApplies[index].id, userId: user, workId: +id, message: messager, link: file1, statusActive: null },
+                        { id: data.WorkApplies[index].id, userId: user, workId: +id, message: messager, statusActive: null },
                     ).then(ok => {
                         props.reload()
                     })
@@ -260,7 +260,7 @@ function Jd(props) {
                                     <p>Mô tả công việc</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {RenderHTML(data.description ?? "")}
+                                    {renderHTML(data.description ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -268,7 +268,7 @@ function Jd(props) {
                                     <p>Yêu cầu công việc</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {RenderHTML(data.form ?? "")}
+                                    {renderHTML(data.form ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -276,7 +276,7 @@ function Jd(props) {
                                     <p>Quyền lợi được hưởng</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {RenderHTML(data.interest ?? "")}
+                                    {renderHTML(data.interest ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -290,7 +290,7 @@ function Jd(props) {
                                     <p>Tính chất công việc</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {RenderHTML(data.nature ?? "")}
+                                    {renderHTML(data.nature ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -298,7 +298,7 @@ function Jd(props) {
                                     <p>Yêu cầu bằng cấp(tối thiểu)</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {RenderHTML(data.request ?? "")}
+                                    {renderHTML(data.request ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -306,7 +306,7 @@ function Jd(props) {
                                     <p>Yêu cầu kinh nghiệm</p>
                                 </div>
                                 <div className="job__box__content--jd">
-                                    {RenderHTML(data.exprience ?? "")}
+                                    {renderHTML(data.exprience ?? "")}
                                 </div>
                             </div>
                             <div>
@@ -319,7 +319,7 @@ function Jd(props) {
                                         className="z-depth-1-half map-container"
                                         style={{ width: "100%" }}
                                     >
-                                        {RenderHTML(data.addressGoogle ?? "")}
+                                        {renderHTML(data.addressGoogle ?? "")}
                                     </div>
                                 </div>
                             </div>

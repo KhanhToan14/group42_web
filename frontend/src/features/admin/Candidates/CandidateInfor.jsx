@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import userApi from "../../../api/userApi";
 import moment from "moment";
-import RenderHTML from "react-native-render-html";
+import renderHTML from "react-render-html";
 
 function CandidateInfor() {
     let { id } = useParams();
@@ -80,7 +80,7 @@ function CandidateInfor() {
                             <div className="box">
                                 <div className="title">Giới thiệu:</div>
                                 <div className="detail">
-                                    {RenderHTML(data.introduce ?? "Chưa cập nhật!")}
+                                    {renderHTML(data.introduce ?? "Chưa cập nhật!")}
                                 </div>
                             </div>
                         </div>

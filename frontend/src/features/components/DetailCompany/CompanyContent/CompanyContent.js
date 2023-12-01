@@ -1,7 +1,7 @@
 import React from "react";
 import "../../../styles/DetailCompany/ContentCompany.scss";
 import Jobs from "../../InfoCompany/Tabs/Jobs/Jobs";
-import RenderHTML from "react-native-render-html";
+import renderHTML from "react-render-html";
 function ContentCompany({ data }) {
     return (
         <div className="contentCompany">
@@ -11,7 +11,7 @@ function ContentCompany({ data }) {
                         <div className="company__box">
                             <div className="company__box__title">Giới thiệu</div>
                             <div className="company__box__content">
-                                {data.introduce ? RenderHTML(data.introduce) : ""}
+                                {data.introduce ? renderHTML(data.introduce) : ""}
                             </div>
                         </div>
                         <div className="job">
