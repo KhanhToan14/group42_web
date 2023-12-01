@@ -11,6 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static com.web.recruitment.utils.ConstantMessages.*;
@@ -77,6 +81,66 @@ public class JobServiceImpl implements JobService{
             resError.put(ERRORS, subResError);
             return resError;
         }
+        String phone = jobInsert.getPhone();
+        if(phone == null || phone.isBlank()){
+            subResError.put(PHONE, PHONE_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            jobInsert.setPhone(validateVietnamesePhoneNumber(phone));
+            if(jobInsert.getPhone() == null){
+                subResError.put(PHONE, PHONE_INVALID);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
+        String email = jobInsert.getEmail();
+        if(email == null || email.isBlank()){
+            subResError.put(EMAIL, EMAIL_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            email = email.trim();
+            Map<String, Object> map = new HashMap<>();
+            map.put(EMAIL, email);
+            if(!validateEmail(email)){
+                subResError.put(EMAIL, EMAIL_INVALID);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            } else {
+                jobInsert.setEmail(email);
+            }
+        }
+        String dealTime = jobInsert.getDealTime();
+        if (dealTime == null || dealTime.isBlank()) {
+            subResError.put(DEAL_TIME, DEAL_TIME_NOT_NULL_ERROR);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            dealTime = dealTime.trim();
+            try {
+                LocalDate dt = LocalDate.parse(dealTime, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LocalDate now = LocalDate.now();
+                if (ChronoUnit.DAYS.between(dt, now) > 0) {
+                    subResError.put(DEAL_TIME, DEAL_TIME_MUST_AFTER_NOW_ERROR);
+                    resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                    resError.put(ERRORS, subResError);
+                    return resError;
+                } else {
+                    jobInsert.setDealTime(dealTime);
+                }
+            } catch (DateTimeParseException ex) {
+                subResError.put(DEAL_TIME, DEAL_TIME_INVALID_FORMAT_ERROR);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
         jobMapper.insert(jobInsert);
         resError.put(MESSAGE, SUCCESS_INSERT_JOB);
         return resError;
@@ -137,6 +201,66 @@ public class JobServiceImpl implements JobService{
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
+        }
+        String phone = jobUpdate.getPhone();
+        if(phone == null || phone.isBlank()){
+            subResError.put(PHONE, PHONE_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            jobUpdate.setPhone(validateVietnamesePhoneNumber(phone));
+            if(jobUpdate.getPhone() == null){
+                subResError.put(PHONE, PHONE_INVALID);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
+        String email = jobUpdate.getEmail();
+        if(email == null || email.isBlank()){
+            subResError.put(EMAIL, EMAIL_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            email = email.trim();
+            Map<String, Object> map = new HashMap<>();
+            map.put(EMAIL, email);
+            if(!validateEmail(email)){
+                subResError.put(EMAIL, EMAIL_INVALID);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            } else {
+                jobUpdate.setEmail(email);
+            }
+        }
+        String dealTime = jobUpdate.getDealTime();
+        if (dealTime == null || dealTime.isBlank()) {
+            subResError.put(DEAL_TIME, DEAL_TIME_NOT_NULL_ERROR);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            dealTime = dealTime.trim();
+            try {
+                LocalDate dt = LocalDate.parse(dealTime, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LocalDate now = LocalDate.now();
+                if (ChronoUnit.DAYS.between(dt, now) > 0) {
+                    subResError.put(DEAL_TIME, DEAL_TIME_MUST_AFTER_NOW_ERROR);
+                    resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                    resError.put(ERRORS, subResError);
+                    return resError;
+                } else {
+                    jobUpdate.setDealTime(dealTime);
+                }
+            } catch (DateTimeParseException ex) {
+                subResError.put(DEAL_TIME, DEAL_TIME_INVALID_FORMAT_ERROR);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
         }
         jobMapper.update(jobUpdate);
         resError.put(MESSAGE, SUCCESS_UPDATE_JOB);

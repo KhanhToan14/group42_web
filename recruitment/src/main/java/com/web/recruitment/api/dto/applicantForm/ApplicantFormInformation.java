@@ -1,4 +1,4 @@
-package com.web.recruitment.api.dto.user;
+package com.web.recruitment.api.dto.applicantForm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInformation {
+public class ApplicantFormInformation {
     private int id;
+    private int jobId;
     private String username;
     private String firstName;
     private String lastName;
@@ -19,8 +20,5 @@ public class UserInformation {
     private String phone;
     private String email;
     private String address;
-    private String avatar;
-    private String role;
-    private Integer companyId;
-    private String skills;
+    private String cvName;
 }

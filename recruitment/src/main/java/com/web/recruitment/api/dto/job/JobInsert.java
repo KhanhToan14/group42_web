@@ -29,4 +29,8 @@ public class JobInsert {
     private Long salaryTo;
     @Enumerated(EnumType.STRING)
     private CurrencyEnum currency;
+    private String email;
+    private String phone;
+    private int quantity;
+    private String dealTime;
 }

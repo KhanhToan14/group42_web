@@ -102,4 +102,27 @@ public class ConstantMessages {
     public static final String SUCCESS_INSERT_USER = "SuccessInsertUser";
     public static final String SUCCESS_UPDATE_USER = "SuccessUpdateUser";
     public static final String SUCCESS_DELETE_USER = "SuccessDeleteUser";
+    public static final String ROLE = "role";
+    public static final String DEAL_TIME = "dealTime";
+    public static final String DEAL_TIME_NOT_NULL_ERROR = "DealTimeMustNotNull";
+    public static final String DEAL_TIME_MUST_AFTER_NOW_ERROR = "DealTimeMustBeAfterNow";
+    public static final String DEAL_TIME_INVALID_FORMAT_ERROR = "InvalidDealTimeInput";
+
+    //
+    public static final String FILE_NAME = "fileName";
+    public static final String FILE_NAME_NOT_NULL = "FileNameNotNull";
+    public static final String SUCCESS_STORE_FILE = "SuccessStoreFile";
+    public static final String FILE_INVALID = "FileInvalid";
+    public static final String FILE_INCORRECT_FORMAT = "FileIncorrectFormat";
+    public static final String FILE_EXTENSION = "fileExtension";
+    public static final String FILE_SIZE = "fileSize";
+    public static final String CV = "CV";
+
+    //
+    public static final String APPLICANT_FORM = "applicationForm";
+    public static final String JOB_ID = "jobId";
+    public static final String USER_ID = "userId";
+    public static final String SUCCESS_INSERT_APPLICANT_FORM = "SuccessInsertApplicantForm";
+    public static final String SUCCESS_UPDATE_APPLICANT_FORM = "SuccessUpdateApplicantForm";
+    public static final String SUCCESS_DELETE_APPLICANT_FORM = "SuccessDeleteApplicantForm";
 }

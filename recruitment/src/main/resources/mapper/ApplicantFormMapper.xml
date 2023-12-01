@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.recruitment.persistence.mapper.ApplicantFormMapper">
+    <resultMap id="applicantForm" type="com.web.recruitment.persistence.dto.ApplicantForm">
+        <result column="ID" property="id"/>
+        <result column="JOB_ID" property="jobId"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="CV_ID" property="cvId"/>
+        <result column="DEL_YN" property="delYn"/>
+        <result column="CREATE_AT" property="createAt"/>
+        <result column="UPDATE_AT" property="updateAt"/>
+    </resultMap>
+    <resultMap id="applicantFormInformation" type="com.web.recruitment.api.dto.applicantForm.ApplicantFormInformation">
+        <result column="ID" property="id"/>
+        <result column="JOB_ID" property="jobId"/>
+        <result column="USERNAME" property="username"/>
+        <result column="FIRST_NAME" property="firstName"/>
+        <result column="LAST_NAME" property="lastName"/>
+        <result column="GENDER" property="gender"/>
+        <result column="DATE_OF_BIRTH" property="dateOfBirth"/>
+        <result column="PHONE" property="phone"/>
+        <result column="EMAIL" property="email"/>
+        <result column="ADDRESS" property="address"/>
+        <result column="CV_NAME" property="cvName"/>
+    </resultMap>
+    <sql id="select_applicant_form">
+        SELECT *
+        FROM APPLICANT_FORM_TB
+    </sql>
+    <sql id="update_applicant_form">
+        UPDATE
+        APPLICANT_FORM_TB
+        SET JOB_ID = #{jobId}
+        , USER_ID = #{userId}
+        , CV_ID = #{cvId}
+        , UPDATE_AT = NOW()
+    </sql>
+    <sql id="delete_applicant_form">
+        UPDATE
+        APPLICANT_FORM_TB
+        SET DEL_YN = 1
+        , UPDATE_AT = NOW()
+    </sql>
+    <select id="list_applicant_form" resultMap="applicantForm" parameterType="map">
+        <include refid="select_applicant_form"></include>
+        WHERE DEL_YN = 0
+        ORDER BY CREATE_DT DESC
+    </select>
+    <select id="select" resultMap="applicantForm" parameterType="map">
+        <include refid="select_applicant_form"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
+    <!-- list phân trang-->
+    <select id="list" resultMap="applicantFormInformation" parameterType="map">
+        SELECT af.ID, af.JOB_ID, u.USERNAME, u.FIRST_NAME, u.LAST_NAME, u.GENDER, u.DATE_OF_BIRTH, u.PHONE, u.EMAIL, u.ADDRESS, cv.NAME as CV_NAME
+        FROM APPLICANT_FORM_TB AS af, USER_TB as u, CV_TB as cv
+        WHERE af.USER_ID = u.ID
+        AND u.DEL_YN = 0
+        AND af.CV_ID = cv.ID
+        AND af.JOB_ID = #{jobId}
+        ORDER BY
+        <if test="sortBy == 'time'">
+            af.CREATE_AT
+        </if>
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <insert id="insert" parameterType="com.web.recruitment.api.dto.applicantForm.ApplicantFormInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        APPLICANT_FORM_TB
+        (
+        JOB_ID
+        , USER_ID
+        , CV_ID
+        , DEL_YN
+        , CREATE_AT
+        , UPDATE_AT
+        )
+        VALUES
+        (
+        #{jobId}
+        , #{userId}
+        , #{cvId}
+        , 0
+        , NOW()
+        , NOW()
+        )
+    </insert>
+
+    <update id="update" parameterType="com.web.recruitment.api.dto.applicantForm.ApplicantFormInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        <include refid="update_applicant_form"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </update>
+    <delete id="delete" parameterType="int">
+        <include refid="delete_applicant_form"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </delete>
+</mapper>

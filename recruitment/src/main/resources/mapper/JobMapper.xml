@@ -12,6 +12,10 @@
         <result column="SALARY_FROM" property="salaryFrom"/>
         <result column="SALARY_TO" property="salaryTo"/>
         <result column="CURRENCY" property="currency"/>
+        <result column="EMAIL" property="email"/>
+        <result column="PHONE" property="phone"/>
+        <result column="QUANTITY" property="quantity"/>
+        <result column="DEAL_TIME" property="dealTime"/>
         <result column="STATUS" property="status"/>
         <result column="DEL_YN" property="delYn"/>
         <result column="CREATE_AT" property="createAt"/>
@@ -28,6 +32,10 @@
         <result column="SALARY_FROM" property="salaryFrom"/>
         <result column="SALARY_TO" property="salaryTo"/>
         <result column="CURRENCY" property="currency"/>
+        <result column="EMAIL" property="email"/>
+        <result column="PHONE" property="phone"/>
+        <result column="QUANTITY" property="quantity"/>
+        <result column="DEAL_TIME" property="dealTime"/>
     </resultMap>
     <resultMap id="jobIntroduction" type="com.web.recruitment.api.dto.job.JobIntroduction">
         <result column="JOB_NM" property="name"/>
@@ -49,6 +57,10 @@
         , SALARY_FROM = #{salaryFrom}
         , SALARY_TO = #{salaryTo}
         , CURRENCY = #{currency}
+        , EMAIL = #{email}
+        , PHONE = #{phone}
+        , QUANTITY = #{quantity}
+        , DEAL_TIME = #{dealTime}
         , STATUS = #{status}
         , UPDATE_AT = NOW()
     </sql>
@@ -178,6 +190,10 @@
                 , SALARY_FROM
                 , SALARY_TO
                 , CURRENCY
+                , EMAIL
+                , PHONE
+                , QUANTITY
+                , DEAL_TIME
                 , STATUS
                 , DEL_YN
                 , CREATE_AT
@@ -194,6 +210,10 @@
                 , #{salaryFrom}
                 , #{salaryTo}
                 , #{currency}
+                , #{email}
+                , #{phone}
+                , #{quantity}
+                , #{dealTime}
                 , 0
                 , 0
                 , NOW()
@@ -222,4 +242,5 @@
     </if>
     LIMIT #{limit} OFFSET #{offset}
     </select>
+
 </mapper>

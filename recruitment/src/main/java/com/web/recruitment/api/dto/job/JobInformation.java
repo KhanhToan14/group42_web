@@ -20,4 +20,8 @@ public class JobInformation {
     private Long salaryFrom;
     private Long salaryTo;
     private String currency;
+    private String email;
+    private String phone;
+    private int quantity;
+    private String dealTime;
 }
