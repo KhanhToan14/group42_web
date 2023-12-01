@@ -1,5 +1,5 @@
 package com.web.recruitment.api.dto.Enum.UserEnum;
 
 public enum RoleEnum {
-    CANDIDATE, EMPLOYER;
+    ADMIN, CANDIDATE, EMPLOYER;
 }

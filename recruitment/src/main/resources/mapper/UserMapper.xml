@@ -219,4 +219,9 @@
         WHERE EMAIL = #{email}
             AND DEL_YN = 0
     </select>
+    <select id="findByUsername" resultMap="user" parameterType="map">
+        <include refid="select_user"/>
+        WHERE USERNAME = BINARY#{username}
+        AND DEL_YN = 0
+    </select>
 </mapper>
