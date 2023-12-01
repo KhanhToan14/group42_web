@@ -59,6 +59,7 @@ public class CVServiceImpl implements CVService{
         cv.setType(file.getContentType());
         cv.setData(file.getBytes());
         cvMapper.store(cv);
+        resError.put(ID, cv.getId());
         resError.put(MESSAGE, SUCCESS_STORE_FILE);
         return resError;
     }

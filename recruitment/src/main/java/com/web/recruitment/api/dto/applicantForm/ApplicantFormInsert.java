@@ -1,5 +1,6 @@
-package com.web.recruitment.api.dto.applicationForm;
+package com.web.recruitment.api.dto.applicantForm;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationFormUpdate {
+public class ApplicantFormInsert {
+    @JsonIgnore
     private int id;
     private int jobId;
     private int userId;
-    private String CV;
+    private int cvId;
 }
