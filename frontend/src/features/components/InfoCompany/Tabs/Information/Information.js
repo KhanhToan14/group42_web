@@ -7,13 +7,13 @@ import companyApi from "../../../../../api/companyApi";
 // import { storage } from "../../../../../firebase";
 import {
     companyData,
-    // updatecompany,
+    updatecompany,
 } from "../../../../admin/Slice/companySlice";
 import { useDispatch } from "react-redux";
 import SpinLoad from "../../../Spin/Spin";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { message } from "antd";
-function Infor({ id }) {
+export default function Infor({ id }) {
     const [state, setState] = useState({
         loading: false,
         linkImg: "",
@@ -29,94 +29,101 @@ function Infor({ id }) {
         loading,
         linkImg,
         tenanh,
-        // img,
+        img,
         anh,
         linkImgBanner,
         tenanhBanner,
-        // imgBanner,
+        imgBanner,
         anhBanner,
     } = state;
     const { register, handleSubmit, reset } = useForm();
     const [content, setContent] = useState();
+    const getApi = async () => {
+        return await companyApi.getOne(id).then((data) => {
+            return data;
+        });
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            if (id) {
-                const data = await companyApi.getOne(id);
-                setContent(data.introduce);
-                reset(data);
-                setState({ ...state, anh: data.avatar, anhBanner: data.banner });
-            }
-        };
-        fetchData();
-    }, [id, reset, state]);
+        if (id) {
+            Promise.all([getApi()]).then(function (data) {
+                setContent(data[0].introduce);
+                reset(data[0]);
+                setState({
+                    ...state,
+                    anh: data[0].avatar,
+                    anhBanner: data[0].banner,
+                });
+            });
+        }
+    }, []);
     const dispatch = useDispatch();
     const actionResult = (page) => {
         dispatch(companyData(page));
     };
-    // const edit = async (data) => {
-    //     if (data.anh && data.anhBanner === undefined) {
-    //         await dispatch(
-    //             updatecompany({
-    //                 avatar: data.anh,
-    //                 name: data.name,
-    //                 address: data.address,
-    //                 quantity: data.quantity,
-    //                 website: data.website,
-    //                 phone: data.phone,
-    //                 email: data.email,
-    //                 // //password: data.newPassword,
-    //                 introduce: content,
-    //                 id: id,
-    //             }),
-    //         );
-    //     } else if (data.anhBanner && data.anh === undefined) {
-    //         await dispatch(
-    //             updatecompany({
-    //                 banner: data.anhBanner,
-    //                 name: data.name,
-    //                 address: data.address,
-    //                 quantity: data.quantity,
-    //                 website: data.website,
-    //                 phone: data.phone,
-    //                 email: data.email,
-    //                 //password: data.newPassword,
-    //                 introduce: content,
-    //                 id: id,
-    //             }),
-    //         );
-    //     } else if (data.anhBanner && data.anh) {
-    //         await dispatch(
-    //             updatecompany({
-    //                 avatar: data.anh,
-    //                 banner: data.anhBanner,
-    //                 name: data.name,
-    //                 address: data.address,
-    //                 quantity: data.quantity,
-    //                 website: data.website,
-    //                 phone: data.phone,
-    //                 email: data.email,
-    //                 //password: data.newPassword,
-    //                 introduce: content,
-    //                 id: id,
-    //             }),
-    //         );
-    //     } else {
-    //         await dispatch(
-    //             updatecompany({
-    //                 name: data.name,
-    //                 address: data.address,
-    //                 quantity: data.quantity,
-    //                 website: data.website,
-    //                 phone: data.phone,
-    //                 email: data.email,
-    //                 //password: data.newPassword,
-    //                 introduce: content,
-    //                 id: id,
-    //             }),
-    //         );
-    //     }
-    // };
-    const history = useNavigate();
+    const edit = async (data) => {
+        if (data.anh && data.anhBanner === undefined) {
+            await dispatch(
+                updatecompany({
+                    avatar: data.anh,
+                    name: data.name,
+                    address: data.address,
+                    quantity: data.quantity,
+                    website: data.website,
+                    phone: data.phone,
+                    email: data.email,
+                    // //password: data.newPassword,
+                    introduce: content,
+                    id: id,
+                }),
+            );
+        } else if (data.anhBanner && data.anh === undefined) {
+            await dispatch(
+                updatecompany({
+                    banner: data.anhBanner,
+                    name: data.name,
+                    address: data.address,
+                    quantity: data.quantity,
+                    website: data.website,
+                    phone: data.phone,
+                    email: data.email,
+                    //password: data.newPassword,
+                    introduce: content,
+                    id: id,
+                }),
+            );
+        } else if (data.anhBanner && data.anh) {
+            await dispatch(
+                updatecompany({
+                    avatar: data.anh,
+                    banner: data.anhBanner,
+                    name: data.name,
+                    address: data.address,
+                    quantity: data.quantity,
+                    website: data.website,
+                    phone: data.phone,
+                    email: data.email,
+                    //password: data.newPassword,
+                    introduce: content,
+                    id: id,
+                }),
+            );
+        } else {
+            await dispatch(
+                updatecompany({
+                    name: data.name,
+                    address: data.address,
+                    quantity: data.quantity,
+                    website: data.website,
+                    phone: data.phone,
+                    email: data.email,
+                    //password: data.newPassword,
+                    introduce: content,
+                    id: id,
+                }),
+            );
+        }
+    };
+    const history = useHistory();
     const onSubmit = async (data) => {
 
         if (
@@ -368,5 +375,3 @@ function Infor({ id }) {
         </div>
     );
 }
-
-export default Infor;

@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { message, Radio } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 function RegisterUser() {
     const schema = yup.object().shape({
         userName: yup.string().email().required(),
@@ -26,7 +26,7 @@ function RegisterUser() {
     });
     const avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
     const banner = "https://zeru.com/blog/wp-content/uploads/How-Do-You-Have-No-Profile-Picture-on-Facebook_25900";
-    const history = useNavigate();
+    const history = useHistory();
 
     const onSubmit = (data) => {
         const asUserRole = [{ roleId: 2 }];

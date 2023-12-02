@@ -1,8 +1,8 @@
 import React from "react";
-import { useMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import Menu from "../Home/Menu/Menu";
 function CheckMenu() {
-    const { path } = useMatch();
+    const { path } = useRouteMatch();
     const HidenMenu = () => {
         return <div></div>;
     };

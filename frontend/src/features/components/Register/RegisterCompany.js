@@ -4,7 +4,7 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 import { companyData } from "../../admin/Slice/companySlice";
 function RegisterCompany() {
@@ -30,7 +30,7 @@ function RegisterCompany() {
     const avatar =
         "https://www.mintformations.co.uk/blog/wp-content/uploads/2020/05/shutterstock_583717939.jpg";
     const dispatch = useDispatch();
-    const history = useNavigate();
+    const history = useHistory();
     const actionResult = () => {
         dispatch(companyData());
     };

@@ -1,7 +1,7 @@
 import { Checkbox, message } from "antd";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "../../styles/Login/Login.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -18,7 +18,7 @@ function LoginAdmin({ onLogin }) {
     } = useForm({
         resolver: yupResolver(schema),
     });
-    const history = useNavigate();
+    const history = useHistory();
     const onSumit = async (data) => {
         await loginApi
             .loginAdmin({

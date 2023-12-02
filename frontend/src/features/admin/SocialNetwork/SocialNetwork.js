@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Button, Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link, useNavigate, useMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,7 +28,7 @@ function SocialNetwork() {
         },
     ];
 
-    const match = useMatch();
+    const match = useRouteMatch();
     const socialNetwork = useSelector(
         (state) => state.socialNetworks.socialNetwork.data,
     );
@@ -48,7 +48,7 @@ function SocialNetwork() {
         actionResult({ page: page });
     }, [page, actionResult]);
 
-    const history = useNavigate();
+    const history = useHistory();
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updatesocialNetwork({ status: 0, id: id }));

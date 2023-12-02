@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { addcontact, contactData, updatecontact } from '../Slice/contactSlice';
 import contactApi, { } from "../../../api/contactApi"
 function Addcontact() {
@@ -21,7 +21,7 @@ function Addcontact() {
     }, [id, reset])
 
     const dispatch = useDispatch();
-    const history = useNavigate();
+    const history = useHistory();
     const actionResult = async (page) => { await dispatch(contactData(page)) }
 
     const onhandleSubmit = (data) => {

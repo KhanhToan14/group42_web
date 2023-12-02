@@ -82,7 +82,7 @@ function Mn(props) {
         <div className={props.class}>
             <div className="menu__brand">
                 <Link to="/">
-                    <img src={logo} height={40} alt="" />
+                    <img src={logo} height={80} alt="" />
                 </Link>
             </div>
             <div className="menu--right">

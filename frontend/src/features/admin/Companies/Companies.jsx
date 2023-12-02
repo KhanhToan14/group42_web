@@ -2,7 +2,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Pagination, Popconfirm, Spin, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
 import companyApi from "../../../api/companyApi";
 import { removecompany } from "../Slice/companySlice";
@@ -71,7 +71,7 @@ function Companies() {
         }, 500);
     };
 
-    const match = useMatch();
+    const match = useRouteMatch();
 
     return (
         <div id="admin">

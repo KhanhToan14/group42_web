@@ -6,7 +6,7 @@ import { Option } from "antd/lib/mentions";
 // import { storage } from "../../../../../firebase";
 import { useDispatch } from "react-redux";
 import SpinLoad from "../../../Spin/Spin";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import userApi from "../../../../../api/userApi";
 import { updateuser, userData } from "../../../../admin/Slice/userSlice";
 // import { typeWorkData } from "../../../../admin/Slice/typeWorkSlice";
@@ -132,7 +132,7 @@ function Information({ id }) {
         }
     };
 
-    const history = useNavigate();
+    const history = useHistory();
 
     const onSubmit = async (data) => {
         if (

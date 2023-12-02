@@ -16,7 +16,7 @@
         flex-wrap: wrap;
 
         .key__tag {
-            border: 1px solid yellow;
+            border: 1px solid gray;
             border-radius: 5px;
             margin: .2rem .5rem;
             transition: .5s;
@@ -31,7 +31,7 @@
             }
 
             &:hover {
-                background: linear-gradient(90deg, #ffa704 50% #b37c10 100%);
+                background: linear-gradient(90deg, gray 50%, lightgray 100%);
 
                 a {
                     color: white;

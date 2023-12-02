@@ -2,7 +2,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Pagination, Popconfirm, Spin, Table } from "antd";
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { removeuser, userData } from "../Slice/userSlice";
 function Candidates() {
@@ -39,7 +39,7 @@ function Candidates() {
         actionResult({ page: page });
     }, [page, actionResult]);
 
-    // const history = useNavigate();
+    const history = useHistory();
 
     const onChangePage = (page) => {
         setState({
@@ -47,7 +47,7 @@ function Candidates() {
             pageCurent: page,
         });
     };
-    const match = useMatch();
+    const match = useRouteMatch();
     const hangdleDelete = (e) => {
         dispatch(removeuser(e));
         setTimeout(() => {

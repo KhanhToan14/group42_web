@@ -1,11 +1,11 @@
-$colorBorder: #2529d8;
+$colorVien: #0d6efd;
 
 .searchJobs {
     .key {
         display: flex;
         align-items: center;
         justify-content: space-around;
-        border: 1px solid $colorBorder;
+        border: 1px solid $colorVien;
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
         padding: 0.5rem 1rem;
@@ -28,7 +28,7 @@ $colorBorder: #2529d8;
         display: flex;
         align-items: center;
         justify-content: space-around;
-        border: 1px solid $colorBorder;
+        border: 1px solid $colorVien;
         padding: 0.5rem 1rem;
         border-right: none;
         border-left: none;
@@ -48,7 +48,7 @@ $colorBorder: #2529d8;
     }
 
     .btn {
-        border: 1px solid $colorBorder;
+        border: 1px solid $colorVien;
         width: 100%;
         height: 100%;
         padding: 0;
@@ -61,7 +61,7 @@ $colorBorder: #2529d8;
             border: none;
             width: 100%;
             height: 100%;
-            background-color: $colorBorder;
+            background-color: $colorVien;
             color: white;
             text-transform: uppercase;
             font-size: 0.9rem;
@@ -69,13 +69,13 @@ $colorBorder: #2529d8;
     }
 
     .col-md-6,
-    col-md-3 {
+    .col-md-3 {
         padding: 0;
         margin: 0;
     }
 }
 
-@media(max-width: 767px) {
+@media (max-width: 767px) {
     .searchJobs {
         padding: 0 1rem;
 
@@ -86,8 +86,8 @@ $colorBorder: #2529d8;
         }
 
         .address {
-            border-right: 1px solid $colorBorder;
-            border-left: 1px solid $colorBorder;
+            border-right: 1px solid $colorVien;
+            border-left: 1px solid $colorVien;
             margin-bottom: 1rem;
         }
 

@@ -1,9 +1,10 @@
-
+import "antd/dist/antd.css";
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter as Routes,
+  BrowserRouter as Router,
   Route,
-  useMatch
+  Switch,
+  useRouteMatch
 } from "react-router-dom";
 import checkLoginApi from "./api/checkLogin";
 import "./App.scss";
@@ -40,11 +41,15 @@ function App() {
       let user = ok.data.user.role;
       if (user === "admin" || user === "grant") {
         setCheckAdmin(
-          <Route path="/admin" element={<Ladmin />} />
+          <Route path="/admin">
+            <Ladmin />
+          </Route>,
         );
       } else {
         setCheckAdmin(
-          <Route path="/admin" element={<Empty />} />
+          <Route path="/admin">
+            <Empty />
+          </Route>,
         );
       }
     });
@@ -52,28 +57,62 @@ function App() {
 
   return (
     <div>
-      <Routes>
-        {/* <Route path={["/admin", "/register", "/Login", "/checkadmin", "/loginAdmin", "/",]} element={<CheckMenu />} /> */}
-        <Route exact path="/" element={<Home />} />
-        {checkAdmin}
-        <Route exact path="/jobs" element={<Jobs />} />
-        {/* < exact path="/jobs/work/:id" element={<DetailJob />} /> */}
-        {/* < exact path="/checkadmin/jobs/work/:id" element={<DetailJob isAdmin />} /> */}
-        <Route exact path="/companys" element={<Company />} />
-        <Route exact path="/companys/:id" element={<DetailCompany />} />
-        <Route exact path="/candidates" element={<Candidates />} />
-        <Route exact path="/candidates/:id" element={<DetailCandidate />} />
-        <Route exact path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route exact path="/loginAdmin" element={<LoginAdmin onLogin={handleLogin} />} />
-        {/* <Route exact path="/register" element={<Register />} /> */}
-        {/* <Route exact path="/inforCompany" element={<InforCompany />} /> */}
-        {/* <Route exact path="/inforUser" element={<InforUser />} /> */}
-      </Routes>
+      <Router>
+        <Switch>
+          <Route path={["/admin", "/register", "/Login", "/checkadmin", "/loginAdmin", "/",]}>
+            <CheckMenu />
+          </Route>
+        </Switch>
+
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          {checkAdmin}
+          <Route exact path="/jobs">
+            <Jobs />
+          </Route>
+          <Route exact path="/jobs/work/:id">
+            <DetailJob />
+          </Route>
+          <Route exact path="/checkadmin/jobs/work/:id">
+            <DetailJob isAdmin />
+          </Route>
+          <Route exact path="/companys">
+            <Company />
+          </Route>
+          <Route exact path="/companys/:id">
+            <DetailCompany />
+          </Route>
+          <Route exact path="/candidates">
+            <Candidates />
+          </Route>
+          <Route exact path="/candidates/:id">
+            <DetailCandidate />
+          </Route>
+          <Route exact path="/login">
+            <Login onLogin={handleLogin} />
+          </Route>
+          <Route exact path="/loginAdmin">
+            <LoginAdmin onLogin={handleLogin} />
+          </Route>
+          <Route exact path="/register">
+            <Register />
+          </Route>
+          <Route exact path="/inforCompany">
+            <InforCompany />
+          </Route>
+          <Route exact path="/inforUser">
+            <InforUser />
+          </Route>
+
+        </Switch>
+      </Router>
     </div>
   );
 }
 function Ladmin() {
-  let { path, url } = useMatch();
+  let { path, url } = useRouteMatch();
 
   return <Admin path={path} url={url} />;
 }

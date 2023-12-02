@@ -1,4 +1,5 @@
 .banner {
+    background: url("../../images/wellcome.jpg") repeat center;
     background-size: cover;
     width: 100%;
     height: 100vh;
@@ -22,7 +23,7 @@
 
             h4 {
                 color: white;
-                font-size: 1.5rem;
+                font-size: 2.5rem;
                 margin-bottom: 1rem;
             }
 
@@ -89,4 +90,37 @@
             border-radius: 0px !important;
         }
     }
+
+    // .banner__search--box--content{
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: space-between;
+    //     align-items: center;
+    //     height: 0 !important;
+    //     background-color: red !important;
+    //     border-radius: 0;
+    //     input:focus{
+    //         outline: none;
+    //         box-shadow: none;
+    //         border-color: transparent;
+    //     }
+    //     input{
+    //         border: none;
+    //         padding: 0rem 1rem;
+    //         margin-bottom: 1rem;
+    //     }
+    //     button{
+    //         padding: 1rem 4rem !important;
+    //         height: 100% !important;
+    //         font-size: 1rem !important;
+    //         border: 1px solid white !important;
+    //         border-top-right-radius: 10px !important;
+    //         border-bottom-right-radius: 10px !important;
+    //     }
+    //     button:focus{
+    //         outline: none !important;
+    //         box-shadow: none !important;
+    //         border-color: transparent !important;
+    //     }
+    // }
 }

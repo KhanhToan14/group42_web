@@ -1,8 +1,8 @@
 import React from "react";
-import { useMatch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import Nav from '../features/admin/Layout/Layout';
 function Admin() {
-    const match = useMatch();
+    const match = useRouteMatch();
     // console.log({match});
     return (
         <div>
