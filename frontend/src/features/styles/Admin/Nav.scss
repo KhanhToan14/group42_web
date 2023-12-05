@@ -62,7 +62,7 @@
     transition: .5s;
 
     &:hover {
-        background-color: rgba(0, 0, 0, .2);
+        background-color: #00000033;
     }
 }
 
@@ -80,7 +80,7 @@
 }
 
 .action .fa-edit {
-    color: rgb(14, 177, 14);
+    color: #0eb10e;
     margin-right: 10px;
 }
 
@@ -94,7 +94,7 @@
 
 #admin th.ant-table-cell {
     font-weight: bold;
-    background-color: rgb(206, 199, 199);
+    background-color: #cec7c7;
 }
 
 #admin .ct {

@@ -171,6 +171,7 @@
 }
 
 .ListJob {
+    background-color: #dfd9d3;
     @include jobBox();
 
     .col-lg-6 {

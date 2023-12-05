@@ -2,7 +2,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Pagination, Popconfirm, Spin, Table } from "antd";
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { removeuser, userData } from "../Slice/userSlice";
 function Candidates() {

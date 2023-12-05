@@ -1,34 +1,31 @@
 import React from "react";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { contactData } from "../../../admin/Slice/contactSlice";
 import { socialNetworkData } from "../../../admin/Slice/socialNetworkSlice";
 import "../../../styles/Home/Footer.scss";
 import SpinLoad from "../../Spin/Spin";
-function Footer() {
+export default function Footer() {
     const dispatch = useDispatch();
-    const actionResult = useCallback(async () => {
+    const actionResult = async () => {
         await dispatch(contactData({ status: 1 }));
-    }, [dispatch]);
-
+    };
     const contact = useSelector((state) => state.contacts.contact.data);
     const loadingContact = useSelector((state) => state.contacts.loading);
     const ok = !loadingContact ? contact.rows[0] : [];
-    const actionResultMxh = useCallback(async () => {
+    const actionResultMxh = async () => {
         await dispatch(socialNetworkData({ status: 1 }));
-    }, [dispatch]);
-
+    };
     const mxh = useSelector((state) => state.socialNetworks.socialNetwork.data);
     const loadMxh = useSelector((state) => state.socialNetworks.loading);
     useEffect(() => {
         actionResult();
         actionResultMxh();
-    }, [actionResult, actionResultMxh]);
+    }, []);
     const chuyentrang = (url) => {
         window.open(url);
     };
-
     return (
         <div className="footer">
             <div className="container-footer">
@@ -90,9 +87,6 @@ function Footer() {
                                             <li>
                                                 <Link to="">Mạng máy tính</Link>
                                             </li>
-                                            <li>
-                                                <Link to="">Cơ sở dữ liệu</Link>
-                                            </li>
                                         </ul>
                                     </div>
                                     <div className="col-lg-6">
@@ -108,9 +102,6 @@ function Footer() {
                                             </li>
                                             <li>
                                                 <Link to="">.NET</Link>
-                                            </li>
-                                            <li>
-                                                <Link to="">HTML, CSS</Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -153,5 +144,3 @@ function Footer() {
         </div>
     );
 }
-
-export default Footer;

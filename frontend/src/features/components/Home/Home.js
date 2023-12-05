@@ -10,9 +10,11 @@ function Home() {
         <div>
             {/* <Menu /> */}
             <Banner />
-            <ListCategories />
-            <ListJobs />
-            <Contact />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
+                <ListCategories style={{ flex: 1 }} />
+                <ListJobs style={{ flex: 1 }} />
+                <Contact style={{ flex: 1 }} />
+            </div>
             <Footer />
         </div>
     );
