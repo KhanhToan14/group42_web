@@ -5,7 +5,7 @@ import Footer from "./Footer/Footer";
 import ListCategories from "./ListCategories/ListCategories";
 import ListJobs from "./ListJobs/ListJobs";
 
-function Home() {
+export default function Home() {
     return (
         <div>
             {/* <Menu /> */}
@@ -19,5 +19,3 @@ function Home() {
         </div>
     );
 }
-
-export default Home;
