@@ -19,7 +19,7 @@ function InforCompany() {
                 <SpinLoad />
             ) : (
                 <div>
-                    {/* <MenuNotHome /> */}
+                    {<MenuNotHome /> }
                     <Breadcrumb name={user.name} />
                     <Tabs id={user.id} />
                 </div>

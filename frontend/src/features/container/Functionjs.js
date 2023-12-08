@@ -107,7 +107,8 @@ export const checkArrayEquar = (a, b) => {
         return true;
     }
 };
-export const checkStatus = (e) => {
+
+/* export const checkStatus = (e) => {
     if (e) {
         let data = [];
         let a = e.rows;
@@ -119,7 +120,26 @@ export const checkStatus = (e) => {
         console.log(data);
         return data;
     }
+    
+    
+}; */
+export const checkStatus = (e) => {
+    if (e && e.rows && e.rows.length > 0) {
+        let data = [];
+        let a = e.rows;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i].status === 0) {
+                data.push(a[i]);
+            }
+        }
+        console.log(data);
+        return data;
+    } else {
+        console.log("Invalid input or empty rows");
+        return [];
+    }
 };
+
 export const GetCategoryHome = (e) => {
     let list = e.rows;
     if (list.length !== 0) {
