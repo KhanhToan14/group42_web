@@ -9,7 +9,6 @@ import com.web.recruitment.api.dto.job.JobUpdate;
 import com.web.recruitment.service.JobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 @Slf4j
 @RequestMapping(value = "/v1/job")
 public class JobController {
-    @Resource
+    @Autowired
     private final JobService jobService;
 
     @Autowired

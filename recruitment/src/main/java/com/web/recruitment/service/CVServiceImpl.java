@@ -4,9 +4,9 @@ import com.web.recruitment.persistence.dto.CV;
 import com.web.recruitment.persistence.dto.Department;
 import com.web.recruitment.persistence.mapper.CVMapper;
 import com.web.recruitment.utils.FileUtils;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +22,7 @@ import static com.web.recruitment.utils.ConstantMessages.DEPARTMENT;
 @Service
 public class CVServiceImpl implements CVService{
 
-    @Resource
+    @Autowired
     private final CVMapper cvMapper;
 
     public CVServiceImpl(CVMapper cvMapper) {

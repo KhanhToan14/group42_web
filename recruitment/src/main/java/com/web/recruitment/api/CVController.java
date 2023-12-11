@@ -5,7 +5,6 @@ import com.web.recruitment.persistence.mapper.CVMapper;
 import com.web.recruitment.service.CVService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,9 @@ import static com.web.recruitment.utils.ConstantMessages.*;
 @Slf4j
 @RequestMapping(value = "/v1/cv")
 public class CVController {
-    @Resource
+    @Autowired
     private final CVService cvService;
-    @Resource
+    @Autowired
     private final CVMapper cvMapper;
 
     @Autowired

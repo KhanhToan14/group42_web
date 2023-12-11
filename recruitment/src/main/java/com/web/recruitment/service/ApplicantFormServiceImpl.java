@@ -6,8 +6,8 @@ import com.web.recruitment.persistence.dto.ApplicantForm;
 import com.web.recruitment.persistence.mapper.ApplicantFormMapper;
 import com.web.recruitment.persistence.mapper.JobMapper;
 import com.web.recruitment.persistence.mapper.UserMapper;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,12 +19,12 @@ import static com.web.recruitment.utils.ConstantMessages.*;
 @Slf4j
 @Service
 public class ApplicantFormServiceImpl implements ApplicantFormService {
-    @Resource
+    @Autowired
     private final ApplicantFormMapper applicantFormMapper;
 
-    @Resource
+    @Autowired
     private final JobMapper jobMapper;
-    @Resource
+    @Autowired
     private final UserMapper userMapper;
 
     public ApplicantFormServiceImpl(ApplicantFormMapper applicantFormMapper, JobMapper jobMapper, UserMapper userMapper) {

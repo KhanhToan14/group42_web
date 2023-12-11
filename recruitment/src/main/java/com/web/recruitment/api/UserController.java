@@ -8,7 +8,6 @@ import com.web.recruitment.api.dto.user.UserUpdate;
 import com.web.recruitment.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 @Slf4j
 @RequestMapping(value = "/v1/user")
 public class UserController {
-    @Resource
+    @Autowired
     private final UserService userService;
 
     @Autowired
@@ -92,7 +91,7 @@ public class UserController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    @Operation(summary = "Insert user API", description = "Insert user")
+    /*@Operation(summary = "Insert user API", description = "Insert user")
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> insertUser(
             @RequestParam(name = "username") String username,
@@ -124,13 +123,13 @@ public class UserController {
         userInsert.setRole(role);
         userInsert.setCompanyId(companyId);
 
-        resError = userService.insert(userInsert);
+        resError = userService.insert(user);
         res = new JSONObject(resError);
         if (resError.get(MESSAGE).equals(SUCCESS_INSERT_USER)){
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
-    }
+    }*/
 
     @Operation(summary = "Update user API", description = "update user")
     @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)

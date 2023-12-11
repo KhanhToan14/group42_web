@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.payload.response;
 
 import lombok.AllArgsConstructor;
@@ -12,3 +13,4 @@ import lombok.Setter;
 public class MessageResponse {
     private String message;
 }
+*/

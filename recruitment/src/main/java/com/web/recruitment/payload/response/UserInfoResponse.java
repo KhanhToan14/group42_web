@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.payload.response;
 
 import java.util.List;
@@ -16,3 +17,4 @@ public class UserInfoResponse {
     private String email;
     private List<String> roles;
 }
+*/

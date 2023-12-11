@@ -18,6 +18,7 @@ import javax.persistence.Enumerated;
 public class UserInsert {
     @JsonIgnore
     private int id;
+    @JsonIgnore
     private String username;
     private String firstName;
     private String lastName;

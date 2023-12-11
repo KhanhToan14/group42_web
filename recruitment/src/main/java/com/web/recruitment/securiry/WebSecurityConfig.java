@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.securiry;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.web.recruitment.config.PasswordConfig;
 import com.web.recruitment.securiry.jwt.AuthEntryPointJwt;
 import com.web.recruitment.securiry.jwt.AuthTokenFilter;
 import com.web.recruitment.securiry.services.UserDetailsServiceImpl;
+
 
 @Configuration
 @EnableMethodSecurity
@@ -65,3 +67,4 @@ public class WebSecurityConfig {
     }
 
 }
+*/

@@ -5,8 +5,8 @@ import com.web.recruitment.api.dto.department.DepartmentUpdate;
 import com.web.recruitment.persistence.dto.Department;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
 import com.web.recruitment.persistence.mapper.DepartmentMapper;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +18,10 @@ import static com.web.recruitment.utils.ValidationUtils.*;
 @Slf4j
 @Service
 public class DepartmentServiceImpl implements DepartmentService{
-    @Resource
+    @Autowired
     private final DepartmentMapper departmentMapper;
 
-    @Resource
+    @Autowired
     private final CompanyMapper companyMapper;
 
     public DepartmentServiceImpl(DepartmentMapper departmentMapper, CompanyMapper companyMapper) {

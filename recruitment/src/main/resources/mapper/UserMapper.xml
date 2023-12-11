@@ -20,6 +20,9 @@
         <result column="DEL_YN" property="delYn"/>
         <result column="CREATE_AT" property="createAt"/>
         <result column="UPDATE_AT" property="updateAt"/>
+        <result column="EMAIL_VERIFIED_AT" property="emailVerifiedAt"/>
+        <result column="OTP" property="otp"/>
+        <result column="OTP_TIME_SENT" property="otpTimeSent"/>
     </resultMap>
     <resultMap id="userInformation" type="com.web.recruitment.api.dto.user.UserInformation">
         <result column="ID" property="id"/>
@@ -137,7 +140,7 @@
         <!--            AND STATUS = 1-->
         AND ROLE = #{role}
     </select>
-    <insert id="insert" parameterType="com.web.recruitment.api.dto.user.UserInsert" keyColumn="id"
+    <insert id="insert" parameterType="com.web.recruitment.persistence.dto.User" keyColumn="id"
             keyProperty="id"
             useGeneratedKeys="true">
         INSERT INTO
@@ -160,6 +163,7 @@
         , DEL_YN
         , CREATE_AT
         , UPDATE_AT
+        , EMAIL_VERIFIED_AT
         )
         VALUES
         (
@@ -180,10 +184,59 @@
         , 0
         , NOW()
         , NOW()
+        , NOW()
         )
     </insert>
-
-    <select id="selectByUsername" resultType="int" parameterType="map">
+    <insert id="register" parameterType="com.web.recruitment.persistence.dto.User" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+        USER_TB
+        (
+        USERNAME
+        , FIRST_NAME
+        , LAST_NAME
+        , GENDER
+        , DATE_OF_BIRTH
+        , PHONE
+        , EMAIL
+        , ADDRESS
+        , AVATAR
+        , HASH_PASSWORD
+        , ROLE
+        , COMPANY_ID
+        , SKILLS
+        , STATUS
+        , DEL_YN
+        , CREATE_AT
+        , UPDATE_AT
+        , OTP
+        , OTP_TIME_SENT
+        )
+        VALUES
+        (
+        BINARY#{username}
+        , BINARY#{firstName}
+        , BINARY#{lastName}
+        , #{gender}
+        , #{dateOfBirth}
+        , #{phone}
+        , #{email}
+        , #{address}
+        , #{avatar}
+        , #{password}
+        , #{role}
+        , #{companyId}
+        , #{skills}
+        , 0
+        , 0
+        , NOW()
+        , NOW()
+        , #{otp}
+        , #{otpTimeSent}
+        )
+    </insert>
+    <select id="selectCountByUsername" resultType="int" parameterType="map">
         SELECT COUNT(ID)
         FROM USER_TB
         WHERE USERNAME = BINARY#{username}
@@ -213,15 +266,66 @@
         AND ID IN
         <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
     </update>
-    <select id="selectUserByEmail" resultType="int" parameterType="map">
+    <select id="selectCountUserByEmail" resultType="int" parameterType="map">
         SELECT COUNT(*)
         FROM USER_TB
         WHERE EMAIL = #{email}
             AND DEL_YN = 0
     </select>
-    <select id="findByUsername" resultMap="user" parameterType="map">
+    <!--<select id="findByUsername" resultMap="user" parameterType="map">
         <include refid="select_user"/>
         WHERE USERNAME = BINARY#{username}
         AND DEL_YN = 0
+    </select>-->
+    <!-- select inactivate user -->
+    <select id="selectInactivateByEmail" resultMap="user" parameterType="String">
+        SELECT *
+        FROM USER_TB
+        WHERE EMAIL = #{email}
+        AND DEL_YN = 0
+        AND EMAIL_VERIFIED_AT IS NULL
     </select>
+    <select id="selectByEmail" resultMap="user" parameterType="String">
+        SELECT *
+        FROM USER_TB
+        WHERE EMAIL = #{email}
+        AND DEL_YN = 0
+        AND EMAIL_VERIFIED_AT IS NOT NULL
+    </select>
+    <select id="selectByUSerName" resultMap="user" parameterType="String">
+        SELECT *
+        FROM USER_TB
+        WHERE USERNAME = #{username}
+        AND DEL_YN = 0
+        AND EMAIL_VERIFIED_AT IS NOT NULL
+    </select>
+<!--    <update id="lockUser" parameterType="map">-->
+<!--        UPDATE USER_TB-->
+<!--        SET OTP_FAILED_COUNT = 0,-->
+<!--        <if test="lockedTime != null">-->
+<!--            LOCKED_TIME = #{lockedTime}-->
+<!--        </if>-->
+<!--        <if test="lockedTime == null">-->
+<!--            LOCKED_TIME = NULL-->
+<!--        </if>-->
+<!--        WHERE ID = #{id} and DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NOT NULL-->
+<!--    </update>-->
+<!--    &lt;!&ndash; increase OTP failed count &ndash;&gt;-->
+<!--    <update id="increaseOTPFailedCount" parameterType="long">-->
+<!--        UPDATE USER_TB-->
+<!--        SET OTP_FAILED_COUNT = CASE WHEN OTP_FAILED_COUNT IS NULL THEN 1 ELSE OTP_FAILED_COUNT + 1 END-->
+<!--        WHERE ID = #{id} AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NULL-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash; increase login failed count &ndash;&gt;-->
+<!--    <update id="increaseLoginFailedCount" parameterType="long">-->
+<!--        UPDATE USER_TB-->
+<!--        SET OTP_FAILED_COUNT = CASE WHEN OTP_FAILED_COUNT IS NULL THEN 1 ELSE OTP_FAILED_COUNT + 1 END-->
+<!--        WHERE ID = #{id} AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NOT NULL-->
+<!--    </update>-->
+    <update id="activate" parameterType="int">
+        UPDATE USER_TB
+        SET EMAIL_VERIFIED_AT = NOW(), OTP = NULL, OTP_TIME_SENT = NULL
+        WHERE ID = #{id} AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NULL
+    </update>
 </mapper>
