@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 @OpenAPIDefinition(info = @Info(title = "Web", description = ""))
-@SecurityScheme(name = "Authorization", scheme = "basic", bearerFormat = "JWT", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+@SecurityScheme(name = "Authorization", scheme = "bearer", bearerFormat = "JWT", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 @Configuration
 public class OpenApiConfig {
     private ApiKey apiKey() {

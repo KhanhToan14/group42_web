@@ -7,8 +7,8 @@ import com.web.recruitment.persistence.dto.Company;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
 import com.web.recruitment.utils.ImageUtils;
 import com.web.recruitment.utils.ValidationUtils;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +24,7 @@ import static com.web.recruitment.utils.ValidationUtils.*;
 @Slf4j
 @Service
 public class CompanyServiceImpl implements CompanyService{
-    @Resource
+    @Autowired
     private final CompanyMapper companyMapper;
 
     public CompanyServiceImpl(CompanyMapper companyMapper) {

@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.api;
 
 import com.web.recruitment.payload.request.LoginRequest;
@@ -54,3 +55,4 @@ public class AuthController {
                 .body(new MessageResponse("đã xóa cookie jwt!"));
     }
 }
+*/

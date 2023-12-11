@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.payload.request;
 
 import jakarta.validation.constraints.Email;
@@ -24,3 +25,4 @@ public class SignupRequest {
     @NotBlank
     private String password;
 }
+*/

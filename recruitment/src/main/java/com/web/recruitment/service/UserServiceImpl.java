@@ -5,8 +5,8 @@ import com.web.recruitment.api.dto.user.UserUpdate;
 import com.web.recruitment.persistence.dto.User;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
 import com.web.recruitment.persistence.mapper.UserMapper;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,9 +26,9 @@ import static com.web.recruitment.utils.ValidationUtils.*;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService{
-    @Resource
+    @Autowired
     private final UserMapper userMapper;
-    @Resource
+    @Autowired
     private final CompanyMapper companyMapper;
 
     private final PasswordEncoder passwordEncoder;
@@ -103,11 +103,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> insert(UserInsert userInsert) throws Exception{
+    public Map<String, Object> insert(User user) throws Exception{
         Map<String, Object> subResError = new HashMap<>();
         Map<String, Object> resError = new HashMap<>();
-        userInsert.setUsername(autoCorrectFormatName(userInsert.getUsername()));
-        String username = userInsert.getUsername();
+        user.setUsername(autoCorrectFormatName(user.getUsername()));
+        String username = user.getUsername();
         if(username == null || username.isBlank()){
             subResError.put(USERNAME, USERNAME_MUST_NOT_NULL);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -122,16 +122,16 @@ public class UserServiceImpl implements UserService{
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
-            } else if(userMapper.selectByUsername(reqMap) != 0){
+            } else if(userMapper.selectCountByUsername(reqMap) != 0){
                 subResError.put(USERNAME, USERNAME_EXIST);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
             } else {
-                userInsert.setUsername(username);
+                user.setUsername(username);
             }
         }
-        String firstName = userInsert.getFirstName();
+        String firstName = user.getFirstName();
         if(firstName == null || firstName.isBlank()){
             subResError.put(FIRST_NAME, FIRST_NAME_MUST_NOT_NULL);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -145,10 +145,10 @@ public class UserServiceImpl implements UserService{
                 resError.put(ERRORS, subResError);
                 return resError;
             } else {
-                userInsert.setFirstName(firstName);
+                user.setFirstName(firstName);
             }
         }
-        String lastName = userInsert.getFirstName();
+        String lastName = user.getFirstName();
         if(lastName == null || lastName.isBlank()){
             subResError.put(LAST_NAME, LAST_NAME_MUST_NOT_NULL);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -162,10 +162,10 @@ public class UserServiceImpl implements UserService{
                 resError.put(ERRORS, subResError);
                 return resError;
             } else {
-                userInsert.setLastName(lastName);
+                user.setLastName(lastName);
             }
         }
-        String password = userInsert.getPassword();
+        String password = user.getPassword();
         if (password == null || password.isBlank()) {
             subResError.put(PASSWORD, PASSWORD_NOT_NULL_ERROR);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -179,11 +179,11 @@ public class UserServiceImpl implements UserService{
                 resError.put(ERRORS, subResError);
                 return resError;
             } else {
-                userInsert.setPassword(passwordEncoder.encode(password));
+                user.setPassword(passwordEncoder.encode(password));
             }
         }
 
-        String dateOfBirth = userInsert.getDateOfBirth();
+        String dateOfBirth = user.getDateOfBirth();
         if (dateOfBirth == null || dateOfBirth.isBlank()) {
             subResError.put(DATE_OF_BIRTH, DATE_OF_BIRTH_NOT_NULL_ERROR);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -200,7 +200,7 @@ public class UserServiceImpl implements UserService{
                     resError.put(ERRORS, subResError);
                     return resError;
                 } else {
-                    userInsert.setDateOfBirth(dateOfBirth);
+                    user.setDateOfBirth(dateOfBirth);
                 }
             } catch (DateTimeParseException ex) {
                 subResError.put(DATE_OF_BIRTH, DATE_OF_BIRTH_INVALID_FORMAT_ERROR);
@@ -209,22 +209,22 @@ public class UserServiceImpl implements UserService{
                 return resError;
             }
         }
-        String phone = userInsert.getPhone();
+        String phone = user.getPhone();
         if(phone == null || phone.isBlank()){
             subResError.put(PHONE, PHONE_NOT_NULL);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         } else {
-            userInsert.setPhone(validateVietnamesePhoneNumber(phone));
-            if(userInsert.getPhone() == null){
+            user.setPhone(validateVietnamesePhoneNumber(phone));
+            if(user.getPhone() == null){
                 subResError.put(PHONE, PHONE_INVALID);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
             }
         }
-        String email = userInsert.getEmail();
+        String email = user.getEmail();
         if(email == null || email.isBlank()){
             subResError.put(EMAIL, EMAIL_NOT_NULL);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -239,16 +239,16 @@ public class UserServiceImpl implements UserService{
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
-            } else if (userMapper.selectUserByEmail(map) != 0){
+            } else if (userMapper.selectCountUserByEmail(map) != 0){
                 subResError.put(EMAIL, EMAIL_EXIST);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
             } else {
-                userInsert.setEmail(email);
+                user.setEmail(email);
             }
         }
-        userMapper.insert(userInsert);
+        userMapper.insert(user);
         resError.put(MESSAGE, SUCCESS_INSERT_USER);
         return resError;
     }
@@ -285,7 +285,7 @@ public class UserServiceImpl implements UserService{
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
-            } else if(userMapper.selectByUsername(reqMap) != 0){
+            } else if(userMapper.selectCountByUsername(reqMap) != 0){
                 subResError.put(USERNAME, USERNAME_EXIST);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
@@ -402,7 +402,7 @@ public class UserServiceImpl implements UserService{
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
                 return resError;
-            } else if (userMapper.selectUserByEmail(map) != 0){
+            } else if (userMapper.selectCountUserByEmail(map) != 0){
                 subResError.put(EMAIL, EMAIL_EXIST);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
                 resError.put(ERRORS, subResError);
@@ -507,5 +507,17 @@ public class UserServiceImpl implements UserService{
         reqInfo.put(DATA, retList);
         reqInfo.put(TOTAL, total);
         return reqInfo;
+    }
+    public Map<String, Object> changePassword(int userId, String currentPassword, String newPassword, String confirmNewPassword) throws Exception{
+        return null;
+    }
+    @Override
+    public User selectByEmail(String email){
+        return userMapper.selectByEmail(email);
+    }
+
+    @Override
+    public User selectByUsername(String username){
+        return userMapper.selectByUsername(username);
     }
 }

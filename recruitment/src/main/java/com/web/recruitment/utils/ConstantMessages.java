@@ -125,4 +125,23 @@ public class ConstantMessages {
     public static final String SUCCESS_INSERT_APPLICANT_FORM = "SuccessInsertApplicantForm";
     public static final String SUCCESS_UPDATE_APPLICANT_FORM = "SuccessUpdateApplicantForm";
     public static final String SUCCESS_DELETE_APPLICANT_FORM = "SuccessDeleteApplicantForm";
+
+    //
+    public static final String USER_EMAIL_REGISTERED_INACTIVE_ERROR = "EmailRegisteredButInactivate";
+    public static final String LOCKED_TIME = "lockedTime";
+    public static final String SUCCESS = "success";
+    public static final String LOCKED = "locked";
+    public static final String ACCESS_TOKEN = "accessToken";
+    public static final String INVALID_CREDENTIALS_ERROR = "InvalidCredentials";
+    public static final String OTP = "otp";
+    public static final String AUTH_SUCCESS_REGISTER_USER = "SuccessRegisterUser";
+    public static final String OTP_NOT_NULL = "OtpNotNull";
+    public static final String EMAIL_NOT_REGISTERED = "EmailNotRegistered";
+    public static final String OTP_DEACTIVATED = "OTPDeactivated";
+    public static final String USER_REQUEST_NEW_OTP = "PleaseRequestToReceiveNewOTP";
+    public static final String OTP_EXPIRED = "OTPExpired";
+    public static final String PASSWORD_INCORRECT = "PasswordIncorrect";
+    public static final String LOGIN_SUCCESS = "LoginSuccess";
+    public static final String AUTH_SUCCESS_ACTIVATE_USER = "SuccessActivateUser";
+
 }

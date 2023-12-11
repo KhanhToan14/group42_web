@@ -3,7 +3,7 @@ package com.web.recruitment.persistence.mapper;
 import com.web.recruitment.api.dto.user.UserInsert;
 import com.web.recruitment.api.dto.user.UserUpdate;
 import com.web.recruitment.persistence.dto.User;
-import org.apache.ibatis.annotations.Select;
+//import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -16,9 +16,9 @@ public interface UserMapper {
 
     int total(Map<String, Object> reqMap) throws Exception;
 
-    int insert(UserInsert userInsert) throws Exception;
+    int insert(User user) throws Exception;
 
-    int selectByUsername(Map<String, Object> reqMap) throws Exception;
+    int selectCountByUsername(Map<String, Object> reqMap) throws Exception;
 
     int update(UserUpdate userUpdate) throws Exception;
 
@@ -30,8 +30,24 @@ public interface UserMapper {
 
     int totalRole(Map<String, Object> reqMap) throws Exception;
 
-    int selectUserByEmail(Map<String, Object> reqMap) throws Exception;
+    int selectCountUserByEmail(Map<String, Object> reqMap) throws Exception;
 
-    Optional<User> findByUsername(String username) ;
+    /*Optional<User> findByUsername(String username) ;*/
+
+    User selectInactivateByEmail(String email);
+
+    User selectByEmail(String email);
+
+    User selectByUsername(String username);
+
+//    int lockUser(Map<String, Object> req);
+
+//    int increaseOTPFailedCount(int id);
+
+//    int increaseLoginFailedCount(int id);
+
+    int activate(int id);
+
+    int register(User user) throws Exception;
 
 }

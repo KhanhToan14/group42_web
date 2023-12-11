@@ -1,3 +1,4 @@
+/*
  package com.web.recruitment.securiry.services;
 
  import java.util.Collection;
@@ -105,3 +106,4 @@
  return Objects.equals(id, user.id);
  }
  }
+*/

@@ -6,9 +6,9 @@ server:
   servlet:
     context-path: /
 
-jwtSecret: =======================Spring===========================
-jwtExpirationMs: 86400000
-jwtCookieName: btl_app
+#jwtSecret: =======================Spring===========================
+#jwtExpirationMs: 86400000
+#jwtCookieName: btl_app
 
 # ----------------------------------------
 # Spring Setting
@@ -22,6 +22,21 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: iwbanp.kt@gmail.com
+#    password: pfevjmaigcjbppir
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: false
+#          ssl:
+#            trust: '*'
+#            protocols: TLSv1.2
+#            ciphersuites: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 # ----------------------------------------
 # SpringDoc Setting
 # ----------------------------------------
@@ -51,3 +66,22 @@ logging:
     jdbc.audit: off
     jdbc.resultset: off
     jdbc.connection: off
+
+jwt:
+  secret: lIo+7l3LEtKvvK+CyX4w++aKQWkFSsPJwf8QlwaV0dE=
+  expiration: 86400000
+
+# ----------------------------------------
+# Authorization
+# ----------------------------------------
+
+
+# ----------------------------------------
+# User Login
+# ----------------------------------------
+user_login:
+  user_locked_time_minute: 5
+  login_failed_time: 10
+  max_login_failed: 5
+  redis_login_failed_postfix: ":login_failed"
+  redis_locked_postfix: ":locked"

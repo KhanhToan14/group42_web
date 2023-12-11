@@ -6,8 +6,8 @@ import com.web.recruitment.persistence.dto.Job;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
 import com.web.recruitment.persistence.mapper.DepartmentMapper;
 import com.web.recruitment.persistence.mapper.JobMapper;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +23,11 @@ import static com.web.recruitment.utils.ValidationUtils.*;
 @Slf4j
 @Service
 public class JobServiceImpl implements JobService{
-    @Resource
+    @Autowired
     private final JobMapper jobMapper;
-    @Resource
+    @Autowired
     private final CompanyMapper companyMapper;
-    @Resource
+    @Autowired
     private final DepartmentMapper departmentMapper;
 
     public JobServiceImpl(JobMapper jobMapper, CompanyMapper companyMapper, DepartmentMapper departmentMapper) {

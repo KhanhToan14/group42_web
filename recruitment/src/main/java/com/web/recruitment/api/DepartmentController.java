@@ -7,7 +7,6 @@ import com.web.recruitment.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import java.util.Map;
 @Slf4j
 @RequestMapping(value = "/v1/department")
 public class DepartmentController {
-    @Resource
+    @Autowired
     private final DepartmentService departmentService;
 
     @Autowired
@@ -37,6 +36,7 @@ public class DepartmentController {
 
     @Operation(summary = "Select department API", description = "select department")
     @GetMapping(path = "/select/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> selectDepartment(
             @PathVariable("id") int id
     ) throws Exception {
@@ -52,6 +52,7 @@ public class DepartmentController {
     }
     @Operation(summary = "Get list department API", description = "get list department")
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> getListDepartment(
             @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
             @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,

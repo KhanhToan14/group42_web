@@ -7,7 +7,6 @@ import com.web.recruitment.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import java.util.Map;
 @Slf4j
 @RequestMapping(value = "/v1/company")
 public class CompanyController {
-    @Resource
+    @Autowired
     private final CompanyService companyService;
 
     @Autowired
