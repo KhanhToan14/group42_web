@@ -10,15 +10,16 @@ function CandidateInfor() {
     const [data, setData] = useState();
     console.log("data", data);
 
+    const getApi = async () => {
+        return await userApi.getOne(id).then((data) => {
+            setData(data);
+        });
+    };
+
     useEffect(() => {
-        async function getApi() {
-            await userApi.getOne(id).then((data) => {
-                setData(data);
-            });
-        }
         getApi();
         window.scrollTo(0, 0);
-    }, [id]);
+    }, []);
 
     return (
         <div id="admin">

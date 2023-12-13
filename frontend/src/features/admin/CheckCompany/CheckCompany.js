@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Pagination, Popconfirm, Spin, Table } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,8 +28,7 @@ function CheckCompany() {
         },
     ];
 
-    // const match = useMatch();
-
+    const match = useRouteMatch();
     const checkCompanys = useSelector(
         (state) => state.checkCompanys.checkCompany.data
     );
@@ -41,14 +40,14 @@ function CheckCompany() {
     });
     const { page } = state;
 
-    const actionResult = useCallback(() => {
-        dispatch(checkCompanyData(page));
-    }, [dispatch, page]);
+    const actionResult = async (page) => {
+        await dispatch(checkCompanyData(page));
+    };
 
     useEffect(() => {
         localStorage.setItem("pagecheckCompany", page);
-        actionResult();
-    }, [dispatch, page, actionResult]);
+        actionResult({ page: page });
+    }, [page]);
 
     const handleStatus = (e, id) => {
         if (e === 1) {

@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 import { formatDateWork } from "../../../../container/Functionjs";
 function UserApply({ id }) {
     const [data, setData] = useState();
-    const getApi = useCallback(async () => {
+    const getApi = async () => {
         await workApplyApi.checkUserApply(id).then((data) => {
             setData(data.workapply);
         });
-    }, [id]);
+    };
     useEffect(() => {
         getApi();
-    }, [getApi]);
+    }, []);
     return (
         <div className="ListJob">
             <div className="heading">

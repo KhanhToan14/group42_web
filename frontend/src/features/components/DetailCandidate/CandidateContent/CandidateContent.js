@@ -11,7 +11,7 @@ function CandidateContent({ data }) {
             <div className="container">
                 <div className="row">
                     <div className="col-md-8">
-                        {<div className="candidate__box">
+                        {/* {<div className="candidate__box">
                             <div className="candidate__box__title">Kỹ năng</div>
                             <div className="candidate__box__skill ">
                                 <div className="candidateTag d-flex">
@@ -26,7 +26,7 @@ function CandidateContent({ data }) {
                                     )}
                                 </div>
                             </div>
-                        </div>}
+                        </div>} */}
 
                         <div className="candidate__box">
                             <div className="candidate__box__title">Giới thiệu</div>

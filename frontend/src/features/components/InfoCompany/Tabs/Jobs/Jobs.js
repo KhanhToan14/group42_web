@@ -23,30 +23,30 @@ function Jobs({
     const { page } = state;
     const [loadEffect, setLoadEffect] = useState(false);
 
-    const getApi = useCallback(async () => {
+    const getApi = async () => {
         await workApi.getAllId({ page: page, id: id }).then((data) => {
             setData(data);
         });
-    }, [id, page]);
+    };
 
     useEffect(() => {
         localStorage.setItem("pageWorkHomeInfor", page);
         getApi();
-    }, [getApi, page, loadEffect, resetJob]);
+    }, [page, loadEffect, resetJob]);
 
     const hangdleDelete = async (e) => {
         await workApi.deletework(e);
         setLoadEffect(!loadEffect);
     };
 
-    // const checkStatusCensorship = (status) => {
-    //     let obj = {
-    //         1: "Đã duyệt",
-    //         null: "Chờ duyệt",
-    //         0: "Từ chối",
-    //     }
-    //     return obj[status]
-    // }
+    const checkStatusCensorship = (status) => {
+        let obj = {
+            1: "Đã duyệt",
+            null: "Chờ duyệt",
+            0: "Từ chối",
+        }
+        return obj[status]
+    }
 
     return (
         <div className="ListJob">

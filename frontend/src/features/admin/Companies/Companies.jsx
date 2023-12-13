@@ -41,7 +41,7 @@ function Companies() {
         companyApi.search({ page, name: nameCompanies, status: 1 }).then((data) => {
             setState({ ...state, companys: data.data, loading: false });
         });
-    }, [page, isLoad, nameCompanies, state]);
+    }, [page, isLoad]);
 
     const onChangePage = (page) => {
         setState({

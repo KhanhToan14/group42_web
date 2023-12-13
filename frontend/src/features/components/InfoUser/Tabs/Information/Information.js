@@ -41,18 +41,18 @@ function Information({ id }) {
     const [male, setMale] = useState("");
     const [date, setDate] = useState("");
 
-    const getApi = useCallback(async () => {
+    const getApi = async () => {
         return await userApi.getOne(id).then((data) => {
             return data;
         });
-    }, [id]);
+    };
 
     useEffect(() => {
         if (id) {
-            getApi().then((data) => {
-                setContent(data.introduce);
-                setMale(data.male);
-                setDate(data[0].date);
+            Promise.all([getApi()]).then(function (data) {
+                setContent(data[0].introduce);
+                setMale(data[0].male);
+                setDate(data[0].date)
                 reset(data[0]);
                 setState({
                     ...state,
@@ -61,7 +61,7 @@ function Information({ id }) {
                 });
             });
         }
-    }, [id, getApi, reset, state]);
+    }, []);
 
 
     const actionResult = (page) => {
@@ -147,38 +147,38 @@ function Information({ id }) {
                 ...state,
                 loading: true,
             });
-            // if (img !== "" || imgBanner !== "") {
-            //     if (img !== "" && imgBanner === "") {
-            //         await storage.ref(`imagesuser/${img.name}`).put(img);
-            //         const anh = await storage
-            //             .ref("imagesuser")
-            //             .child(img.name)
-            //             .getDownloadURL();
-            //         edit({ data, anh });
-            //     } else if (imgBanner !== "" && img === "") {
-            //         await storage.ref(`imagesuser/${imgBanner.name}`).put(imgBanner);
-            //         const anhBanner = await storage
-            //             .ref("imagesuser")
-            //             .child(imgBanner.name)
-            //             .getDownloadURL();
-            //         edit({ data, anhBanner });
-            //     } else {
-            //         await storage.ref(`imagesuser/${img.name}`).put(img);
-            //         const anh = await storage
-            //             .ref("imagesuser")
-            //             .child(img.name)
-            //             .getDownloadURL();
-            //         await storage.ref(`imagesuser/${imgBanner.name}`).put(imgBanner);
-            //         const anhBanner = await storage
-            //             .ref("imagesuser")
-            //             .child(imgBanner.name)
-            //             .getDownloadURL();
+            if (img !== "" || imgBanner !== "") {
+                if (img !== "" && imgBanner === "") {
+                    // await storage.ref(`imagesuser/${img.name}`).put(img);
+                    // const anh = await storage
+                    //     .ref("imagesuser")
+                    //     .child(img.name)
+                    //     .getDownloadURL();
+                    edit({ data, anh });
+                } else if (imgBanner !== "" && img === "") {
+                    // await storage.ref(`imagesuser/${imgBanner.name}`).put(imgBanner);
+                    // const anhBanner = await storage
+                    //     .ref("imagesuser")
+                    //     .child(imgBanner.name)
+                    //     .getDownloadURL();
+                    edit({ data, anhBanner });
+                } else {
+                    // await storage.ref(`imagesuser/${img.name}`).put(img);
+                    // const anh = await storage
+                    //     .ref("imagesuser")
+                    //     .child(img.name)
+                    //     .getDownloadURL();
+                    // await storage.ref(`imagesuser/${imgBanner.name}`).put(imgBanner);
+                    // const anhBanner = await storage
+                    //     .ref("imagesuser")
+                    //     .child(imgBanner.name)
+                    //     .getDownloadURL();
 
-            //         edit({ data, anh, anhBanner });
-            //     }
-            // } else {
-            //     edit(data);
-            // }
+                    edit({ data, anh, anhBanner });
+                }
+            } else {
+                edit(data);
+            }
             setTimeout(() => {
                 actionResult({ page: 1 });
             }, 800);

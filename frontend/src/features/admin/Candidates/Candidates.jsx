@@ -30,14 +30,14 @@ function Candidates() {
     });
     const { page } = state;
 
-    const actionResult = useCallback(() => {
+    const actionResult = (page) => {
         dispatch(userData(page));
-    }, [page, dispatch]);
+    };
 
     useEffect(() => {
         localStorage.setItem("pageUser", page);
         actionResult({ page: page });
-    }, [page, actionResult]);
+    }, [page]);
 
     const history = useHistory();
 

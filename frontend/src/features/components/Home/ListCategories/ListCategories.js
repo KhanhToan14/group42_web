@@ -8,16 +8,15 @@ import SpinLoad from "../../Spin/Spin";
 import renderHTML from "react-render-html";
 function ListCategories() {
     const dispatch = useDispatch();
-    const actionResult = useCallback(() => {
+    const actionResult = () => {
         dispatch(typeWorkData({ status: 1 }));
-    }, [dispatch]);
-
+    };
     const typework = useSelector((state) => state.typeWorks.typeWork.data);
     const loading = useSelector((state) => state.typeWorks.loading);
 
     useEffect(() => {
         actionResult();
-    }, [actionResult]);
+    }, []);
 
     return (
         <div className="categori">

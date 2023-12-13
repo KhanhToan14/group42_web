@@ -1,24 +1,20 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { addsocialNetwork, socialNetworkData, updatesocialNetwork } from '../Slice/socialNetworkSlice';
 import socialNetworkApi, { } from "../../../api/socialNetworkApi"
 function AddSocialNetwork() {
     const { id } = useParams();
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    useEffect(() => {
-        async function fetchData() {
-            if (id) {
-                const response = await socialNetworkApi.getOne(id);
-                const data = response.data;
-                reset(data);
-            }
+    useEffect(async () => {
+        if (id) {
+            reset(await socialNetworkApi.getOne(id).then(data => {
+                return data
+            }));
         }
-        fetchData();
-    }, [id, reset])
+    }, [])
 
     const dispatch = useDispatch();
     const history = useHistory();

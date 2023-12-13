@@ -11,16 +11,15 @@ import CompanyContent from "./CompanyContent/CompanyContent";
 function DetailCompany() {
     const { id } = useParams();
     const [data, setData] = useState();
-    const getApi = useCallback(async () => {
+    const getApi = async () => {
         return await companyApi.getOne(id).then((data) => {
             setData(data);
         });
-    }, [id]);
-
+    };
     useEffect(() => {
         getApi();
         window.scrollTo(0, 0);
-    }, [getApi]);
+    }, []);
     // console.log(data);
 
     return (

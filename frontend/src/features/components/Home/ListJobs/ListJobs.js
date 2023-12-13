@@ -9,13 +9,12 @@ function ListJobs() {
     const work = useSelector((state) => state.works.work.data);
     const loading = useSelector((state) => state.works.loading);
     const dispatch = useDispatch();
-    const actionResult = useCallback(async (page) => {
+    const actionResult = async (page) => {
         await dispatch(workData(page));
-    }, [dispatch]);
-
+    };
     useEffect(() => {
         actionResult({ page: 1, status: 1 });
-    }, [actionResult]);
+    }, []);
 
     return (
         <div className="ListJob">

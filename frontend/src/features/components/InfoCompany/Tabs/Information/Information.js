@@ -142,38 +142,38 @@ export default function Infor({ id }) {
                 ...state,
                 loading: true,
             });
-            // if (img !== "" || imgBanner !== "") {
-            //     if (img !== "" && imgBanner === "") {
-            //         await storage.ref(`imagescompany/${img.name}`).put(img);
-            //         const anh = await storage
-            //             .ref("imagescompany")
-            //             .child(img.name)
-            //             .getDownloadURL();
-            //         edit({ data, anh });
-            //     } else if (imgBanner !== "" && img === "") {
-            //         await storage.ref(`imagescompany/${imgBanner.name}`).put(imgBanner);
-            //         const anhBanner = await storage
-            //             .ref("imagescompany")
-            //             .child(imgBanner.name)
-            //             .getDownloadURL();
-            //         edit({ data, anhBanner });
-            //     } else {
-            //         await storage.ref(`imagescompany/${img.name}`).put(img);
-            //         const anh = await storage
-            //             .ref("imagescompany")
-            //             .child(img.name)
-            //             .getDownloadURL();
-            //         await storage.ref(`imagescompany/${imgBanner.name}`).put(imgBanner);
-            //         const anhBanner = await storage
-            //             .ref("imagescompany")
-            //             .child(imgBanner.name)
-            //             .getDownloadURL();
+            if (img !== "" || imgBanner !== "") {
+                if (img !== "" && imgBanner === "") {
+                    // await storage.ref(`imagescompany/${img.name}`).put(img);
+                    // const anh = await storage
+                    //     .ref("imagescompany")
+                    //     .child(img.name)
+                    //     .getDownloadURL();
+                    edit({ data, anh });
+                } else if (imgBanner !== "" && img === "") {
+                    // await storage.ref(`imagescompany/${imgBanner.name}`).put(imgBanner);
+                    // const anhBanner = await storage
+                    //     .ref("imagescompany")
+                    //     .child(imgBanner.name)
+                    //     .getDownloadURL();
+                    edit({ data, anhBanner });
+                } else {
+                    // await storage.ref(`imagescompany/${img.name}`).put(img);
+                    // const anh = await storage
+                    //     .ref("imagescompany")
+                    //     .child(img.name)
+                    //     .getDownloadURL();
+                    // await storage.ref(`imagescompany/${imgBanner.name}`).put(imgBanner);
+                    // const anhBanner = await storage
+                    //     .ref("imagescompany")
+                    //     .child(imgBanner.name)
+                    //     .getDownloadURL();
 
-            //         edit({ data, anh, anhBanner });
-            //     }
-            // } else {
-            //     edit(data);
-            // }
+                    edit({ data, anh, anhBanner });
+                }
+            } else {
+                edit(data);
+            }
             setTimeout(() => {
                 actionResult({ page: 1 });
             }, 800);

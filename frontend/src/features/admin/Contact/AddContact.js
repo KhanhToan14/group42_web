@@ -8,17 +8,13 @@ function Addcontact() {
     const { id } = useParams();
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-
-    useEffect(() => {
+    useEffect(async () => {
         if (id) {
-            (async () => {
-                const data = await contactApi.getOne(id).then(data => {
-                    return data
-                });
-                reset(data);
-            })();
+            reset(await contactApi.getOne(id).then(data => {
+                return data
+            }));
         }
-    }, [id, reset])
+    }, [])
 
     const dispatch = useDispatch();
     const history = useHistory();

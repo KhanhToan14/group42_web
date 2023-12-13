@@ -26,15 +26,15 @@ function Work() {
     });
     const { page } = state;
 
-    const actionResult = useCallback(async (page, name) => {
+    const actionResult = async (page, name) => {
         await dispatch(workData(page, name));
-    }, [dispatch]);
+    };
 
     const [nameCompanies, setNameCompanies] = useState("");
     useEffect(() => {
         localStorage.setItem("pagework", page);
         actionResult({ page: page, name: nameCompanies });
-    }, [page, isLoad, actionResult, nameCompanies]);
+    }, [page, isLoad]);
 
     const handleStatus = (e, id) => {
         if (e === 1) {

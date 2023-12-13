@@ -31,14 +31,14 @@ function CheckJob() {
     });
     const { page } = state;
 
-    const actionResult = useCallback(() => {
+    const actionResult = (page) => {
         dispatch(workCensorshipData(page));
-    }, [dispatch, page]);
+    };
 
     useEffect(() => {
         localStorage.setItem("pagecheckJob", page);
-        actionResult();
-    }, [dispatch, page, actionResult]);
+        actionResult({ page: page });
+    }, [page]);
 
     const handleCensorship = (id) => {
         dispatch(updateWorkCensorship({ censorship: 1, id: id }));

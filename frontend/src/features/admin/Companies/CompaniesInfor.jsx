@@ -9,16 +9,16 @@ function CompaniesInfor() {
     let { id } = useParams();
     const [data, setData] = useState();
 
-    const getApi = useCallback(async () => {
+    const getApi = async () => {
         return await companyApi.getOne(id).then((data) => {
             setData(data);
         });
-    }, [id]);
+    };
 
     useEffect(() => {
         getApi();
         window.scrollTo(0, 0);
-    }, [getApi])
+    }, [])
 
     return (
         <div id="admin">

@@ -38,14 +38,13 @@ function TypeWork() {
     });
 
     const { page } = state;
-    const actionResult = useCallback(async (page) => {
+    const actionResult = async (page) => {
         await dispatch(typeWorkData(page));
-    }, [dispatch]);
-
+    };
     useEffect(() => {
         localStorage.setItem("pagetypeWork", page);
         actionResult({ page: page });
-    }, [page, actionResult]);
+    }, [page]);
 
     const history = useHistory();
 

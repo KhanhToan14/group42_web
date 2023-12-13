@@ -39,14 +39,14 @@ function SocialNetwork() {
     });
     const { page } = state;
 
-    const actionResult = useCallback(async (page) => {
+    const actionResult = async (page) => {
         await dispatch(socialNetworkData(page));
-    }, [dispatch]);
+    };
 
     useEffect(() => {
         localStorage.setItem("pageSocialNetwork", page);
         actionResult({ page: page });
-    }, [page, actionResult]);
+    }, [page]);
 
     const history = useHistory();
     const handleStatus = (e, id) => {

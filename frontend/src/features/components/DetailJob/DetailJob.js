@@ -9,19 +9,18 @@ import Jd from "./Jd/Jd";
 function DetailJob({ isAdmin }) {
     const { id } = useParams();
     const [isLoad, setIsLoad] = useState(false)
-    const getApi = useCallback(async () => {
+    const getApi = async () => {
         return await workApi.getOne(id).then((data) => {
             return data;
         });
-    }, [id]);
-
+    };
     const [data, setData] = useState();
     useEffect(() => {
         Promise.all([getApi()]).then(function (data) {
             setData(data[0]);
         });
         window.scrollTo(0, 0);
-    }, [isLoad, getApi]);
+    }, [isLoad]);
 
     const reload = () => {
         setIsLoad(!isLoad)

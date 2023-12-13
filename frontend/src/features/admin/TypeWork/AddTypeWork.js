@@ -9,15 +9,13 @@ function AddtypeWork() {
     const { id } = useParams();
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    useEffect(() => {
-        async function fetchData() {
-            if (id) {
-                const data = await typeWorkApi.getOne(id);
-                reset(data);
-            }
+    useEffect(async () => {
+        if (id) {
+            reset(await typeWorkApi.getOne(id).then(data => {
+                return data
+            }));
         }
-        fetchData();
-    }, [id, reset])
+    }, [])
 
     const dispatch = useDispatch();
     const history = useHistory();

@@ -13,31 +13,14 @@ import { FormatProvince } from "../../../../container/Functionjs";
 import SpinLoad from "../../../Spin/Spin";
 function AddJob({ id, idEdit, onChangeTabs }) {
     const dispatch = useDispatch();
-    const actionResultTypeOfWork = useCallback(() => {
+    const actionResultTypeOfWork = () => {
         dispatch(typeWorkData({ status: 1 }));
-    }, [dispatch]);
-    const { register, handleSubmit, reset } = useForm();
-    const objDefault = useMemo(() => {
-        return {
-            load: false,
-            typeofworkId: 2,
-            address: "Hà Nội",
-            price1: "",
-            nature: "Full Time",
-            request: "Không yêu cầu",
-            price2: "",
-            date: undefined,
-        };
-    }, []);
+    };
 
-    const [state, setState] = useState({
-        ...objDefault,
-    });
-    useEffect(() => {
-        actionResultTypeOfWork();
-        async function fetchData() {
-            if (idEdit) {
-                const data = await workApi.getOne(idEdit).then((data) => {
+    useEffect(async () => {
+        if (idEdit) {
+            reset(
+                await workApi.getOne(idEdit).then((data) => {
                     setState({
                         ...state,
                         price1: String(data.price1),
@@ -52,26 +35,36 @@ function AddJob({ id, idEdit, onChangeTabs }) {
                     setForm(data.form);
                     setExprience(data.exprience);
                     return data;
-                });
-                return data;
-            } else {
-                reset(objDefault);
-                setDescripton("");
-                setInterest("");
-                setForm("");
-                setExprience("");
-            }
+                }),
+            );
+        } else {
+            reset(objDefault);
+            setDescripton("");
+            setInterest("");
+            setForm("");
+            setExprience("");
         }
-
-        fetchData();
-    }, [actionResultTypeOfWork, idEdit, objDefault, reset, state]);
-
+    }, [idEdit]);
     const typeWorks = useSelector((state) => state.typeWorks.typeWork.data);
     const loadingTypeWork = useSelector((state) => state.typeWorks.loading);
+    const { register, handleSubmit, reset } = useForm();
     const [interest, setInterest] = useState();
     const [exprience, setExprience] = useState();
     const [form, setForm] = useState();
     const [description, setDescripton] = useState();
+    let objDefault = {
+        load: false,
+        typeofworkId: 2,
+        address: "Hà Nội",
+        price1: "",
+        nature: "Full Time",
+        request: "Không yêu cầu",
+        price2: "",
+        date: undefined,
+    };
+    const [state, setState] = useState({
+        ...objDefault,
+    });
     const {
         price1,
         price2,
@@ -197,12 +190,12 @@ function AddJob({ id, idEdit, onChangeTabs }) {
             typeofworkId: e,
         });
     };
-    // const onChangeRequest = (e) => {
-    //     setState({
-    //         ...state,
-    //         request: e,
-    //     });
-    // };
+    const onChangeRequest = (e) => {
+        setState({
+            ...state,
+            request: e,
+        });
+    };
     const onChangeDate = (date, dateString) => {
         setState({
             ...state,
@@ -211,8 +204,8 @@ function AddJob({ id, idEdit, onChangeTabs }) {
     };
     useEffect(() => {
         actionResultTypeOfWork();
-    }, [actionResultTypeOfWork]);
-    // const data = [];
+    }, []);
+    const data = [];
 
 
     const onchangeAddress = (e) => {

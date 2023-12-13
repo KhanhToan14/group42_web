@@ -13,16 +13,14 @@ function Companys() {
     });
     const { page } = state;
     const dispatch = useDispatch();
-
-    const actionResult = useCallback(async (page) => {
+    const actionResult = async (page) => {
         await dispatch(companyData(page));
-    }, [dispatch]);
-
+    };
     useEffect(() => {
         localStorage.setItem("pagecompanyHome", page);
         actionResult({ page: page, status: 1 });
         window.scrollTo(0, 0);
-    }, [page, actionResult]);
+    }, [page]);
 
     return (
         <div className="companys">

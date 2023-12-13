@@ -21,7 +21,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "sub-vi": "^0.0.5",
-    "util": "^0.12.5",
     "yup": "^0.32.9"
   },
   "scripts": {
@@ -32,10 +31,7 @@
     "deploy": "sh ./deploy-surge.sh"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [

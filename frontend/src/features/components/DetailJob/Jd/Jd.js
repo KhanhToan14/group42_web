@@ -51,7 +51,7 @@ function Jd(props) {
                 setNotSave(false);
             }
         });
-    }, [user, load, data.name, id]);
+    }, [user, load]);
     const onSaveWork = async () => {
         if (user) {
             await saveWorkApi.postsaveWork([{ userId: user, workId: id }]);

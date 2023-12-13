@@ -13,16 +13,14 @@ function ListCandidates() {
     });
     const { page } = state;
     const dispatch = useDispatch();
-
-    const actionResult = useCallback(async (page) => {
-        await dispatch(userData(page, 1));
-    }, [dispatch]);
-
+    const actionResult = async (page) => {
+        await dispatch(userData(page));
+    };
     useEffect(() => {
         localStorage.setItem("pageUserHome", page);
-        actionResult({ page: page });
+        actionResult({ page: page, status: 1 });
         window.scrollTo(0, 0);
-    }, [page, actionResult]);
+    }, [page]);
 
     return (
         <div className="listCandidates">

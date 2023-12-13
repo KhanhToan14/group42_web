@@ -30,16 +30,12 @@ function UserApply({ id }) {
         // workId,
     } = state;
 
-    const getApi = useCallback(async () => {
+    const getApi = async () => {
         await workApplyApi.checkWorkApply({ id, userId }).then((data) => {
             console.log('data.Works', data.Works)
             setData(data.Works);
         });
-    }, [id, userId]);
-
-    useEffect(() => {
-        getApi();
-    }, [id, userId, getApi]);
+    };
 
     const handleOk = () => {
         setState({ ...state, isModalUserVisible: false });
@@ -91,7 +87,7 @@ function UserApply({ id }) {
 
     useEffect(() => {
         getApi();
-    }, [getApi, numReload, isLoad]);
+    }, [numReload, isLoad]);
 
     let styleTextarea = {
         width: "100%",

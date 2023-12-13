@@ -6,15 +6,14 @@ import SpinLoad from "../../../Spin/Spin";
 
 function WorkSave({ id }) {
     const [data, setData] = useState();
-
+    const getApi = async () => {
+        await userApi.getUserSaveWork(id).then((data) => {
+            setData(data.Works);
+        });
+    };
     useEffect(() => {
-        async function getApi() {
-            await userApi.getUserSaveWork(id).then((data) => {
-                setData(data.Works);
-            });
-        }
         getApi();
-    }, [id]);
+    }, []);
 
     return (
         <div className="ListJob">
