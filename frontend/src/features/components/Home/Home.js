@@ -11,11 +11,11 @@ export default function Home() {
             {/* <Menu /> */}
             <Banner />
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
-                <ListCategories style={{ flex: 1 }} />
+                {/* <ListCategories style={{ flex: 1 }} /> */}
                 <ListJobs style={{ flex: 1 }} />
-                <Contact style={{ flex: 1 }} />
+                {/* <Contact style={{ flex: 1 }} /> */}
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

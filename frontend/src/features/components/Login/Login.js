@@ -20,32 +20,18 @@ function Login({ onLogin }) {
     });
     const history = useHistory();
     const onSumit = async (data) => {
+        console.log("onSubmit");
         await loginApi
-            .loginCompany({
-                email: data.userName,
+            .loginUser({
+                username: data.userName,
                 password: data.password,
-                status: 1,
             })
             .then((ok) => {
                 if (ok === "err") {
-                    loginApi
-                        .loginUser({
-                            email: data.userName,
-                            password: data.password,
-                            status: 1,
-                        })
-                        .then((ok) => {
-                            if (ok === "err") {
-                                message.error("Sai tên đăng nhập hoặc mật khẩu!");
-                            } else {
-                                localStorage.setItem("token", ok);
-                                message.success("Đăng nhập thành công!");
-                                onLogin();
-                                history.push("/");
-                            }
-                        });
+                    message.error("Sai tên đăng nhập hoặc mật khẩu!");
                 } else {
-                    localStorage.setItem("token", ok);
+                    console.log(ok);
+                    localStorage.setItem("token", ok.accessToken);
                     message.success("Đăng nhập thành công!");
                     onLogin();
                     history.push("/");

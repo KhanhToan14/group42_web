@@ -37,8 +37,13 @@ function App() {
 
   const [checkAdmin, setCheckAdmin] = useState();
   useEffect(() => {
-    checkLoginApi.checkLogin().then((ok) => {
-      let user = ok.data.user.role;
+    setCheckAdmin(
+      <Route path="/admin">
+        <Empty />
+      </Route>,
+    );
+    checkLoginApi.checkLogin().then((userData) => {
+      let user = userData;
       if (user === "admin" || user === "grant") {
         setCheckAdmin(
           <Route path="/admin">
