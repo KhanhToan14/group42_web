@@ -1,0 +1,66 @@
+.contact {
+    padding: 2rem 5rem;
+    background: url("../../images/work.jpg") repeat center;
+    background-size: cover;
+    color: black;
+    width: 100%;
+    height: 30vh;
+    overflow: hidden;
+    position: relative;
+
+    &__title {
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px white;
+    }
+
+    &__detail {
+        font-size: 1.1rem;
+        color: black;
+    }
+
+    &__gmail {
+        position: relative;
+
+        textarea {
+            outline: none;
+            border: none;
+            border-radius: 5px;
+            width: 450px;
+            height: 90px;
+            padding: 0.5rem 0.5rem;
+            resize: none;
+            color: black;
+        }
+
+        button {
+            position: absolute;
+            left: 0;
+            bottom: -50%;
+            outline: none;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            background-color: #ff4948;
+            font-weight: 400;
+            font-size: 1.2rem;
+            color: white;
+            transition: 0.5s;
+
+            &:hover {
+                background-color: #f83333;
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .contact {
+        padding: 6rem 2rem 6rem 3rem;
+
+        textarea {
+            width: 100%;
+        }
+    }
+}
