@@ -7,8 +7,8 @@ import Tabs from "./Tabs/Tabs";
 function InforUser() {
     const [user, setUser] = useState();
     useEffect(() => {
-        checkLoginApi.checkLogin().then((ok) => {
-            setUser(ok.data.user);
+        checkLoginApi.checkLogin().then((userData) => {
+            setUser(userData);
         });
         window.scrollTo(0, 0);
     }, []);

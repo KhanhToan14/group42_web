@@ -5,7 +5,7 @@ const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 export const workData = createAsyncThunk(
     "works/workData",
     async (page, name) => {
-        const work = await workApi.getAll(page, name);
+        const work = await workApi.getAll({ currentPage: page });
         return work;
     },
 );

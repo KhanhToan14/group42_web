@@ -58,11 +58,11 @@ export default function Job({
                             loading ? (
                                 <SpinLoad />
                             ) : (
-                                work?.rows?.map((data, index) => (
+                                work?.map((data, index) => (
                                     <div className="job__box" key={index}>
                                         {/* <div className="job__tag">hot</div> */}
                                         <div className="job__logo">
-                                            <img src={data.Company.avatar} alt="" />
+                                            {/* <img src={data.Company.avatar} alt="" /> */}
                                         </div>
                                         <div className="job__content">
                                             <div className="job__title">
@@ -75,7 +75,7 @@ export default function Job({
                                             <div className="job__nameCompany">
                                                 <Link to={`/jobs/work/${data.id}`}>
                                                     {" "}
-                                                    <span>{data.Company.name}</span>
+                                                    {/* <span>{data.Company.name}</span> */}
                                                 </Link>
                                             </div>
                                             <div className="job__detail">
@@ -83,21 +83,21 @@ export default function Job({
                                                     <div className="job__icon">
                                                         <i className="fas fa-map-marker-alt"></i>
                                                     </div>
-                                                    <span>{data.address}</span>
+                                                    <span>{data.location}</span>
                                                 </div>
                                                 <div className="job__detail--deadline outSize outSize">
                                                     <div className="job__icon">
                                                         <i className="far fa-clock"></i>
                                                     </div>
-                                                    <span>{formatDateWork(data.dealtime)}</span>
+                                                    {/* <span>{formatDateWork(data.dealtime)}</span> */}
                                                 </div>
                                                 <div className="job__detail--salary">
                                                     <div className="job__icon">
                                                         <i className="fas fa-dollar-sign"></i>
                                                     </div>
                                                     <span>
-                                                        {(data.price1 && data.price2) ?
-                                                            data.price1 + " - " + data.price2 + " Triệu VNĐ"
+                                                        {(data.salaryFrom && data.salaryTo) ?
+                                                            data.salaryFrom + " - " + data.salaryTo + " " + data.currency
                                                             : "Thương lượng"
                                                         }
                                                     </span>
@@ -108,11 +108,11 @@ export default function Job({
                                 ))
                             )
                         ) : (
-                            searchData?.rows?.map((data, index) => (
+                            searchData?.map((data, index) => (
                                 <div className="job__box" key={index}>
                                     {/* <div className="job__tag">hot</div> */}
                                     <div className="job__logo">
-                                        <img src={data.Company.avatar} alt="" />
+                                        {/* <img src={data.Company.avatar} alt="" /> */}
                                     </div>
                                     <div className="job__content">
                                         <div className="job__title">
@@ -125,7 +125,7 @@ export default function Job({
                                         <div className="job__nameCompany">
                                             <Link to={`/jobs/work/${data.id}`}>
                                                 {" "}
-                                                <span>{data.Company.name}</span>
+                                                {/* <span>{data.Company.name}</span> */}
                                             </Link>
                                         </div>
                                         <div className="job__detail">
@@ -146,8 +146,8 @@ export default function Job({
                                                     <i className="fas fa-dollar-sign"></i>
                                                 </div>
                                                 <span>
-                                                    {(data.price1 && data.price2) ?
-                                                        data.price1 + " - " + data.price2 + " Triệu VNĐ"
+                                                    {(data.salaryFrom && data.salaryTo) ?
+                                                        data.salaryFrom + " - " + data.salaryTo + " " + data.currency
                                                         : "Thương lượng"
                                                     }
                                                 </span>

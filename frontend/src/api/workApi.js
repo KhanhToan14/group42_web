@@ -3,7 +3,7 @@ import axiosClient from "./axiosClient";
 
 class WorkApi {
     getAll = (params) => {
-        const url = '/works';
+        const url = '/v1/job/list';
         return axiosClient.get(url, { params });
     };
     getAllCensorship = (params) => {
@@ -11,7 +11,7 @@ class WorkApi {
         return axiosClient.get(url, { params });
     };
     search = (params) => {
-        const url = '/searchWorks';
+        const url = '/v1/job/list';
         return axiosClient.get(url, { params });
     };
     getAllId = (params) => {
