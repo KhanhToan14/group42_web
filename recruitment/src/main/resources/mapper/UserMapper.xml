@@ -348,7 +348,7 @@
     </select>
     <update id="changePassword" parameterType="map">
         UPDATE USER_TB
-        SET HASHED_PASSWORD = #{newPassword}
+        SET HASH_PASSWORD = #{newPassword}
         WHERE ID = #{id} AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NOT NULL
     </update>
 </mapper>
