@@ -8,6 +8,7 @@ import com.web.recruitment.api.dto.job.JobInsert;
 import com.web.recruitment.api.dto.job.JobUpdate;
 import com.web.recruitment.service.JobService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -27,6 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 @RestController
 @Slf4j
 @RequestMapping(value = "/v1/job")
+@CrossOrigin(origins = "http://localhost:3000")
 public class JobController {
     @Autowired
     private final JobService jobService;
@@ -37,6 +39,7 @@ public class JobController {
     }
     @Operation(summary = "Insert job API", description = "Insert job")
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> insertJob(
             @RequestParam(name = "departmentId") int departmentId,
             @RequestParam(name = "name") String name,
@@ -99,6 +102,7 @@ public class JobController {
 
     @Operation(summary = "Update job API", description = "Update job")
     @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> updateJob(
             @RequestParam(name = "id") int id,
             @RequestParam(name = "departmentId") int departmentId,
@@ -145,6 +149,7 @@ public class JobController {
 
     @Operation(summary = "Delete job API", description = "Delete job")
     @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> deleteJob(
             @PathVariable("id") int id
     ) throws Exception{
@@ -159,6 +164,7 @@ public class JobController {
     }
     @Operation(summary = "Delete jobs API", description = "Delete jobs")
     @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> deleteJobs(
             @RequestBody DeleteRequest deleteRequest
     ) throws Exception{
@@ -170,5 +176,77 @@ public class JobController {
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @Operation(summary = "Get list job API", description = "get list job")
+    @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getListJob(
+            @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
+            @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "time") String sortBy,
+            @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
+    ) throws Exception{
+        int pageSizeInt;
+        int currentPageInt;
+        if (!isNumeric(pageSize)) {
+            pageSizeInt = 30;
+        } else {
+            pageSizeInt = Integer.parseInt(pageSize);
+        }
+        if (!isNumeric(currentPage)) {
+            currentPageInt = 1;
+        } else {
+            currentPageInt = Integer.parseInt(currentPage);
+        }
+        JSONObject res;
+        Map<String, Object> filter = new HashMap<>();
+        filter.put(PAGE_SIZE, pageSizeInt);
+        filter.put(CURRENT_PAGE, currentPageInt);
+        filter.put(SORT_BY, sortBy);
+        filter.put(SORT_TYPE, sortType);
+        if (keyword == null || keyword.trim().equals("")) {
+            filter.put(KEYWORD, null);
+        }
+        else {
+            filter.put(KEYWORD, keyword);
+        }
+        Map<String, Object> responseBody;
+        responseBody = jobService.listJob(filter);
+        res = new JSONObject(responseBody);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+    @Operation(summary = "Get list job in company API", description = "get list job")
+    @GetMapping(path = "/list_job_in_company", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getListJobInCompany(
+            @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
+            @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
+            @RequestParam(value = "companyId") int companyId,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "time") String sortBy,
+            @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
+    ) throws Exception{
+        int pageSizeInt;
+        int currentPageInt;
+        if (!isNumeric(pageSize)) {
+            pageSizeInt = 30;
+        } else {
+            pageSizeInt = Integer.parseInt(pageSize);
+        }
+        if (!isNumeric(currentPage)) {
+            currentPageInt = 1;
+        } else {
+            currentPageInt = Integer.parseInt(currentPage);
+        }
+        JSONObject res;
+        Map<String, Object> filter = new HashMap<>();
+        filter.put(PAGE_SIZE, pageSizeInt);
+        filter.put(CURRENT_PAGE, currentPageInt);
+        filter.put(SORT_BY, sortBy);
+        filter.put(SORT_TYPE, sortType);
+        filter.put(COMPANY_ID, companyId);
+        Map<String, Object> responseBody;
+        responseBody = jobService.listJob(filter);
+        res = new JSONObject(responseBody);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

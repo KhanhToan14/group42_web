@@ -2,7 +2,7 @@
 # Server Info
 # ----------------------------------------
 server:
-  port: 8092
+  port: 8091
   servlet:
     context-path: /
 

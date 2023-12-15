@@ -38,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //, "/v1/auth/register", "/v1/auth/confirmRegister", "/v1/auth/activate"
         http.csrf().disable()
                 .cors()
                 .and()
@@ -46,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/v1/auth/login", "/v1/auth/register", "/v1/auth/confirmRegister", "/v1/auth/activate")
                 .permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-ui/*", "/api-docs", "/api-docs/swagger-config")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/v1/company/select/{id}", "/v1/company/list", "/v1/job/select/{id}", "/v1/job/list_job_in_company", "/v1/job/list")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

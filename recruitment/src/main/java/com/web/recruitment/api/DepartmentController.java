@@ -25,6 +25,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping(value = "/v1/department")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DepartmentController {
     @Autowired
     private final DepartmentService departmentService;
@@ -92,6 +93,7 @@ public class DepartmentController {
 
     @Operation(summary = "Insert department API", description = "Insert department")
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> insertDepartment(
             @RequestBody DepartmentInsert departmentInsert
     ) throws Exception{
@@ -111,6 +113,7 @@ public class DepartmentController {
 
     @Operation(summary = "Update department API", description = "Update department")
     @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> updateDepartment(
             @RequestBody DepartmentUpdate departmentUpdate
     ) throws Exception{
@@ -129,6 +132,7 @@ public class DepartmentController {
 
     @Operation(summary = "Delete department API", description = "Delete department")
     @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> deleteDepartment(
             @PathVariable("id") int id
     ) throws Exception{
@@ -143,6 +147,7 @@ public class DepartmentController {
     }
     @Operation(summary = "Delete departments API", description = "Delete departments")
     @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> deleteDepartments(
             @RequestBody DeleteRequest deleteRequest
     ) throws Exception{

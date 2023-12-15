@@ -284,7 +284,7 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    public Map<String, Object> listDepartment(Map<String, Object> filter) throws Exception{
+    public Map<String, Object> listJob(Map<String, Object> filter) throws Exception{
         List<Job> retList;
         Map<String, Object> reqInfo = new HashMap<>();
         int pageSize = (int) filter.get(PAGE_SIZE);
@@ -427,7 +427,7 @@ public class JobServiceImpl implements JobService{
         }
         filter.replace(SORT_BY, sortBy);
         filter.replace(SORT_TYPE, sortType);
-        retList = jobMapper.list(filter);
+        retList = jobMapper.listJobInCompany(filter);
         reqInfo.put(CURRENT_PAGE, currentPage);
         reqInfo.put(PAGE_SIZE, pageSize);
         reqInfo.put(DATA, retList);

@@ -4,24 +4,25 @@ import com.web.recruitment.api.dto.Enum.UserEnum.GenderEnum;
 import com.web.recruitment.api.dto.Enum.UserEnum.RoleEnum;
 import com.web.recruitment.api.dto.auth.ConfirmRegisterRequest;
 import com.web.recruitment.api.dto.auth.LoginRequest;
-import com.web.recruitment.exception.ValidationException;
+//import com.web.recruitment.exception.ValidationException;
 import com.web.recruitment.persistence.dto.EmailDetails;
 import com.web.recruitment.persistence.dto.User;
 import com.web.recruitment.service.AuthenticationService;
 import com.web.recruitment.service.EmailService;
-import com.web.recruitment.service.EmailTrapService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.InternalServerErrorException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -30,17 +31,11 @@ import java.util.HashMap;
 import java.util.Map;
 import static com.web.recruitment.utils.ConstantMessages.*;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import java.util.Properties;
-
 @Tag(name = "Authentication API", description = "API for functions related to authentication, such as login, logout")
 @RestController
 @Slf4j
 @RequestMapping(value = "/v1/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
     @Autowired
     private final AuthenticationService authenticationService;
@@ -48,23 +43,19 @@ public class AuthenticationController {
     @Autowired
     private final EmailService emailService;
 
-    @Autowired
-    private final EmailTrapService emailTrapService;
-
-    public AuthenticationController(AuthenticationService authenticationService, EmailService emailService, EmailTrapService emailTrapService) {
+    public AuthenticationController(AuthenticationService authenticationService, EmailService emailService) {
         this.authenticationService = authenticationService;
         this.emailService = emailService;
-        this.emailTrapService = emailTrapService;
     }
     @Operation(summary = "Login API.", description = "Log user in.")
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Object> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) throws Exception{
+    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) throws Exception{
         Map<String, Object> loginRes = authenticationService.login(loginRequest.getUsername(), loginRequest.getPassword());
-
+        JSONObject res;
+        res = new JSONObject(loginRes);
         if (loginRes.containsKey(ERRORS)) {
-            loginRes.remove(ERRORS);
-            throw new ValidationException(loginRes);
+            return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         boolean isLoginSuccess = (boolean) loginRes.get(SUCCESS);
@@ -74,7 +65,7 @@ public class AuthenticationController {
 
         // login failed & user is not determined
         if (user == null) {
-            throw new ValidationException(INVALID_CREDENTIALS_ERROR, Collections.emptyMap());
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
 
 //        // user is locked
@@ -84,13 +75,14 @@ public class AuthenticationController {
 
         // login failed & user is determined
         if (!isLoginSuccess) {
-            throw new ValidationException(INVALID_CREDENTIALS_ERROR, Collections.emptyMap());
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
         }
-
-        return this.handleLoginSuccess(user, request);
+        JSONObject res1;
+        res1 = new JSONObject(this.handleLoginSuccess(user));
+        return new ResponseEntity<>(res1, HttpStatus.OK);
     }
 
-    private Map<String, Object> handleLoginSuccess(User user, HttpServletRequest request) {
+    private Map<String, Object> handleLoginSuccess(User user) {
         String jwtToken;
         String createdAt = user.getCreateAt();
         String tokenTime = LocalDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
@@ -197,7 +189,7 @@ public class AuthenticationController {
             res.put(MESSAGE, AUTH_SUCCESS_ACTIVATE_USER);
             return res;
         }
-
-        throw new ValidationException(INVALID_INPUT_MESSAGE, confirmRegisterResult);
+        return null;
+//        throw new ValidationException(INVALID_INPUT_MESSAGE, confirmRegisterResult);
     }
 }

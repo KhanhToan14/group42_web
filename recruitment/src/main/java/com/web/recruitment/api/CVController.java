@@ -4,6 +4,7 @@ import com.web.recruitment.persistence.dto.CV;
 import com.web.recruitment.persistence.mapper.CVMapper;
 import com.web.recruitment.service.CVService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -37,6 +38,7 @@ public class CVController {
     }
     @Operation(summary = "Store CV API", description = "Store CV")
     @PostMapping(path = "/store", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> storeCV(
             @RequestParam("file") MultipartFile file
     ) throws Exception{
@@ -52,6 +54,7 @@ public class CVController {
     }
     @Operation(summary = "Get CV API", description = "Get CV")
     @GetMapping(path = "/select/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> selectCV(
             @PathVariable("id") int id
     ) throws Exception{
@@ -64,6 +67,7 @@ public class CVController {
 
     @Operation(summary = "Download CV API", description = "Download CV")
     @GetMapping(path = "/download/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> downloadCV(
             @PathVariable("id") int id
     ) throws Exception{

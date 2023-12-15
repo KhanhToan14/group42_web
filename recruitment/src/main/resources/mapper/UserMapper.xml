@@ -26,7 +26,6 @@
     </resultMap>
     <resultMap id="userInformation" type="com.web.recruitment.api.dto.user.UserInformation">
         <result column="ID" property="id"/>
-        <result column="COMPANY_ID" property="companyId"/>
         <result column="USERNAME" property="username"/>
         <result column="FIRST_NAME" property="firstName"/>
         <result column="LAST_NAME" property="lastName"/>
@@ -71,7 +70,7 @@
         WHERE DEL_YN = 0
         ORDER BY CREATE_DT DESC
     </select>
-    <select id="select" resultMap="user" parameterType="map">
+    <select id="select" resultMap="user" parameterType="int">
         <include refid="select_user"></include>
         WHERE ID = #{id}
         AND DEL_YN = 0
@@ -292,7 +291,7 @@
         AND DEL_YN = 0
         AND EMAIL_VERIFIED_AT IS NOT NULL
     </select>
-    <select id="selectByUSerName" resultMap="user" parameterType="String">
+    <select id="selectByUsername" resultMap="user" parameterType="String">
         SELECT *
         FROM USER_TB
         WHERE USERNAME = #{username}
@@ -327,5 +326,29 @@
         UPDATE USER_TB
         SET EMAIL_VERIFIED_AT = NOW(), OTP = NULL, OTP_TIME_SENT = NULL
         WHERE ID = #{id} AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NULL
+    </update>
+    <update id="setNewOtp" parameterType="map">
+        UPDATE USER_TB
+        SET OTP = #{otp}, OTP_TIME_SENT = #{otpTimeSent}
+        WHERE ID = #{id} AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NULL
+    </update>
+
+    <select id="selectRoleById" resultType="String" parameterType="int">
+        SELECT USER_TB.ROLE
+        FROM USER_TB
+        WHERE ID = #{id}
+        AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NOT NULL
+    </select>
+    <select id="selectEmployerAndCompanyIdById" resultType="int" parameterType="int">
+        SELECT COMPANY_ID
+        FROM USER_TB
+        WHERE ID = #{id}
+        AND ROLE = 'EMPLOYER'
+        AND DEL_YN AND EMAIL_VERIFIED_AT IS NOT NULL
+    </select>
+    <update id="changePassword" parameterType="map">
+        UPDATE USER_TB
+        SET HASHED_PASSWORD = #{newPassword}
+        WHERE ID = #{id} AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NOT NULL
     </update>
 </mapper>

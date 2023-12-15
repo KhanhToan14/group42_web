@@ -13,4 +13,6 @@ public interface AuthenticationService {
     String handleLoginSuccess(User user);
 
     Map<String, Object> confirmRegister(String email, String otp);
+
+    Map<String, Object> activateUser(String email);
 }

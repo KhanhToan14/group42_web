@@ -107,4 +107,13 @@
         WHERE ID = #{id}
         AND DEL_YN = 0
     </delete>
+    <select id="selectCompanyIdByJobId" parameterType="int" resultType="int">
+        SELECT d.COMPANY_ID
+        FROM APPLICANT_FORM_TB as af, JOB_TB as j, DEPARTMENT_TB as d, COMPANIES_TB as c
+        WHERE af.JOB_ID = #{jobId}
+        AND af.JOB_ID = j.ID
+        AND j.DEPARTMENT_ID = d.ID
+        AND d.COMPANY_ID = c.ID
+        AND c.DEL_YN = 0
+    </select>
 </mapper>

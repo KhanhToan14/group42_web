@@ -32,22 +32,22 @@ public interface UserMapper {
 
     int selectCountUserByEmail(Map<String, Object> reqMap) throws Exception;
 
-    /*Optional<User> findByUsername(String username) ;*/
-
     User selectInactivateByEmail(String email);
 
     User selectByEmail(String email);
 
     User selectByUsername(String username);
 
-//    int lockUser(Map<String, Object> req);
-
-//    int increaseOTPFailedCount(int id);
-
-//    int increaseLoginFailedCount(int id);
-
     int activate(int id);
 
     int register(User user) throws Exception;
+
+    int setNewOtp(Map<String, String> req);
+
+    String selectRoleById(int id);
+
+    int selectEmployerAndCompanyIdById(int id);
+
+    int changePassword(Map<String, String> req);
 
 }

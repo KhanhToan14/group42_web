@@ -19,11 +19,10 @@ import java.util.Map;
 
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
-//    private final RedisTemplate<String, Object> redisTemplate;
 
     private final JwtUtils jwtUtils;
 
-    private final List<String> notFilterUrls = Arrays.asList("/v1/auth/login", "/v1/auth/register", "/v1/auth/confirmRegister", "/v1/auth/activate");
+    private final List<String> notFilterUrls = Arrays.asList("/v1/auth/login", "/v1/auth/register", "/v1/auth/confirmRegister", "/v1/auth/activate", "/v1/company/select/{id}", "/v1/company/list", "/v1/job/select/{id}", "/v1/job/list_job_in_company", "/v1/job/list");
 
     public JwtFilter(JwtUtils jwtUtils) {
 //        this.redisTemplate = redisTemplate;

@@ -143,5 +143,23 @@ public class ConstantMessages {
     public static final String PASSWORD_INCORRECT = "PasswordIncorrect";
     public static final String LOGIN_SUCCESS = "LoginSuccess";
     public static final String AUTH_SUCCESS_ACTIVATE_USER = "SuccessActivateUser";
-
+    public static final String TOKEN_NOT_NULL = "TokenMustNotNull";
+    public static final String TOKEN = "token";
+    public static final String OTP_ALREADY_SENT_MESSAGE = "OtpAlreadySent";
+    public static final String OTP_TIME_SENT = "otpTimeSent";
+    public static final String NEW_OTP_GENERATED_MESSAGE = "NewOtpGenerated";
+    public static final String AUTH_SUCCESS_LOGOUT = "SuccessLogout";
+    public static final String LOGIN_NAME = "loginName";
+    public static final String LOGIN_NAME_INVALID = "LoginNameInvalid";
+    public static final String YOU_CAN_NOT_USE_THIS_FUNCTION = "YouCanNotUseThisFunction";
+    public static final String CURRENT_PASSWORD = "currentPassword";
+    public static final String CURRENT_PASSWORD_NOT_NULL = "CurrentPasswordMustNotNull";
+    public static final String CURRENT_PASSWORD_INCORRECT = "CurrentPasswordIncorrect";
+    public static final String NEW_PASSWORD = "newPassword";
+    public static final String NEW_PASSWORD_NOT_NULL= "NewPasswordMustNotNull";
+    public static final String NEW_PASSWORD_MUST_NOT_SAME_CURRENT_PASSWORD= "NewPasswordAndCurrentPasswordShouldNotBeSame";
+    public static final String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
+    public static final String CONFIRM_NEW_PASSWORD_NOT_NULL = "ConfirmNewPasswordMustNotBeNull";
+    public static final String CONFIRM_AND_NEW_PASSWORD_NOT_SAME = "ConfirmNewPasswordAndNewPasswordMustBeSame";
+    public static final String SUCCESS_CHANGE_PASSWORD = "SuccessChangeUserPassword";
 }

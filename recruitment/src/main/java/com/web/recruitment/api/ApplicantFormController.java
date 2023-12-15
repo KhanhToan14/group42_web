@@ -3,9 +3,13 @@ package com.web.recruitment.api;
 import com.web.recruitment.api.dto.DeleteRequest;
 import com.web.recruitment.api.dto.applicantForm.ApplicantFormInsert;
 import com.web.recruitment.api.dto.applicantForm.ApplicantFormUpdate;
+import com.web.recruitment.persistence.dto.User;
+import com.web.recruitment.persistence.mapper.ApplicantFormMapper;
+import com.web.recruitment.persistence.mapper.UserMapper;
 import com.web.recruitment.service.ApplicantFormService;
 import com.web.recruitment.service.CVService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -13,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,23 +32,31 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 @RestController
 @Slf4j
 @RequestMapping(value = "/v1/applicant_form")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ApplicantFormController {
     @Autowired
     private final ApplicantFormService applicantFormService;
     @Autowired
     private final CVService cvService;
-
     @Autowired
-    public ApplicantFormController(ApplicantFormService applicantFormService, CVService cvService) {
+    private final UserMapper userMapper;
+    @Autowired
+    private final ApplicantFormMapper applicantFormMapper;
+
+    public ApplicantFormController(ApplicantFormService applicantFormService, CVService cvService, UserMapper userMapper, ApplicantFormMapper applicantFormMapper) {
         this.applicantFormService = applicantFormService;
         this.cvService = cvService;
+        this.userMapper = userMapper;
+        this.applicantFormMapper = applicantFormMapper;
     }
 
     @Operation(summary = "Select applicant form API", description = "select applicant form")
     @GetMapping(path = "/select/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> selectApplicantForm(
             @PathVariable("id") int id
     ) throws Exception {
+//        8
         Map<String, Object> response;
         JSONObject res;
         response = applicantFormService.select(id);
@@ -56,6 +70,7 @@ public class ApplicantFormController {
 
     @Operation(summary = "Get list applicant form API", description = "get list applicant form")
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> getListApplicantForm(
             @RequestParam(name = "pageSize", required = false, defaultValue = "30") String pageSize,
             @RequestParam(name = "currentPage", required = false, defaultValue = "1") String currentPage,
@@ -63,6 +78,19 @@ public class ApplicantFormController {
             @RequestParam(value = "sortBy", required = false, defaultValue = "time") String sortBy,
             @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(applicantFormMapper.selectCompanyIdByJobId(jobId) != userMapper.selectEmployerAndCompanyIdById(ownerId)){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         int pageSizeInt;
         int currentPageInt;
         if (!isNumeric(pageSize)) {
@@ -90,6 +118,7 @@ public class ApplicantFormController {
 
     @Operation(summary = "Insert applicant form API", description = "Insert applicant form")
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> insertApplicantForm(
             @RequestParam(name = "jobId") int jobId,
             @RequestParam(name = "userId") int userId,
@@ -119,6 +148,7 @@ public class ApplicantFormController {
     }
     @Operation(summary = "Update applicant form API", description = "Update applicant form")
     @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> updateApplicantForm(
             @RequestParam(name = "id") int id,
             @RequestParam(name = "jobId") int jobId,
@@ -151,9 +181,18 @@ public class ApplicantFormController {
 
     @Operation(summary = "Delete applicant form API", description = "Delete applicant form")
     @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> deleteApplicantForm(
             @PathVariable("id") int id
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = applicantFormService.delete(id);
@@ -165,9 +204,18 @@ public class ApplicantFormController {
     }
     @Operation(summary = "Delete applicant forms API", description = "Delete applicant forms")
     @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> deleteApplicantForms(
             @RequestBody DeleteRequest deleteRequest
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = applicantFormService.deleteChoice(deleteRequest.getDeleteIds());
@@ -176,5 +224,10 @@ public class ApplicantFormController {
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+    public int getOwnerIdFromToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getDetails();
+        return user.getId();
     }
 }
