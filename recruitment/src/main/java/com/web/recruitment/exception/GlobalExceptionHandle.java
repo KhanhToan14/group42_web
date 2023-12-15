@@ -1,7 +1,5 @@
 /*
 package com.web.recruitment.exception;
-
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
@@ -42,14 +41,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return this.toResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    */
-/**
-     * Not Found Exception occurs
-     *
-     * @param request
-     * @param ex
-     * @return
-     *//*
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(HttpServletRequest request, NotFoundException ex) {
@@ -97,4 +88,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         res.put("errors", errors);
         return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
     }
-}*/
+}
+*/

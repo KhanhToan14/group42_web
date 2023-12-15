@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.exception;
 
 import lombok.Getter;
@@ -22,3 +23,4 @@ public class ValidationException extends CustomException{
         super(message, errors, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }
+*/

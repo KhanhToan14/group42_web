@@ -3,6 +3,7 @@ package com.web.recruitment.api;
 import com.web.recruitment.api.dto.DeleteRequest;
 import com.web.recruitment.api.dto.company.CompanyInsert;
 import com.web.recruitment.api.dto.company.CompanyUpdate;
+import com.web.recruitment.persistence.dto.User;
 import com.web.recruitment.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.web.recruitment.utils.ConstantMessages.*;
@@ -25,6 +28,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping(value = "/v1/company")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CompanyController {
     @Autowired
     private final CompanyService companyService;
@@ -90,6 +94,7 @@ public class CompanyController {
 
     @Operation(summary = "Insert company API", description = "Insert company")
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> insertCompany(
             @RequestBody CompanyInsert companyInsert
     ) throws Exception{
@@ -105,6 +110,7 @@ public class CompanyController {
 
     @Operation(summary = "Update company API", description = "Update company")
     @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> updateCompany(
             @RequestBody CompanyUpdate companyUpdate
     ) throws Exception{
@@ -123,6 +129,7 @@ public class CompanyController {
 
     @Operation(summary = "Delete company API", description = "Delete company")
     @DeleteMapping(path = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> deleteCompany(
             @PathVariable("id") int id
     ) throws Exception{
@@ -137,6 +144,7 @@ public class CompanyController {
     }
     @Operation(summary = "Delete companies API", description = "Delete companies")
     @DeleteMapping(path = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> deleteCompanies(
             @RequestBody DeleteRequest deleteRequest
     ) throws Exception{
@@ -148,6 +156,11 @@ public class CompanyController {
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+    public int getOwnerIdFromToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getDetails();
+        return user.getId();
     }
 
 }

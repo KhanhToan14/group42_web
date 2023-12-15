@@ -19,4 +19,6 @@ public interface ApplicantFormMapper {
     int delete(int id) throws Exception;
 
     int deleteChoice(List<Integer> id) throws Exception;
+
+    int selectCompanyIdByJobId(int jobId);
 }

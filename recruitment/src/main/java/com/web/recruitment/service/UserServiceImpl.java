@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.ws.rs.InternalServerErrorException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -148,7 +149,7 @@ public class UserServiceImpl implements UserService{
                 user.setFirstName(firstName);
             }
         }
-        String lastName = user.getFirstName();
+        String lastName = user.getLastName();
         if(lastName == null || lastName.isBlank()){
             subResError.put(LAST_NAME, LAST_NAME_MUST_NOT_NULL);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -508,8 +509,75 @@ public class UserServiceImpl implements UserService{
         reqInfo.put(TOTAL, total);
         return reqInfo;
     }
+    @Override
     public Map<String, Object> changePassword(int userId, String currentPassword, String newPassword, String confirmNewPassword) throws Exception{
-        return null;
+        Map<String, Object> subResError = new HashMap<>();
+        Map<String, Object> resError = new HashMap<>();
+        User user = userMapper.select(userId);
+        if(user == null){
+            subResError.put(ID, ID_MUST_NOT_NULL);
+            resError.put(MESSAGE, NOT_FOUND_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        }
+        if (currentPassword == null || currentPassword.isBlank()) {
+            subResError.put(CURRENT_PASSWORD, CURRENT_PASSWORD_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            currentPassword = currentPassword.trim();
+            if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+                subResError.put(CURRENT_PASSWORD, CURRENT_PASSWORD_INCORRECT);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
+
+        // validate new password
+        if (newPassword == null || newPassword.isBlank()) {
+            subResError.put(NEW_PASSWORD, NEW_PASSWORD_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            newPassword = newPassword.trim();
+            if (newPassword.equals(currentPassword)) {
+                subResError.put(NEW_PASSWORD, NEW_PASSWORD_MUST_NOT_SAME_CURRENT_PASSWORD);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            } else if (!validatePassword(newPassword)) {
+                subResError.put(NEW_PASSWORD, PASSWORD_INVALID_ERROR);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
+
+        // validate confirm password
+        if (confirmNewPassword == null || confirmNewPassword.isBlank()) {
+            subResError.put(CONFIRM_NEW_PASSWORD, CONFIRM_NEW_PASSWORD_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        } else {
+            confirmNewPassword = confirmNewPassword.trim();
+            if (!confirmNewPassword.equals(newPassword)) {
+                subResError.put(CONFIRM_NEW_PASSWORD, CONFIRM_AND_NEW_PASSWORD_NOT_SAME);
+                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                resError.put(ERRORS, subResError);
+                return resError;
+            }
+        }
+
+        Map<String, String> changePasswordReq = new HashMap<>();
+        changePasswordReq.put(ID, Integer.toString(userId));
+        changePasswordReq.put(NEW_PASSWORD, passwordEncoder.encode(newPassword));
+        int rowsAffecting = userMapper.changePassword(changePasswordReq);
+        resError.put(MESSAGE, SUCCESS_CHANGE_PASSWORD);
+        return resError;
     }
     @Override
     public User selectByEmail(String email){

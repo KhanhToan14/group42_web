@@ -33,12 +33,14 @@ import static com.web.recruitment.utils.ValidationUtils.*;
 public class AuthenticationServiceImpl implements AuthenticationService{
     @Autowired
     private final UserMapper userMapper;
-
+    @Autowired
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
 
-    public AuthenticationServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
+    public AuthenticationServiceImpl(UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.userMapper = userMapper;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
     }
@@ -73,7 +75,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 user.setFirstName(firstName);
             }
         }
-        String lastName = user.getFirstName();
+        String lastName = user.getLastName();
         if(lastName == null || lastName.isBlank()){
             subResError.put(LAST_NAME, LAST_NAME_MUST_NOT_NULL);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -249,7 +251,13 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         if (principal.contains("@")) {
             user = userMapper.selectByEmail(principal);
         } else {
-            user = userMapper.selectByUsername(principal);
+            user = userService.selectByUsername(principal);
+        }
+        if(user == null){
+            subResError.put(LOGIN_NAME, LOGIN_NAME_INVALID);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
         }
 //        boolean isLoginSuccess = true;
 //        boolean isUserLocked = false;
@@ -368,6 +376,64 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         }
         userMapper.activate(inactiveUser.getId());
         resError.put(SUCCESS, true);
+        return resError;
+    }
+    @Override
+    public Map<String, Object> activateUser(String email){
+        Map<String, Object> subResError = new HashMap<>();
+        Map<String, Object> resError = new HashMap<>();
+        if (email == null || email.isBlank()) {
+            subResError.put(EMAIL, EMAIL_NOT_NULL);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        }
+
+        email = email.trim();
+
+        if (userMapper.selectByEmail(email) != null) {
+            subResError.put(EMAIL, EMAIL_EXIST);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        }
+
+        User inactivateUser = userMapper.selectInactivateByEmail(email);
+        if (inactivateUser == null) {
+            subResError.put(EMAIL, EMAIL_NOT_REGISTERED);
+            resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+            resError.put(ERRORS, subResError);
+            return resError;
+        }
+        boolean shouldNotGenerateNewOtp = true;
+        if (inactivateUser.getOtp() == null) {
+            shouldNotGenerateNewOtp = false;
+        } else {
+            LocalDateTime otpTimeSent = LocalDateTime.parse(inactivateUser.getOtpTimeSent(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            if (Duration.between(otpTimeSent, LocalDateTime.now()).toSeconds() > 60) {
+                shouldNotGenerateNewOtp = false;
+            }
+        }
+
+        if (shouldNotGenerateNewOtp) {
+            resError.put(MESSAGE, OTP_ALREADY_SENT_MESSAGE);
+            return resError;
+        }
+
+        String newOtp = this.generateOtp();
+
+        Map<String, String> setNewOtpReq = new HashMap<>();
+        setNewOtpReq.put(ID, Long.toString(inactivateUser.getId()));
+        setNewOtpReq.put(OTP, newOtp);
+        setNewOtpReq.put(OTP_TIME_SENT, LocalDateTime.now().plusSeconds(10).toString());
+        if (userMapper.setNewOtp(setNewOtpReq) != 1) {
+            resError.put(MESSAGE, SOME_THING_WENT_WRONG_MESSAGE);
+            return resError;
+        }
+
+        resError.put(MESSAGE, NEW_OTP_GENERATED_MESSAGE);
+        resError.put(OTP, newOtp);
+
         return resError;
     }
 }

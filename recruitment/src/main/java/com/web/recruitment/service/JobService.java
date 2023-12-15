@@ -12,7 +12,7 @@ public interface JobService {
 
     Map<String, Object> select(int id) throws Exception;
 
-    Map<String, Object> listDepartment(Map<String, Object> filter) throws Exception;
+    Map<String, Object> listJob(Map<String, Object> filter) throws Exception;
 
     Map<String, Object> update(JobUpdate jobUpdate) throws Exception;
 
