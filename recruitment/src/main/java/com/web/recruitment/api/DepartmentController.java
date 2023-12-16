@@ -3,6 +3,9 @@ package com.web.recruitment.api;
 import com.web.recruitment.api.dto.DeleteRequest;
 import com.web.recruitment.api.dto.department.DepartmentInsert;
 import com.web.recruitment.api.dto.department.DepartmentUpdate;
+import com.web.recruitment.persistence.dto.User;
+import com.web.recruitment.persistence.mapper.DepartmentMapper;
+import com.web.recruitment.persistence.mapper.UserMapper;
 import com.web.recruitment.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.web.recruitment.utils.ConstantMessages.*;
@@ -29,10 +34,16 @@ import java.util.Map;
 public class DepartmentController {
     @Autowired
     private final DepartmentService departmentService;
+    @Autowired
+    private final UserMapper userMapper;
+    @Autowired
+    private final DepartmentMapper departmentMapper;
 
     @Autowired
-    public DepartmentController(DepartmentService departmentService) {
+    public DepartmentController(DepartmentService departmentService, UserMapper userMapper, DepartmentMapper departmentMapper) {
         this.departmentService = departmentService;
+        this.userMapper = userMapper;
+        this.departmentMapper = departmentMapper;
     }
 
     @Operation(summary = "Select department API", description = "select department")
@@ -41,6 +52,19 @@ public class DepartmentController {
     public ResponseEntity<Object> selectDepartment(
             @PathVariable("id") int id
     ) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != departmentMapper.selectCompanyIdById(id)){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         Map<String, Object> response;
         JSONObject res;
         response = departmentService.select(id);
@@ -61,6 +85,14 @@ public class DepartmentController {
             @RequestParam(value = "sortBy", required = false, defaultValue = "time") String sortBy,
             @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(!userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         int pageSizeInt;
         int currentPageInt;
         if (!isNumeric(pageSize)) {
@@ -97,6 +129,19 @@ public class DepartmentController {
     public ResponseEntity<Object> insertDepartment(
             @RequestBody DepartmentInsert departmentInsert
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != departmentInsert.getCompanyId()){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = departmentService.insert(departmentInsert);
@@ -117,6 +162,19 @@ public class DepartmentController {
     public ResponseEntity<Object> updateDepartment(
             @RequestBody DepartmentUpdate departmentUpdate
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != departmentUpdate.getCompanyId()){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = departmentService.update(departmentUpdate);
@@ -136,6 +194,19 @@ public class DepartmentController {
     public ResponseEntity<Object> deleteDepartment(
             @PathVariable("id") int id
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != departmentMapper.selectCompanyIdById(id)){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = departmentService.delete(id);
@@ -151,6 +222,14 @@ public class DepartmentController {
     public ResponseEntity<Object> deleteDepartments(
             @RequestBody DeleteRequest deleteRequest
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = departmentService.deleteChoice(deleteRequest.getDeleteIds());
@@ -159,6 +238,11 @@ public class DepartmentController {
             return new ResponseEntity<>(res, HttpStatus.OK);
         }
         return new ResponseEntity<>(res, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+    public int getOwnerIdFromToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getDetails();
+        return user.getId();
     }
 
 }

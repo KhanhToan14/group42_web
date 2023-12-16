@@ -131,4 +131,10 @@
 <!--        AND c.ID = #{companyId}-->
 <!--            AND c.DEL_YN = 0-->
 <!--    </select>-->
+    <select id="selectCompanyIdById" resultType="int" parameterType="int">
+        SELECT COMPANY_ID
+        FROM DEPARTMENT_TB
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
 </mapper>

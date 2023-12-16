@@ -56,7 +56,19 @@ public class ApplicantFormController {
     public ResponseEntity<Object> selectApplicantForm(
             @PathVariable("id") int id
     ) throws Exception {
-//        8
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(applicantFormMapper.selectCompanyIdByJobId(applicantFormMapper.selectJobIdById(id)) != userMapper.selectEmployerAndCompanyIdById(ownerId)){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         Map<String, Object> response;
         JSONObject res;
         response = applicantFormService.select(id);
@@ -121,9 +133,9 @@ public class ApplicantFormController {
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> insertApplicantForm(
             @RequestParam(name = "jobId") int jobId,
-            @RequestParam(name = "userId") int userId,
             @RequestParam(name = "file") MultipartFile file
     ) throws Exception {
+        int ownerId = this.getOwnerIdFromToken();
         JSONObject res1;
         Map<String, Object> resError1;
         Map<String, Object> resError2;
@@ -132,7 +144,7 @@ public class ApplicantFormController {
         if (resError1.get(MESSAGE).equals(SUCCESS_STORE_FILE)){
             ApplicantFormInsert applicantFormInsert = new ApplicantFormInsert();
             applicantFormInsert.setJobId(jobId);
-            applicantFormInsert.setUserId(userId);
+            applicantFormInsert.setUserId(ownerId);
             applicantFormInsert.setCvId((int)resError1.get(ID));
             JSONObject res2;
             resError2 = applicantFormService.insert(applicantFormInsert);
@@ -152,9 +164,9 @@ public class ApplicantFormController {
     public ResponseEntity<Object> updateApplicantForm(
             @RequestParam(name = "id") int id,
             @RequestParam(name = "jobId") int jobId,
-            @RequestParam(name = "userId") int userId,
             @RequestParam(name = "file") MultipartFile file
     ) throws Exception {
+        int ownerId = this.getOwnerIdFromToken();
         JSONObject res1;
         Map<String, Object> resError1;
         Map<String, Object> resError2;
@@ -164,7 +176,7 @@ public class ApplicantFormController {
             ApplicantFormUpdate applicantFormUpdate = new ApplicantFormUpdate();
             applicantFormUpdate.setId(id);
             applicantFormUpdate.setJobId(jobId);
-            applicantFormUpdate.setUserId(userId);
+            applicantFormUpdate.setUserId(ownerId);
             applicantFormUpdate.setCvId((int)resError1.get(ID));
             JSONObject res2;
             resError2 = applicantFormService.update(applicantFormUpdate);
@@ -189,6 +201,11 @@ public class ApplicantFormController {
         JSONObject request;
         int ownerId = this.getOwnerIdFromToken();
         if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(applicantFormMapper.selectCompanyIdByJobId(applicantFormMapper.selectJobIdById(id)) != userMapper.selectEmployerAndCompanyIdById(ownerId)){
             map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
             request = new JSONObject(map);
             return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);

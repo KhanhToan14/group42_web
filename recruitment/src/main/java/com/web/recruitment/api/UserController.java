@@ -4,9 +4,9 @@ import com.web.recruitment.api.dto.DeleteRequest;
 import com.web.recruitment.api.dto.Enum.UserEnum.GenderEnum;
 import com.web.recruitment.api.dto.Enum.UserEnum.RoleEnum;
 import com.web.recruitment.api.dto.user.UserChangePassword;
-import com.web.recruitment.api.dto.user.UserInsert;
 import com.web.recruitment.api.dto.user.UserUpdate;
 import com.web.recruitment.persistence.dto.User;
+import com.web.recruitment.persistence.mapper.UserMapper;
 import com.web.recruitment.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -37,10 +37,13 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 public class UserController {
     @Autowired
     private final UserService userService;
+    @Autowired
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @Operation(summary = "Select user API", description = "select user")
@@ -49,6 +52,14 @@ public class UserController {
     public ResponseEntity<Object> selectUser(
             @PathVariable("id") int id
     ) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = Objects.requireNonNull(this.getLogging()).getId();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         Map<String, Object> response;
         JSONObject res;
         response = userService.select(id);
@@ -70,6 +81,14 @@ public class UserController {
             @RequestParam(value = "sortBy", required = false, defaultValue = "username") String sortBy,
             @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = Objects.requireNonNull(this.getLogging()).getId();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         int pageSizeInt;
         int currentPageInt;
         if (!isNumeric(pageSize)) {
@@ -145,7 +164,6 @@ public class UserController {
     @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> updateUser(
-            @RequestParam(name = "id") Integer id,
             @RequestParam(name = "username") String username,
             @RequestParam(name = "firstName") String firstName,
             @RequestParam(name = "lastName") String lastName,
@@ -159,10 +177,18 @@ public class UserController {
             @RequestParam(name = "role") RoleEnum role,
             @RequestParam(name = "companyId", required = false) Integer companyId
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = Objects.requireNonNull(this.getLogging()).getId();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         UserUpdate userUpdate = new UserUpdate();
-        userUpdate.setId(id);
+        userUpdate.setId(ownerId);
         userUpdate.setUsername(username);
         userUpdate.setFirstName(firstName);
         userUpdate.setLastName(lastName);
@@ -192,6 +218,14 @@ public class UserController {
     public ResponseEntity<Object> deleteUser(
             @PathVariable("id") int id
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = Objects.requireNonNull(this.getLogging()).getId();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = userService.delete(id);
@@ -207,6 +241,14 @@ public class UserController {
     public ResponseEntity<Object> deleteUsers(
             @RequestBody DeleteRequest deleteRequest
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = Objects.requireNonNull(this.getLogging()).getId();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = userService.deleteChoice(deleteRequest.getDeleteIds());
@@ -227,6 +269,14 @@ public class UserController {
             @RequestParam(value = "sortBy", required = false, defaultValue = "username") String sortBy,
             @RequestParam(value = "sortType", required = false, defaultValue = "asc") String sortType
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = Objects.requireNonNull(this.getLogging()).getId();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         int pageSizeInt;
         int currentPageInt;
         if (!isNumeric(pageSize)) {

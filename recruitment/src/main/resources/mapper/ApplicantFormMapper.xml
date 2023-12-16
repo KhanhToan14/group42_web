@@ -116,4 +116,14 @@
         AND d.COMPANY_ID = c.ID
         AND c.DEL_YN = 0
     </select>
+    <select id="selectJobIdById" parameterType="int" resultType="int">
+        SElECT JOB_ID
+        FROM APPLICANT_FORM_TB
+        WHERE ID = #{id} AND DEL_YN = 0
+    </select>
+    <select id="selectJobIdByCVId" parameterType="int" resultType="int">
+        SElECT JOB_ID
+        FROM APPLICANT_FORM_TB
+        WHERE CV_ID = #{cvId} AND DEL_YN = 0
+    </select>
 </mapper>
