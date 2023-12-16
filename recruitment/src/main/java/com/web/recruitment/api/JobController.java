@@ -6,6 +6,9 @@ import com.web.recruitment.api.dto.Enum.JobEnum.EmploymentTypeEnum;
 import com.web.recruitment.api.dto.Enum.JobEnum.ExperienceEnum;
 import com.web.recruitment.api.dto.job.JobInsert;
 import com.web.recruitment.api.dto.job.JobUpdate;
+import com.web.recruitment.persistence.dto.User;
+import com.web.recruitment.persistence.mapper.JobMapper;
+import com.web.recruitment.persistence.mapper.UserMapper;
 import com.web.recruitment.service.JobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -16,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,10 +37,15 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 public class JobController {
     @Autowired
     private final JobService jobService;
-
     @Autowired
-    public JobController(JobService jobService) {
+    private final UserMapper userMapper;
+    @Autowired
+    private final JobMapper jobMapper;
+    @Autowired
+    public JobController(JobService jobService, UserMapper userMapper, JobMapper jobMapper) {
         this.jobService = jobService;
+        this.userMapper = userMapper;
+        this.jobMapper = jobMapper;
     }
     @Operation(summary = "Insert job API", description = "Insert job")
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,6 +65,19 @@ public class JobController {
             @RequestParam(name = "quantity") int quantity,
             @RequestParam(name = "dealTime") String dealTime
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != jobMapper.selectCompanyIdByDepartmentId(departmentId)){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         JobInsert jobInsert = new JobInsert();
@@ -119,6 +142,19 @@ public class JobController {
             @RequestParam(name = "quantity") int quantity,
             @RequestParam(name = "dealTime") String dealTime
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != jobMapper.selectCompanyIdByDepartmentId(departmentId)){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         JobUpdate jobUpdate = new JobUpdate();
@@ -153,6 +189,19 @@ public class JobController {
     public ResponseEntity<Object> deleteJob(
             @PathVariable("id") int id
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != jobMapper.selectCompanyIdByJobId(id)){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = jobService.delete(id);
@@ -168,6 +217,14 @@ public class JobController {
     public ResponseEntity<Object> deleteJobs(
             @RequestBody DeleteRequest deleteRequest
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = jobService.deleteChoice(deleteRequest.getDeleteIds());
@@ -248,5 +305,10 @@ public class JobController {
         responseBody = jobService.listJob(filter);
         res = new JSONObject(responseBody);
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+    public int getOwnerIdFromToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getDetails();
+        return user.getId();
     }
 }

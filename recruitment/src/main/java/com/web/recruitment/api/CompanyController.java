@@ -4,6 +4,7 @@ import com.web.recruitment.api.dto.DeleteRequest;
 import com.web.recruitment.api.dto.company.CompanyInsert;
 import com.web.recruitment.api.dto.company.CompanyUpdate;
 import com.web.recruitment.persistence.dto.User;
+import com.web.recruitment.persistence.mapper.UserMapper;
 import com.web.recruitment.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -32,10 +33,12 @@ import java.util.Map;
 public class CompanyController {
     @Autowired
     private final CompanyService companyService;
-
     @Autowired
-    public CompanyController(CompanyService companyService) {
+    private final UserMapper userMapper;
+    @Autowired
+    public CompanyController(CompanyService companyService, UserMapper userMapper) {
         this.companyService = companyService;
+        this.userMapper = userMapper;
     }
 
     @Operation(summary = "Select company API", description = "select company")
@@ -98,6 +101,14 @@ public class CompanyController {
     public ResponseEntity<Object> insertCompany(
             @RequestBody CompanyInsert companyInsert
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = companyService.insert(companyInsert);
@@ -114,6 +125,19 @@ public class CompanyController {
     public ResponseEntity<Object> updateCompany(
             @RequestBody CompanyUpdate companyUpdate
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(userMapper.selectRoleById(ownerId).equals("CANDIDATE")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != companyUpdate.getId()){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = companyService.update(companyUpdate);
@@ -133,6 +157,14 @@ public class CompanyController {
     public ResponseEntity<Object> deleteCompany(
             @PathVariable("id") int id
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = companyService.delete(id);
@@ -148,6 +180,14 @@ public class CompanyController {
     public ResponseEntity<Object> deleteCompanies(
             @RequestBody DeleteRequest deleteRequest
     ) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+        JSONObject request;
+        int ownerId = this.getOwnerIdFromToken();
+        if(!userMapper.selectRoleById(ownerId).equals("ADMIN")){
+            map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
+            request = new JSONObject(map);
+            return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
+        }
         JSONObject res;
         Map<String, Object> resError;
         resError = companyService.deleteChoice(deleteRequest.getDeleteIds());
