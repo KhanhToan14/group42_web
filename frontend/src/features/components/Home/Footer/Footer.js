@@ -49,17 +49,17 @@ export default function Footer() {
                             </div>
                             <div className="footer__content">
                                 <div className="footer__content--location">
-                                    <div className="location--title text-white">Địa chỉ :</div>
+                                    <div className="location--title text-white">Địa chỉ : Tầng 4 tòa B1, Tạ Quang Bửu, Hai Bà Trưng, Hà Nội</div>
                                     <div className="location--content">{ok?.address}</div>
                                 </div>
                                 <div className="footer__content--contact">
                                     <div className="contact--title text-white pt-3">
-                                        Liên hệ :
+                                        Liên hệ : Mr Đỗ Khánh Toàn
                                     </div>
                                     <div className="contact--content">
-                                        <span>Điện thoại: {ok?.phone}</span>
+                                        <span>Điện thoại: 0867084428{ok?.phone}</span>
                                         <br />
-                                        <span>Email: {ok?.email}</span>
+                                        <span>Email: dkhanhtoan14@gmail.com{ok?.email}</span>
                                     </div>
                                 </div>
                             </div>

@@ -3,18 +3,16 @@ import axiosClient from "./axiosClient";
 
 class UserApi {
     getAll = (params) => {
-        const url = '/users';
+        const url = '/v1/user/list';
         return axiosClient.get(url, { params });
     };
-    getAllId = (params) => {
-        const url = '/userId';
-        return axiosClient.get(url, { params });
-    };
-    getOne = (params) => {
-        const url = `/users/${params}`;
-        return axiosClient.get(url).then(data => {
-            return data.data
-        });
+    // getAllId = (params) => {
+    //     const url = '/userId';
+    //     return axiosClient.get(url, { params });
+    // };
+    getOne = async (params) => {
+        const url = `/v1/user/select/${params}`;
+        return await axiosClient.get(url);
     };
     getUserSaveWork = (params) => {
         const url = `/getUserSaveWork/${params}`;
@@ -31,16 +29,20 @@ class UserApi {
         });
     };
     deleteuser = (id) => {
-        const url = `/users/${id}`;
+        const url = `/v1/user/delete/${id}`;
         return axiosClient.delete(url)
     };
     edituser = (params) => {
-        const url = `/users/${params.id}`;
+        const url = `/v1/user/update/${params.id}`;
         return axiosClient.patch(url, params).then(data => {
             message.success("Sửa thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });
+    }
+    getProfileUser = async () => {
+        const url = `/v1/user/profile`;
+        return (await axiosClient.get(url)).user
     }
 }
 const userApi = new UserApi();

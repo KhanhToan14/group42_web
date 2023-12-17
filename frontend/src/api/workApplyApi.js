@@ -3,11 +3,11 @@ import axiosClient from "./axiosClient";
 
 class WorkApplyApi {
     getAll = (params) => {
-        const url = "/workApplys";
+        const url = "/v1/applicant_form/list";
         return axiosClient.get(url, { params });
     };
     getOne = (params) => {
-        const url = `/workApplys/${params}`;
+        const url = `/v1/applicant_form/select${params}`;
         return axiosClient.get(url).then((data) => {
             return data.data;
         });
@@ -25,7 +25,7 @@ class WorkApplyApi {
         });
     };
     postworkApply = (params) => {
-        const url = "/workApplys";
+        const url = "/v1/applicant_form/insert";
         return axiosClient
             .post(url, params)
             .then((data) => {
@@ -36,7 +36,7 @@ class WorkApplyApi {
             });
     };
     deleteworkApply = (params) => {
-        const url = `/workApplys/reject`;
+        const url = `/v1/applicant_form/delete/${params}`;
         return axiosClient
             .delete(url, { params })
             .then((data) => {
@@ -47,7 +47,7 @@ class WorkApplyApi {
             });
     };
     editworkApply = (params) => {
-        const url = `/workApplys`;
+        const url = `/v1/applicant_form/update`;
         return axiosClient
             .patch(url, params)
             .then((data) => {

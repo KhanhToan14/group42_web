@@ -1,20 +1,19 @@
 import axiosClient from "./axiosClient";
+import userApi from "./userApi";
 
 class CheckLoginApi {
     checkLogin = async (params) => {
-        const url = "/checkLogin";
+        // const url = "/checkLogin";
         if (localStorage.getItem("token")) {
-            return axiosClient.get(url).then((data) => {
-                return data;
-            });
+            return await userApi.getProfileUser();
         } else {
-            return await "";
+            return '';
         }
     };
     checkLoginUser = (params) => {
-        const url = '/checkUserLogin';
+        // const url = '/checkUserLogin';
         if (localStorage.getItem("token")) {
-            return axiosClient.get(url);
+            return true;
         } else {
             return '';
         }

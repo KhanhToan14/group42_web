@@ -3,15 +3,15 @@ import axiosClient from "./axiosClient";
 
 class CompanyApi {
     getAll = (params) => {
-        const url = "/companys";
+        const url = "/v1/company/list";
         return axiosClient.get(url, { params });
     };
     search = (params) => {
-        const url = "/companys/search";
+        const url = "v1/company/";
         return axiosClient.get(url, { params });
     };
     getOne = (params) => {
-        const url = `/companys/${params}`;
+        const url = `/v1/company/select/${params}`;
         return axiosClient.get(url).then((data) => {
             return data.data;
         });
@@ -38,7 +38,7 @@ class CompanyApi {
             });
     };
     deletecompany = (id) => {
-        const url = `/companys/${id}`;
+        const url = `/v1/company/delete/${id}`;
         return axiosClient
             .delete(url)
             .then((data) => {
@@ -49,7 +49,7 @@ class CompanyApi {
             });
     };
     editcompany = (params) => {
-        const url = `/companys/${params.id}`;
+        const url = `/v1/company/update/${params.id}`;
         console.log('CompanyApi ~ params', params)
         return axiosClient
             .patch(url, params)

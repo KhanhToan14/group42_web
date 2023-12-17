@@ -1,16 +1,8 @@
 import axiosClient from "./axiosClient";
 
 class LoginApi {
-    loginCompany = (params) => {
-        const url = '/loginCompany';
-        return axiosClient.post(url, params);
-    };
     loginUser = (params) => {
-        const url = '/loginUser';
-        return axiosClient.post(url, params);
-    };
-    loginAdmin = (params) => {
-        const url = '/loginAdmin';
+        const url = '/v1/auth/login';
         return axiosClient.post(url, params);
     };
 }

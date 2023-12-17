@@ -3,7 +3,7 @@ import axiosClient from "./axiosClient";
 
 class WorkApi {
     getAll = (params) => {
-        const url = '/works';
+        const url = '/v1/job/list';
         return axiosClient.get(url, { params });
     };
     getAllCensorship = (params) => {
@@ -11,25 +11,25 @@ class WorkApi {
         return axiosClient.get(url, { params });
     };
     search = (params) => {
-        const url = '/searchWorks';
+        const url = '/v1/job/list';
         return axiosClient.get(url, { params });
     };
-    getAllId = (params) => {
-        const url = '/workId';
-        return axiosClient.get(url, { params });
-    };
-    getAllRejectId = (params) => {
-        const url = '/workId/reject';
-        return axiosClient.get(url, { params });
-    };
+    // getAllId = (params) => {
+    //     const url = '/workId';
+    //     return axiosClient.get(url, { params });
+    // };
+    // getAllRejectId = (params) => {
+    //     const url = '/workId/reject';
+    //     return axiosClient.get(url, { params });
+    // };
     getOne = (params) => {
-        const url = `/works/${params}`;
+        const url = `/v1/work/select/${params}`;
         return axiosClient.get(url).then(data => {
             return data.data
         });
     };
     postwork = (params) => {
-        const url = '/works';
+        const url = '/v1/work/insert';
         return axiosClient.post(url, params).then(data => {
             message.success("Thêm công việc thành công!");
         }).catch(err => {
@@ -37,11 +37,11 @@ class WorkApi {
         });
     };
     deletework = (id) => {
-        const url = `/works/${id}`;
+        const url = `/v1/work/delete/${id}`;
         return axiosClient.delete(url)
     };
     editwork = (params) => {
-        const url = `/works/${params.id}`;
+        const url = `/v1/work/update/${params.id}`;
         return axiosClient.patch(url, params).then(data => {
             message.success("Sửa thành công!");
         }).catch(err => {

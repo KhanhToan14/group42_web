@@ -19,6 +19,7 @@ export default function Jobs() {
     );
     const hangdelOnChange = (e) => {
         const { name, address } = e;
+        console.log(e);
         setState({
             ...state,
             name: name,
@@ -34,24 +35,26 @@ export default function Jobs() {
     const onChangeTypeWork = (e) => {
         setTypeWorkValue(e);
     };
-    useEffect(async () => {
-        await workApi
+    useEffect(() => {
+        console.log(name);
+        workApi
             .search({
-                name: name,
-                nature: time,
-                address: address,
-                status: 1,
-                typeWordId: typeWorkValue,
+                keyword: name,
+                // name: name,
+                // nature: time,
+                // address: address,
+                // status: 1,
+                // typeWordId: typeWorkValue,
             })
-            .then((ok) => {
-                console.log("ok", ok);
+            .then(result => {
+                console.log(result.data);
                 setState({
                     ...state,
-                    data: ok.data,
+                    data: result.data,
                 });
             });
         window.scrollTo(0, 0);
-    }, [name, address, time, typeWorkValue]);
+    }, [state.name]);
     return (
         <div>
             <Breadcrumbs />
@@ -62,9 +65,9 @@ export default function Jobs() {
             />
             <Job
                 searchData={
-                    name === "" && address === "" && time === "0" && typeWorkValue === ""
-                        ? ""
-                        : data
+                    data
+                        ? data
+                        : ""
                 }
                 onAmout={onChangeAmount}
                 onTime={onChangeTime}
@@ -73,7 +76,7 @@ export default function Jobs() {
                 typeWorkValue={typeWorkValue}
                 onTypeWork={onChangeTypeWork}
             />
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

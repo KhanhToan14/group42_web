@@ -42,22 +42,41 @@ function Information({ id }) {
     const [date, setDate] = useState("");
 
     const getApi = async () => {
-        return await userApi.getOne(id).then((data) => {
-            return data;
-        });
+        return await userApi.getOne(id);
     };
 
     useEffect(() => {
         if (id) {
-            Promise.all([getApi()]).then(function (data) {
-                setContent(data[0].introduce);
-                setMale(data[0].male);
-                setDate(data[0].date)
-                reset(data[0]);
+            // data = {
+            //     "user": {
+            //       "id": 68,
+            //       "username": "dkhanhtoan14",
+            //       "firstName": "Toan",
+            //       "lastName": "Toan",
+            //       "gender": "MALE",
+            //       "dateOfBirth": "2002-04-01",
+            //       "phone": "0867084428",
+            //       "email": "dkhanhtoan14@gmail.com",
+            //       "address": null,
+            //       "avatar": null,
+            //       "role": "ADMIN",
+            //       "companyId": null,
+            //       "skills": null,
+            //       "status": 0,
+            //       "createAt": "2023-12-11 12:06:40",
+            //       "updateAt": "2023-12-11 12:06:40"
+            //     }
+            //   }
+            getApi().then(data => {
+                // setContent(data[0].introduce);\
+                const userData = data.user
+                setMale(userData.gender);
+                setDate(userData.dateOfBirth)
+                reset(userData);
                 setState({
                     ...state,
-                    anh: data[0].avatar,
-                    anhBanner: data[0].banner,
+                    anh: userData.avatar,
+                    // anhBanner: data[0].banner,
                 });
             });
         }

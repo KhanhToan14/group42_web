@@ -30,8 +30,8 @@ function Mn(props) {
     const [user, setUser] = useState();
     okok(bar_el, nav_el, line_el);
     useEffect(() => {
-        checkLoginApi.checkLogin().then((ok) => {
-            setUser(ok.data.user);
+        checkLoginApi.checkLogin().then((userData) => {
+            setUser(userData);
         });
         let idClass = pathname.slice(1);
         if (nav_el.current) {
@@ -43,7 +43,7 @@ function Mn(props) {
                 }
             }
         }
-    }, [nav_el, pathname]);
+    }, []);
 
     const inforCompany = (
         <Menu.Item key="1">
