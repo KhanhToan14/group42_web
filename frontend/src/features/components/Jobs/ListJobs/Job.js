@@ -133,7 +133,7 @@ export default function Job({
                                                 <div className="job__icon">
                                                     <i className="fas fa-map-marker-alt"></i>
                                                 </div>
-                                                <span>{data.address}</span>
+                                                <span>{data.location}</span>
                                             </div>
                                             <div className="job__detail--deadline outSize outSize">
                                                 <div className="job__icon">

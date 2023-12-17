@@ -13,7 +13,7 @@ function RegisterCompany() {
         name: yup.string().required(),
         web: yup.string().required(),
         quantity: yup.number().required(),
-        address: yup.string().required(),
+        location: yup.string().required(),
         phone: yup.number().required(),
         password: yup.string().min(4).max(20).required(),
         rePassword: yup.string().oneOf([yup.ref("password"), null]),
@@ -37,7 +37,7 @@ function RegisterCompany() {
 
     const onSubmit = (data) => {
         const dataCompany = {
-            address: data.address,
+            location: data.location,
             banner,
             avatar,
             phone: data.phone,
@@ -80,9 +80,9 @@ function RegisterCompany() {
                     {errors.name ? "Tên công ty không phù hợp" : ""}
                 </p>
                 <div className="register__box__left__title">Địa chỉ</div>
-                <input type="text" {...register("address")} placeholder="Địa chỉ" />
+                <input type="text" {...register("location")} placeholder="Địa chỉ" />
                 <p className="text-danger">
-                    {errors.address ? "Địa chỉ công ty không được bỏ trống" : ""}
+                    {errors.location ? "Địa chỉ công ty không được bỏ trống" : ""}
                 </p>
                 <div className="register__box__left__title">Điện thoại</div>
                 <input type="text" {...register("phone")} placeholder="Điện thoại" />

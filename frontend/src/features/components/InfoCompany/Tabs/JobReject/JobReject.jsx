@@ -118,7 +118,7 @@ function JobsReject({
                                                 <div className="job__icon">
                                                     <i className="fas fa-map-marker-alt"></i>
                                                 </div>
-                                                <span>{ok.address}</span>
+                                                <span>{ok.location}</span>
                                             </div>
                                             <div className="job__detail--deadline outSize outSize">
                                                 <div className="job__icon">
@@ -131,8 +131,8 @@ function JobsReject({
                                                     <i className="fas fa-dollar-sign"></i>
                                                 </div>
                                                 <span>
-                                                    {(ok.price1 && ok.price2) ?
-                                                        ok.price1 + " - " + ok.price2 + " Triệu VNĐ"
+                                                    {(ok.salaryFrom && ok.salaryTo) ?
+                                                        ok.salaryFrom + " - " + ok.salaryTo + " Triệu VNĐ"
                                                         : "Thương lượng"
                                                     }
                                                 </span>

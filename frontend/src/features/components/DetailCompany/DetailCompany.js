@@ -32,7 +32,7 @@ function DetailCompany() {
                         avatar={data.avatar}
                         banner={data.banner}
                         name={data.name}
-                        address={data.address}
+                        location={data.location}
                     />
                     <CompanyContent data={data} />
                 </div>

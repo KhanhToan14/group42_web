@@ -66,7 +66,7 @@ export default function Infor({ id }) {
                 updatecompany({
                     avatar: data.anh,
                     name: data.name,
-                    address: data.address,
+                    location: data.location,
                     quantity: data.quantity,
                     website: data.website,
                     phone: data.phone,
@@ -81,7 +81,7 @@ export default function Infor({ id }) {
                 updatecompany({
                     banner: data.anhBanner,
                     name: data.name,
-                    address: data.address,
+                    location: data.location,
                     quantity: data.quantity,
                     website: data.website,
                     phone: data.phone,
@@ -97,7 +97,7 @@ export default function Infor({ id }) {
                     avatar: data.anh,
                     banner: data.anhBanner,
                     name: data.name,
-                    address: data.address,
+                    location: data.location,
                     quantity: data.quantity,
                     website: data.website,
                     phone: data.phone,
@@ -111,7 +111,7 @@ export default function Infor({ id }) {
             await dispatch(
                 updatecompany({
                     name: data.name,
-                    address: data.address,
+                    location: data.location,
                     quantity: data.quantity,
                     website: data.website,
                     phone: data.phone,
@@ -129,7 +129,7 @@ export default function Infor({ id }) {
         if (
             data.name === "" ||
             data.quantity === "" ||
-            data.address === "" ||
+            data.location === "" ||
             data.phone === "" ||
             content === "" ||
             data.website === "" ||
@@ -289,7 +289,7 @@ export default function Infor({ id }) {
                             <input
                                 type="text"
                                 className="form-control"
-                                {...register("address")}
+                                {...register("location")}
                                 id=""
                                 aria-describedby="helpId"
                                 placeholder=""

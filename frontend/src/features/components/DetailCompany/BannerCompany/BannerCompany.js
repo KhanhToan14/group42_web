@@ -1,6 +1,6 @@
 import React from 'react'
 import "../../../styles/DetailCompany/BannerCompany.scss"
-function BannerCompany({ avatar, banner, name, address }) {
+function BannerCompany({ avatar, banner, name, location }) {
 
     return (
         <div className="bannerCompany" style={{
@@ -16,7 +16,7 @@ function BannerCompany({ avatar, banner, name, address }) {
                         {name}
                     </div>
                     <div className="bannerCompany__content__address">
-                        {address}
+                        {location}
                     </div>
                 </div>
             </div>

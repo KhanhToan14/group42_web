@@ -71,7 +71,7 @@ function CandidateContent({ data }) {
                                 <div>
                                     <div className="candidate__box__detail__title">Địa điểm</div>
                                     <div className="candidate__box__detail__content">
-                                        {data.address}
+                                        {data.location}
                                     </div>
                                 </div>
                             </div>

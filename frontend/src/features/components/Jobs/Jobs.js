@@ -8,22 +8,22 @@ import Search from "./Search/Search";
 export default function Jobs() {
     const [state, setState] = useState({
         name: getQueryVariable("name") || "",
-        address: getQueryVariable("address") || "",
+        location: getQueryVariable("location") || "",
         data: "",
     });
-    const { name, address, data } = state;
+    const { name, location, data } = state;
     const [time, setTime] = useState("0");
     const [amount, setAmount] = useState("0");
     const [typeWorkValue, setTypeWorkValue] = useState(
         +getQueryVariable("typeWordId") || "",
     );
     const hangdelOnChange = (e) => {
-        const { name, address } = e;
+        const { name, location } = e;
         console.log(e);
         setState({
             ...state,
             name: name,
-            address: address,
+            location: location,
         });
     };
     const onChangeTime = (e) => {
@@ -42,7 +42,7 @@ export default function Jobs() {
                 keyword: name,
                 // name: name,
                 // nature: time,
-                // address: address,
+                // location: location,
                 // status: 1,
                 // typeWordId: typeWorkValue,
             })
@@ -60,7 +60,7 @@ export default function Jobs() {
             <Breadcrumbs />
             <Search
                 nameSearch={name}
-                addressSearch={address}
+                locationSearch={location}
                 onchange={hangdelOnChange}
             />
             <Job

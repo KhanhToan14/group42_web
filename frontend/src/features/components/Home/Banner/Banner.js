@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { removeVietnameseTones } from "../../../container/Functionjs";
 function Banner() {
-    const [state, setState] = useState({ name: "", address: "" });
-    const { name, address } = state;
+    const [state, setState] = useState({ name: "", location: "" });
+    const { name, location } = state;
     const onchange = (e) => {
         setState({
             ...state,
@@ -35,8 +35,8 @@ function Banner() {
                         <input
                             type="text"
                             className="form-control"
-                            name="address"
-                            value={address}
+                            name="location"
+                            value={location}
                             onChange={onchange}
                             id=""
                             aria-describedby="helpId"
@@ -45,7 +45,7 @@ function Banner() {
                         <Link
                             to={`jobs?name=${removeVietnameseTones(
                                 name,
-                            )}&address=${removeVietnameseTones(address)}`}
+                            )}&location=${removeVietnameseTones(location)}`}
                             className="btn btn-primary"
                         >
                             <button type="button">Search</button>

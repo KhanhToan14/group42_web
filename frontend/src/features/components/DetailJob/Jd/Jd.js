@@ -234,7 +234,7 @@ function Jd(props) {
                             <div className="job__box__detail">
                                 <div className="job__box__detail--address">
                                     <i className="fas fa-map-marker-alt"></i>
-                                    {data.address}
+                                    {data.location}
                                 </div>
                                 <div className="job__box__detail--fulltime">
                                     <i className="fas fa-hourglass-half"></i>
@@ -246,8 +246,8 @@ function Jd(props) {
                                 </div>
                                 <div className="job__box--detail--salary">
                                     <i className="fas fa-dollar-sign"></i>
-                                    {(data.price1 && data.price2) ?
-                                        data.price1 + " - " + data.price2 + "triệu"
+                                    {(data.salaryFrom && data.salaryTo) ?
+                                        data.salaryFrom + " - " + data.salaryTo + "triệu"
                                         : "Thương lượng"
                                     }
                                 </div>
@@ -283,7 +283,7 @@ function Jd(props) {
                                 <div className="job__box__title--jd">
                                     <p>Địa điểm làm việc</p>
                                 </div>
-                                <div className="job__box__content--jd">{data.address}</div>
+                                <div className="job__box__content--jd">{data.location}</div>
                             </div>
                             <div>
                                 <div className="job__box__title--jd">

@@ -31,7 +31,7 @@ function DetailCandidate() {
                         avatar={data.avatar}
                         banner={data.banner}
                         name={data.name}
-                        address={data.address}
+                        location={data.location}
                     />
                     <CandidateContent data={data} />
                 </div>
