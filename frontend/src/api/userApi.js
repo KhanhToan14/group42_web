@@ -6,17 +6,14 @@ class UserApi {
         const url = '/v1/user/list';
         return axiosClient.get(url, { params });
     };
-<<<<<<< HEAD
     // getAllId = (params) => {
     //     const url = '/userId';
     //     return axiosClient.get(url, { params });
     // };
-=======
     getAllId = (params) => {
         const url = '/userId';
         return axiosClient.get(url, { params });
     };
->>>>>>> refs/remotes/origin/front-end
     getOne = async (params) => {
         const url = `/v1/user/select/${params}`;
         return await axiosClient.get(url);
