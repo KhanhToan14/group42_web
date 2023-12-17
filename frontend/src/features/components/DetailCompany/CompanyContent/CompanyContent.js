@@ -46,7 +46,7 @@ function ContentCompany({ data }) {
                                 <div>
                                     <div className="company__box__detail__title">Địa điểm</div>
                                     <div className="company__box__detail__content">
-                                        {data.address}
+                                        {data.location}
                                     </div>
                                 </div>
                             </div>

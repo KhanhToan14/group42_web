@@ -2,12 +2,12 @@ import React from "react";
 import "../../../styles/SearchJobs/SearchJobs.scss";
 import PropTypes from "prop-types";
 import { useState } from "react";
-function Search({ onchange, nameSearch, addressSearch }) {
+function Search({ onchange, nameSearch, locationSearch }) {
     const [state, setState] = useState({
         name: nameSearch,
-        address: addressSearch,
+        location: locationSearch,
     });
-    const { name, address } = state;
+    const { name, location } = state;
     const hangdelOnchange = (e) => {
         setState({
             ...state,
@@ -16,7 +16,7 @@ function Search({ onchange, nameSearch, addressSearch }) {
     };
     const onok = (e) => {
         e.preventDefault();
-        onchange({ name, address });
+        onchange({ name, location });
     };
     return (
         <div className="searchJobs">
@@ -41,8 +41,8 @@ function Search({ onchange, nameSearch, addressSearch }) {
                                 <div className="address__title">Địa điểm</div>
                                 <input
                                     type="text"
-                                    name="address"
-                                    value={address}
+                                    name="location"
+                                    value={location}
                                     onChange={hangdelOnchange}
                                     placeholder="Địa điểm"
                                 />
@@ -63,12 +63,12 @@ function Search({ onchange, nameSearch, addressSearch }) {
 
 Search.propTypes = {
     name: PropTypes.string,
-    address: PropTypes.string,
+    location: PropTypes.string,
     onchange: PropTypes.func.isRequired,
 };
 Search.defaultProps = {
     name: "",
-    address: "",
+    location: "",
 };
 
 export default Search;

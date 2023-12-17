@@ -23,11 +23,11 @@ function AddJob({ id, idEdit, onChangeTabs }) {
                 await workApi.getOne(idEdit).then((data) => {
                     setState({
                         ...state,
-                        price1: String(data.price1),
-                        price2: String(data.price2),
+                        salaryFrom: String(data.salaryFrom),
+                        salaryTo: String(data.salaryTo),
                         nature: data.nature,
                         date: data.dealtime,
-                        address: data.address,
+                        location: data.location,
                         typeofworkId: data.TypeOfWorks[0]?.id,
                     });
                     setDescripton(data.description);
@@ -55,25 +55,25 @@ function AddJob({ id, idEdit, onChangeTabs }) {
     let objDefault = {
         load: false,
         typeofworkId: 2,
-        address: "Hà Nội",
-        price1: "",
+        location: "Hà Nội",
+        salaryFrom: "",
         nature: "Full Time",
         request: "Không yêu cầu",
-        price2: "",
+        salaryTo: "",
         date: undefined,
     };
     const [state, setState] = useState({
         ...objDefault,
     });
     const {
-        price1,
-        price2,
+        salaryFrom,
+        salaryTo,
         nature,
         request,
         date,
         load,
         typeofworkId,
-        address,
+        location,
     } = state;
     const onSubmit = async (data) => {
         if (
@@ -84,11 +84,11 @@ function AddJob({ id, idEdit, onChangeTabs }) {
             description === "" ||
             exprience === "" ||
             form === "" ||
-            data.address === "" ||
+            data.location === "" ||
             data.phone === "" ||
             data.quantity === "" ||
             data.email === "" ||
-            data.addressGoogle === "" ||
+            data.locationGoogle === "" ||
             date === ""
         ) {
             message.warning("Bạn chưa nhập đầy đủ thông tin!");
@@ -115,19 +115,19 @@ function AddJob({ id, idEdit, onChangeTabs }) {
                     id: idEdit,
                     name: data.name,
                     status: 1,
-                    price1,
-                    price2,
+                    salaryFrom,
+                    salaryTo,
                     request,
                     nature,
                     interest,
                     description,
                     exprience,
                     form,
-                    address,
+                    location,
                     phone: data.phone,
                     quantity: data.quantity,
                     email: data.email,
-                    addressGoogle: data.addressGoogle,
+                    locationGoogle: data.locationGoogle,
                     dealtime: date,
                 });
                 dispatch(action);
@@ -142,19 +142,19 @@ function AddJob({ id, idEdit, onChangeTabs }) {
                     companyId: id,
                     name: data.name,
                     status: 1,
-                    price1: price1 ? price1 : 0,
-                    price2: price2 ? price2 : 0,
+                    salaryFrom: salaryFrom ? salaryFrom : 0,
+                    salaryTo: salaryTo ? salaryTo : 0,
                     request,
                     nature,
                     interest,
                     description,
                     exprience,
                     form,
-                    address,
+                    location,
                     phone: data.phone,
                     quantity: data.quantity,
                     email: data.email,
-                    addressGoogle: data.addressGoogle,
+                    locationGoogle: data.locationGoogle,
                     dealtime: date,
                 });
                 dispatch(action);
@@ -166,16 +166,16 @@ function AddJob({ id, idEdit, onChangeTabs }) {
             }
         }
     };
-    const onChangePrice1 = (e) => {
+    const onChangesalaryFrom = (e) => {
         setState({
             ...state,
-            price1: e.target.value,
+            salaryFrom: e.target.value,
         });
     };
-    const onChangePrice2 = (e) => {
+    const onChangesalaryTo = (e) => {
         setState({
             ...state,
-            price2: e.target.value,
+            salaryTo: e.target.value,
         });
     };
     const onChangeNature = (e) => {
@@ -208,10 +208,10 @@ function AddJob({ id, idEdit, onChangeTabs }) {
     const data = [];
 
 
-    const onchangeAddress = (e) => {
+    const onchangelocation = (e) => {
         setState({
             ...state,
-            address: e,
+            location: e,
         });
     };
     return (
@@ -240,8 +240,8 @@ function AddJob({ id, idEdit, onChangeTabs }) {
                             <label htmlFor="">Địa chỉ</label>
 
                             <Select
-                                value={address}
-                                onChange={onchangeAddress}
+                                value={location}
+                                onChange={onchangelocation}
                                 className="form-control w-100"
                             >
                                 {getProvinces().map((data, index) => (
@@ -269,7 +269,7 @@ function AddJob({ id, idEdit, onChangeTabs }) {
                             <input
                                 type="text"
                                 className="form-control"
-                                {...register("addressGoogle")}
+                                {...register("locationGoogle")}
                                 id=""
                                 aria-describedby="helpId"
                                 placeholder=""
@@ -293,9 +293,9 @@ function AddJob({ id, idEdit, onChangeTabs }) {
                             <Input.Group compact className="w-100">
                                 <Input
                                     style={{ width: "45%", textAlign: "center" }}
-                                    onChange={onChangePrice1}
+                                    onChange={onChangesalaryFrom}
                                     placeholder="Ít nhất"
-                                    value={price1}
+                                    value={salaryFrom}
                                 />
                                 <Input
                                     className="site-input-split"
@@ -312,9 +312,9 @@ function AddJob({ id, idEdit, onChangeTabs }) {
                                         width: "45%",
                                         textAlign: "center",
                                     }}
-                                    onChange={onChangePrice2}
+                                    onChange={onChangesalaryTo}
                                     placeholder="Nhiều nhất"
-                                    value={price2}
+                                    value={salaryTo}
                                 />
                             </Input.Group>
                             <small>Không nhập nếu bạn muốn thương lượng</small>

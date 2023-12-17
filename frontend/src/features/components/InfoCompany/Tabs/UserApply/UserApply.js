@@ -183,7 +183,7 @@ function UserApply({ id }) {
                                                                         </tr>
                                                                         <tr>
                                                                             <td className="td">Địa chỉ</td>
-                                                                            <td>{oki.address}</td>
+                                                                            <td>{oki.location}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td className="td">Email</td>

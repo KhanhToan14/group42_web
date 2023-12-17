@@ -14,7 +14,7 @@ function Companys() {
     const { page } = state;
     const dispatch = useDispatch();
     const actionResult = async (page) => {
-        await dispatch(companyData(page));
+        dispatch(companyData(page));
     };
     useEffect(() => {
         localStorage.setItem("pagecompanyHome", page);
@@ -35,7 +35,7 @@ function Companys() {
                     {loading ? (
                         <SpinLoad />
                     ) : (
-                        companys.rows.map((data, index) => (
+                        companys.map((data, index) => (
                             <div className="col-md-4" key={index}>
                                 <div
                                     className="company__box"
@@ -50,7 +50,7 @@ function Companys() {
                                         </div>
                                         <div className="company__box__name">{data.name}</div>
                                         <div className="company__box__address">
-                                            <span>{data.address}</span>
+                                            <span>{data.location}</span>
                                         </div>
                                         <div className="company__box__button">
                                             <Link to={`/companys/${data.id}`}>Xem thêm</Link>

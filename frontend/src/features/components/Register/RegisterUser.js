@@ -9,7 +9,7 @@ function RegisterUser() {
     const schema = yup.object().shape({
         userName: yup.string().email().required(),
         name: yup.string().required(),
-        address: yup.string().required(),
+        location: yup.string().required(),
         date: yup.date().required(),
         phone: yup.number().required(),
         password: yup.string().min(4).max(20).required(),
@@ -33,7 +33,7 @@ function RegisterUser() {
         const dataUser = {
             banner,
             avatar,
-            address: data.address,
+            location: data.location,
             phone: data.phone,
             name: data.name,
             date: data.date,
@@ -77,9 +77,9 @@ function RegisterUser() {
                     {errors.name ? "Tên người dùng khống phù hơp" : ""}
                 </p>
                 <div className="register__box__left__title">Địa điểm</div>
-                <input type="text" {...register("address")} placeholder="Địa điểm" />
+                <input type="text" {...register("location")} placeholder="Địa điểm" />
                 <p className="text-danger">
-                    {errors.address ? "Không được bỏ trống" : ""}
+                    {errors.location ? "Không được bỏ trống" : ""}
                 </p>
                 <div className="register__box__left__title">Số điện thoại</div>
                 <input type="text" {...register("phone")} placeholder="Số điện thoại" />

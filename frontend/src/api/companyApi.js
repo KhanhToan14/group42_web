@@ -7,7 +7,7 @@ class CompanyApi {
         return axiosClient.get(url, { params });
     };
     search = (params) => {
-        const url = "v1/company/";
+        const url = "v1/company/list";
         return axiosClient.get(url, { params });
     };
     getOne = (params) => {

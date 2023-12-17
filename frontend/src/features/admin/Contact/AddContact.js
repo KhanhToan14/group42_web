@@ -22,9 +22,9 @@ function Addcontact() {
 
     const onhandleSubmit = (data) => {
         if (id) {
-            dispatch(updatecontact({ email: data.email, address: data.address, phone: data.phone, description: data.description, id: data.id }));
+            dispatch(updatecontact({ email: data.email, location: data.location, phone: data.phone, description: data.description, id: data.id }));
         } else {
-            const action = addcontact({ email: data.email, address: data.address, phone: data.phone, description: data.description, status: 0 });
+            const action = addcontact({ email: data.email, location: data.location, phone: data.phone, description: data.description, status: 0 });
             dispatch(action);
         }
         setTimeout(() => {
@@ -49,8 +49,8 @@ function Addcontact() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Địa chỉ</label>
-                        <input {...register("address", { required: true })} className="form-control w-50" placeholder="" aria-describedby="helpId" />
-                        {errors.address && <span className="text-danger">Bạn không được để trống!</span>}
+                        <input {...register("location", { required: true })} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                        {errors.location && <span className="text-danger">Bạn không được để trống!</span>}
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Số điện thoại</label>

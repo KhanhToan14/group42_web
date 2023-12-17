@@ -50,7 +50,7 @@ export default function Footer() {
                             <div className="footer__content">
                                 <div className="footer__content--location">
                                     <div className="location--title text-white">Địa chỉ : Tầng 4 tòa B1, Tạ Quang Bửu, Hai Bà Trưng, Hà Nội</div>
-                                    <div className="location--content">{ok?.address}</div>
+                                    <div className="location--content">{ok?.location}</div>
                                 </div>
                                 <div className="footer__content--contact">
                                     <div className="contact--title text-white pt-3">

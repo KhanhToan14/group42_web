@@ -57,7 +57,7 @@ function Information({ id }) {
             //       "dateOfBirth": "2002-04-01",
             //       "phone": "0867084428",
             //       "email": "dkhanhtoan14@gmail.com",
-            //       "address": null,
+            //       "location": null,
             //       "avatar": null,
             //       "role": "ADMIN",
             //       "companyId": null,
@@ -94,7 +94,7 @@ function Information({ id }) {
                     status: 1,
                     avatar: data.anh,
                     name: data.name,
-                    address: data.address,
+                    location: data.location,
                     male,
                     phone: data.phone,
                     email: data.email,
@@ -109,7 +109,7 @@ function Information({ id }) {
                     status: 1,
                     banner: data.anhBanner,
                     name: data.name,
-                    address: data.address,
+                    location: data.location,
                     male,
                     phone: data.phone,
                     email: data.email,
@@ -126,7 +126,7 @@ function Information({ id }) {
                     banner: data.anhBanner,
                     name: data.name,
                     male,
-                    address: data.address,
+                    location: data.location,
                     phone: data.phone,
                     email: data.email,
                     date,
@@ -139,7 +139,7 @@ function Information({ id }) {
                 updateuser({
                     status: 1,
                     name: data.name,
-                    address: data.address,
+                    location: data.location,
                     phone: data.phone,
                     male,
                     email: data.email,
@@ -318,7 +318,7 @@ function Information({ id }) {
                             <input
                                 type="text"
                                 className="form-control"
-                                {...register("address")}
+                                {...register("location")}
                                 id=""
                                 aria-describedby="helpId"
                                 placeholder=""
