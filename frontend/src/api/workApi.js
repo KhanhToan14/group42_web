@@ -12,6 +12,17 @@ class WorkApi {
     };
     search = (params) => {
         const url = '/v1/job/list';
+<<<<<<< HEAD
+=======
+        return axiosClient.get(url, { params });
+    };
+    getAllId = (params) => {
+        const url = '/workId';
+        return axiosClient.get(url, { params });
+    };
+    getAllRejectId = (params) => {
+        const url = '/workId/reject';
+>>>>>>> refs/remotes/origin/front-end
         return axiosClient.get(url, { params });
     };
     // getAllId = (params) => {

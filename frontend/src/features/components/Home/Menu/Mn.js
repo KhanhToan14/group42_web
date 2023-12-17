@@ -29,6 +29,8 @@ function Mn(props) {
     const line_el = createRef();
     const [user, setUser] = useState();
     okok(bar_el, nav_el, line_el);
+
+    //TODO: dependency always change => components update
     useEffect(() => {
         checkLoginApi.checkLogin().then((userData) => {
             setUser(userData);
