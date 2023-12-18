@@ -118,7 +118,7 @@ export default function Footer() {
                                 {loadMxh ? (
                                     <SpinLoad />
                                 ) : (
-                                    mxh.rows.map((ok) => (
+                                    mxh.map((ok) => (
                                         <div
                                             key={ok?.id}
                                             title={ok?.name}

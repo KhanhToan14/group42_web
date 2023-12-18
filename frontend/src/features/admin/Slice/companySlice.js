@@ -3,7 +3,7 @@ import companyApi from "../../../api/companyApi";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 export const companyData = createAsyncThunk('companys/companyData', async (page) => {
-    const company = await companyApi.getAll(page);
+    const company = await companyApi.getAll({ currentPage: page });
     return company;
 })
 const Company = createSlice({

@@ -17,17 +17,17 @@ class CompanyApi {
         });
     };
     getCompanySaveUser = (params) => {
-        const url = `/getCompanySaveUser/${params}`;
+        const url = `/v1/company/list${params}`;
         return axiosClient.get(url).then((data) => {
             return data.data;
         });
     };
     getCheck = (params) => {
-        const url = "/checkCompanys";
+        const url = "/v1/company/list";
         return axiosClient.get(url, { params });
     };
     postcompany = (params) => {
-        const url = "/companys";
+        const url = "/v1/company/list";
         return axiosClient
             .post(url, params)
             .then((data) => {

@@ -3,7 +3,7 @@ import contactApi from "../../../api/contactApi";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 export const contactData = createAsyncThunk('contacts/contactData', async (page) => {
-    const contact = await contactApi.getAll(page);
+    const contact = await contactApi.getAll({ currentPage: page });
     return contact;
 })
 const Contact = createSlice({

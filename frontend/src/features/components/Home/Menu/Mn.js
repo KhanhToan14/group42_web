@@ -76,8 +76,8 @@ function Mn(props) {
                     <Link to="/login">Đăng nhập</Link>
                 </Menu.Item>
             }
-            {user ? (user.type === "company" ? inforCompany : inforUser) : ""}
-            {user ? logOut : ""}
+            {user && (user.type === "company" ? inforCompany : inforUser)}
+            {user && logOut}
         </Menu>
     );
     return (

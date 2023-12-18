@@ -14,7 +14,7 @@ function ListCandidates() {
     const { page } = state;
     const dispatch = useDispatch();
     const actionResult = async (page) => {
-        await dispatch(userData(page));
+        dispatch(userData(page));
     };
     useEffect(() => {
         localStorage.setItem("pageUserHome", page);
@@ -35,7 +35,7 @@ function ListCandidates() {
                     {loading ? (
                         <SpinLoad />
                     ) : (
-                        users.rows.map((data, index) => (
+                        users.map((data, index) => (
                             <div className="col-md-3 " key={index}>
                                 <div className="candidate__box">
                                     <div className="candidate__box__img">
@@ -43,7 +43,9 @@ function ListCandidates() {
                                     </div>
                                     <div className="candidate__box__name">{data.name}</div>
                                     {/* <div className="candidate__box__job">{data?.TypeOfWorks[0]?.name ?? "Thiết kế website"}</div> */}
-                                    <div className="candidate__box__address">{data.address}</div>
+                                    <div className="candidate__box__address">
+                                        <span>{data.location}</span>
+                                    </div>
                                     <div className="candidate__box__viewProfile">
                                         <Link to={`/candidates/${data.id}`}>Xem hồ sơ</Link>
                                     </div>
@@ -51,14 +53,14 @@ function ListCandidates() {
                             </div>
                         ))
                     )}
+                    {loading ? (
+                        ""
+                    ) : (
+                        <div className="pagination">
+                            <Pagination defaultCurrent={page} total={users.count} />
+                        </div>
+                    )}
                 </div>
-                {loading ? (
-                    <SpinLoad />
-                ) : (
-                    <div className="pagination">
-                        <Pagination defaultCurrent={page} total={users.count} />
-                    </div>
-                )}
             </div>
         </div>
     );

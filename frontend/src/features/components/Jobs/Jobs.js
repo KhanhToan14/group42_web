@@ -76,7 +76,7 @@ export default function Jobs() {
                 typeWorkValue={typeWorkValue}
                 onTypeWork={onChangeTypeWork}
             />
-            {/* <Footer /> */}
+            <Footer />
         </div>
     );
 }
