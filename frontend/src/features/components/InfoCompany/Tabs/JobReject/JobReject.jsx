@@ -66,7 +66,7 @@ function JobsReject({
                     {!data ? (
                         <SpinLoad />
                     ) : (
-                        data.data.rows.map((ok, index) => (
+                        data.data.map((ok, index) => (
                             <div className="col-lg-12" key={index}>
                                 <div className="job__box mb-3">
                                     {hident ? (

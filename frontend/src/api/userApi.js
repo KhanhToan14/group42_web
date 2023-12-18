@@ -6,20 +6,20 @@ class UserApi {
         const url = '/v1/user/list';
         return axiosClient.get(url, { params });
     };
-    // getAllId = (params) => {
-    //     const url = '/userId';
-    //     return axiosClient.get(url, { params });
-    // };
+    getAllId = (params) => {
+        const url = '/v1/user/list';
+        return axiosClient.get(url, { params });
+    };
     getOne = async (params) => {
         const url = `/v1/user/select/${params}`;
         return await axiosClient.get(url);
     };
-    getUserSaveWork = (params) => {
-        const url = `/getUserSaveWork/${params}`;
-        return axiosClient.get(url).then(data => {
-            return data.data
-        });
-    };
+    // getUserSaveWork = (params) => {
+    //     const url = `/getUserSaveWork/${params}`;
+    //     return axiosClient.get(url).then(data => {
+    //         return data.data
+    //     });
+    // };
     postuser = (params) => {
         const url = '/users';
         return axiosClient.post(url, params).then(data => {

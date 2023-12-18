@@ -2,6 +2,11 @@
 @import "../Variable.scss";
 
 .ListJobSearch {
+    width: 100%;
+    height: 56.1vh;
+    overflow: hidden;
+    position: relative;
+
     @include jobBox();
     margin-top: 2rem;
 

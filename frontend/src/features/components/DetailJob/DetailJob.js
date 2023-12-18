@@ -8,15 +8,15 @@ import Jd from "./Jd/Jd";
 
 function DetailJob({ isAdmin }) {
     const { id } = useParams();
-    const [isLoad, setIsLoad] = useState(false)
+    const [isLoad, setIsLoad] = useState(true)
     const getApi = async () => {
         return await workApi.getOne(id).then((data) => {
             return data;
         });
     };
-    const [data, setData] = useState();
+    const [data, setData] = useState(null);
     useEffect(() => {
-        Promise.all([getApi()]).then(function (data) {
+        Promise.all([getApi()]).then((data) => {
             setData(data[0]);
         });
         window.scrollTo(0, 0);

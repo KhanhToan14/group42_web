@@ -14,7 +14,7 @@ function ListCandidates() {
     const { page } = state;
     const dispatch = useDispatch();
     const actionResult = async (page) => {
-        await dispatch(userData(page));
+        dispatch(userData(page));
     };
     useEffect(() => {
         localStorage.setItem("pageUserHome", page);
@@ -35,7 +35,7 @@ function ListCandidates() {
                     {loading ? (
                         <SpinLoad />
                     ) : (
-                        users.rows.map((data, index) => (
+                        users.map((data, index) => (
                             <div className="col-md-3 " key={index}>
                                 <div className="candidate__box">
                                     <div className="candidate__box__img">
