@@ -3,7 +3,7 @@ import typeWorkApi from "../../../api/typeWorkApi";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 export const typeWorkData = createAsyncThunk('typeWorks/typeWorkData', async (page) => {
-    const typeWork = await typeWorkApi.getAll(page);
+    const typeWork = await typeWorkApi.getAll({ currentPage: page });
     return typeWork;
 })
 const TypeWork = createSlice({

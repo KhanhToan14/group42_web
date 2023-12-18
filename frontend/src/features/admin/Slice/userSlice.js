@@ -3,7 +3,7 @@ import userApi from "../../../api/userApi";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 export const userData = createAsyncThunk('users/userData', async (page) => {
-    const user = await userApi.getAll(page);
+    const user = await userApi.getAll({ currentPage: page });
     return user;
 })
 const User = createSlice({

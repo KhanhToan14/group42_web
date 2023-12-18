@@ -1,9 +1,10 @@
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Pagination, Popconfirm, Spin, Table } from "antd";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
+import userApi from "../../../api/userApi";
 import { removeuser, userData } from "../Slice/userSlice";
 function Candidates() {
     const columns = [
@@ -21,25 +22,30 @@ function Candidates() {
         },
     ];
 
-    const users = useSelector((state) => state.users.user.data);
-    console.log("users", users);
-    const loading = useSelector((state) => state.users.loading);
+    // const users = useSelector((state) => state.users.user.data);
+    // console.log("users", users);
+    // const loading = useSelector((state) => state.users.loading);
     const dispatch = useDispatch();
     const [state, setState] = useState({
         page: localStorage.getItem("pageUser") || 1,
+        nameUsers: "",
+        users: [],
+        loading: true,
     });
-    const { page } = state;
+    const { page, nameUsers, users, loading } = state;
+    const [isLoad, setIsLoad] = useState(false);
 
-    const actionResult = (page) => {
-        dispatch(userData(page));
-    };
+    // const actionResult = (page) => {
+    //     dispatch(userData(page));
+    // };
 
     useEffect(() => {
         localStorage.setItem("pageUser", page);
-        actionResult({ page: page });
-    }, [page]);
-
-    const history = useHistory();
+        userApi.search({ page, name: nameUsers, status: 1 }).then((data) => {
+            setState({ ...state, users: data.data, loading: false });
+        })
+        // actionResult({ page: page });
+    }, [page, isLoad]);
 
     const onChangePage = (page) => {
         setState({
@@ -47,13 +53,14 @@ function Candidates() {
             pageCurent: page,
         });
     };
-    const match = useRouteMatch();
     const hangdleDelete = (e) => {
         dispatch(removeuser(e));
         setTimeout(() => {
-            actionResult({ page: page });
+            setIsLoad(!isLoad);
         }, 500);
     };
+    const match = useRouteMatch();
+
     return (
         <div id="admin">
             <div className="heading">

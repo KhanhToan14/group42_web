@@ -58,7 +58,7 @@ function CandidateInfor() {
                             </div>
                             <div className="box">
                                 <div className="title">Địa chỉ:</div>
-                                <div className="detail">{data.address}</div>
+                                <div className="detail">{data.location}</div>
                             </div>
                             <div className="box">
                                 <div className="title">Giới tính:</div>
