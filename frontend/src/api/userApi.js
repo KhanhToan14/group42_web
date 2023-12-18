@@ -6,23 +6,11 @@ class UserApi {
         const url = "/v1/user/list";
         return axiosClient.get(url, { params });
     };
-<<<<<<< HEAD
-    // getAllId = (params) => {
-    //     const url = '/userId';
-    //     return axiosClient.get(url, { params });
-    // };
-    getAllId = (params) => {
-        const url = '/userId';
-        return axiosClient.get(url, { params });
-    };
-    getOne = async (params) => {
-=======
     getAllId = (params) => {
         const url = "/v1/user/list";
         return axiosClient.get(url, { params });
     };
     getOne = (params) => {
->>>>>>> tien
         const url = `/v1/user/select/${params}`;
         return axiosClient.get(url).then((data) => {
             return data.data;
