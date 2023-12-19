@@ -175,7 +175,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 return resError;
             }
         }
-        String logo = user.getAvatar();
+        /*String logo = user.getAvatar();
         if (logo == null || logo.isBlank()) {
             user.setAvatar(null);
         } else {
@@ -197,7 +197,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                     resError.put(ERRORS, SOME_THING_WENT_WRONG_MESSAGE);
                 }
             }
-        }
+        }*/
         User inactivateUser = userMapper.selectInactivateByEmail(user.getEmail());
         if(inactivateUser != null){
             subResError.put(EMAIL, USER_EMAIL_REGISTERED_INACTIVE_ERROR);
