@@ -4,6 +4,7 @@ import com.web.recruitment.persistence.dto.User;
 import com.web.recruitment.utils.JwtUtils;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +17,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.sun.activation.registries.LogSupport.log;
 
 @Slf4j
+@WebFilter("/*")
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
@@ -30,8 +36,29 @@ public class JwtFilter extends OncePerRequestFilter {
     }
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        // server config
-        return notFilterUrls.contains(request.getRequestURI());
+//        if(request.getRequestURI().substring(0, 14).equals("/v1/job/select/")){
+//            return true;
+//        }
+//        String a = request.getRequestURI();
+//        if(a.startsWith("/v1/job/select/")){
+//            return true;
+//        }
+//        if(a.startsWith("/v1/company/select/")){
+//            return true;
+//        }
+        for (String url : notFilterUrls) {
+            if (matches(request.getRequestURI(), url)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean matches(String requestUri, String pattern) {
+        // Replace {id} with a regular expression that matches any value
+        String regexPattern = pattern.replaceAll("\\{id\\}", "[^/]+");
+        Pattern compiledPattern = Pattern.compile(regexPattern);
+        Matcher matcher = compiledPattern.matcher(requestUri);
+        return matcher.matches();
     }
 
     @Override

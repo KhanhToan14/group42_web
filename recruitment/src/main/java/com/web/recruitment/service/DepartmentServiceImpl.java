@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.service;
 
 import com.web.recruitment.api.dto.department.DepartmentInsert;
@@ -245,3 +246,4 @@ public class DepartmentServiceImpl implements DepartmentService{
         return resError;
     }
 }
+*/

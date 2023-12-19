@@ -10,7 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicantForm {
+    private int id;
     private int jobId;
     private int userId;
-    private String CV;
+    private int cvId;
+    private int delYn;
+    private String createAt;
+    private String updateAt;
 }

@@ -17,7 +17,7 @@ import javax.persistence.Enumerated;
 public class JobInsert {
     @JsonIgnore
     private int id;
-    private int departmentId;
+    private int companyId;
     private String name;
     private String description;
     private String location;

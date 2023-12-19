@@ -1,8 +1,9 @@
 package com.web.recruitment.service;
 
-import com.web.recruitment.api.dto.user.UserInsert;
 import com.web.recruitment.api.dto.user.UserUpdate;
+import com.web.recruitment.persistence.dto.ApplicantForm;
 import com.web.recruitment.persistence.dto.User;
+import com.web.recruitment.persistence.mapper.ApplicantFormMapper;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
 import com.web.recruitment.persistence.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.ws.rs.InternalServerErrorException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -31,12 +31,17 @@ public class UserServiceImpl implements UserService{
     private final UserMapper userMapper;
     @Autowired
     private final CompanyMapper companyMapper;
-
+    @Autowired
+    private final ApplicantFormMapper applicantFormMapper;
+    @Autowired
+    private final ApplicantFormService applicantFormService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserMapper userMapper, CompanyMapper companyMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserMapper userMapper, CompanyMapper companyMapper, ApplicantFormMapper applicantFormMapper, ApplicantFormService applicantFormService, PasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.companyMapper = companyMapper;
+        this.applicantFormMapper = applicantFormMapper;
+        this.applicantFormService = applicantFormService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -429,6 +434,12 @@ public class UserServiceImpl implements UserService{
         }
         userMapper.delete(id);
         resError.put(MESSAGE, SUCCESS_DELETE_USER);
+        List<ApplicantForm> listApplicantForm = applicantFormMapper.listApplicantFormByUserId(id);
+        if(listApplicantForm.size() > 0){
+            for(ApplicantForm applicantForm : listApplicantForm){
+                applicantFormService.delete(applicantForm.getId());
+            }
+        }
         return resError;
     }
 
@@ -463,6 +474,14 @@ public class UserServiceImpl implements UserService{
                 resError.put(MESSAGE, SUCCESS_DELETE_USER);
             } else{
                 resError.put(MESSAGE, SUCCESS_DELETE_USER);
+            }
+            for(int idUser : idsDeleteSuccess){
+                List<ApplicantForm> listApplicantForm = applicantFormMapper.listApplicantFormByUserId(idUser);
+                if(listApplicantForm.size() != 0){
+                    for(ApplicantForm applicantForm : listApplicantForm){
+                        applicantFormService.delete(applicantForm.getId());
+                    }
+                }
             }
         } else {
             subResError.put(DELETE_IDS, IDS_INVALID);

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JobInformation {
     private int id;
-    private int departmentId;
+    private int companyId;
     private String name;
     private String description;
     private String location;

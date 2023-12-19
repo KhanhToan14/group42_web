@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.web.recruitment.utils.ConstantMessages.*;
+import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 @Tag(name = "Job API", description = "API for functions related to job")
@@ -51,7 +52,7 @@ public class JobController {
     @PostMapping(path = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> insertJob(
-            @RequestParam(name = "departmentId") int departmentId,
+            @RequestParam(name = "companyId") int companyId,
             @RequestParam(name = "name") String name,
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "location", required = false) String location,
@@ -73,7 +74,7 @@ public class JobController {
             request = new JSONObject(map);
             return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
         }
-        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != jobMapper.selectCompanyIdByDepartmentId(departmentId)){
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != companyId){
             map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
             request = new JSONObject(map);
             return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
@@ -81,7 +82,7 @@ public class JobController {
         JSONObject res;
         Map<String, Object> resError;
         JobInsert jobInsert = new JobInsert();
-        jobInsert.setDepartmentId(departmentId);
+        jobInsert.setCompanyId(companyId);
         jobInsert.setName(name);
         jobInsert.setDescription(description);
         jobInsert.setLocation(location);
@@ -115,7 +116,7 @@ public class JobController {
         JSONObject res;
         response = jobService.select(id);
         res = new JSONObject(response);
-        if(response.get(MESSAGE).equals(NOT_FOUND_MESSAGE)){
+        if(response.containsKey(ERRORS)){
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         } else{
             return new ResponseEntity<>(res, HttpStatus.OK);
@@ -128,7 +129,7 @@ public class JobController {
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> updateJob(
             @RequestParam(name = "id") int id,
-            @RequestParam(name = "departmentId") int departmentId,
+            @RequestParam(name = "companyId") int companyId,
             @RequestParam(name = "name") String name,
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "location", required = false) String location,
@@ -150,7 +151,7 @@ public class JobController {
             request = new JSONObject(map);
             return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
         }
-        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != jobMapper.selectCompanyIdByDepartmentId(departmentId)){
+        if(userMapper.selectEmployerAndCompanyIdById(ownerId) != companyId){
             map.put(MESSAGE, YOU_CAN_NOT_USE_THIS_FUNCTION);
             request = new JSONObject(map);
             return new ResponseEntity<>(request, HttpStatus.FORBIDDEN);
@@ -159,7 +160,7 @@ public class JobController {
         Map<String, Object> resError;
         JobUpdate jobUpdate = new JobUpdate();
         jobUpdate.setId(id);
-        jobUpdate.setDepartmentId(departmentId);
+        jobUpdate.setCompanyId(companyId);
         jobUpdate.setName(name);
         jobUpdate.setDescription(description);
         jobUpdate.setLocation(location);

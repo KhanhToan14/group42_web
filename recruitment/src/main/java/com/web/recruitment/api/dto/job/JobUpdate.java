@@ -17,7 +17,7 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 public class JobUpdate {
     private Integer id;
-    private int departmentId;
+    private int companyId;
     private String name;
     private String description;
     private String location;

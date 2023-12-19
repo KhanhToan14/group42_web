@@ -25,4 +25,8 @@ public interface ApplicantFormMapper {
     int selectJobIdById(int id);
 
     int selectJobIdByCVId(int cvId);
+
+    List<ApplicantForm> listApplicantFormByJobId(int jobId);
+
+    List<ApplicantForm> listApplicantFormByUserId(int userId);
 }

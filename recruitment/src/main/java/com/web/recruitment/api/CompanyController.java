@@ -50,7 +50,7 @@ public class CompanyController {
         JSONObject res;
         response = companyService.select(id);
         res = new JSONObject(response);
-        if(response.get(MESSAGE).equals(NOT_FOUND_MESSAGE)){
+        if(response.containsKey(ERRORS)){
             return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         } else{
             return new ResponseEntity<>(res, HttpStatus.OK);

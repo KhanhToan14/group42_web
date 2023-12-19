@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.service;
 
 import com.web.recruitment.api.dto.department.DepartmentInsert;
@@ -18,3 +19,4 @@ public interface DepartmentService {
     Map<String, Object> deleteChoice(List<Integer> ids) throws Exception;
 
 }
+*/

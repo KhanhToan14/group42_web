@@ -344,7 +344,7 @@
         FROM USER_TB
         WHERE ID = #{id}
         AND ROLE = 'EMPLOYER'
-        AND DEL_YN AND EMAIL_VERIFIED_AT IS NOT NULL
+        AND DEL_YN = 0 AND EMAIL_VERIFIED_AT IS NOT NULL
     </select>
     <update id="changePassword" parameterType="map">
         UPDATE USER_TB

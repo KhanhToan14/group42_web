@@ -126,4 +126,16 @@
         FROM APPLICANT_FORM_TB
         WHERE CV_ID = #{cvId} AND DEL_YN = 0
     </select>
+    <select id="listApplicantFormByJobId" resultMap="applicantForm" parameterType="int">
+        SELECT *
+        FROM APPLICANT_FORM_TB
+        WHERE JOB_ID = #{jobId}
+        AND DEL_YN = 0
+    </select>
+    <select id="listApplicantFormByUserId" resultMap="applicantForm" parameterType="int">
+        SELECT *
+        FROM APPLICANT_FORM_TB
+        WHERE USER_ID = #{userId}
+        AND DEL_YN = 0
+    </select>
 </mapper>

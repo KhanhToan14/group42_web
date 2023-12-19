@@ -29,4 +29,10 @@ public interface JobMapper {
     int selectCompanyIdByJobId(int id);
 
     int selectCompanyIdByDepartmentId(int departmentId);
+
+    String selectNameById(int id);
+
+    Job checkNameUpdate(Map<String, Object> reqMap);
+
+    List<Job> listJobByCompanyId(int companyId);
 }
