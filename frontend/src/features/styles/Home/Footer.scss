@@ -1,0 +1,69 @@
+.footer {
+    background: url("../../images/dots.png");
+    background-color: #353a40;
+    width: 100%;
+    height: 18vh;
+    overflow: hidden;
+    position: relative;
+
+    .container-footer {
+        color: #ffffff;
+        padding: 1rem 3rem;
+        width: 100%;
+        height: 30vh;
+        overflow: hidden;
+        position: relative;
+
+        .footer__box {
+            .footer__title {
+                h3 {
+                    font-size: 1.5rem;
+                    padding: .5rem 0rem;
+                    border-bottom: 1px ridge #39393a75;
+                    margin-bottom: 0.5rem;
+                    font-weight: 300 !important;
+                    color: white;
+                }
+            }
+
+            .footer__content {
+                color: #616263;
+                font-size: .9rem;
+
+                .about {
+                    text-align: justify;
+                }
+
+                ul {
+                    margin: 0;
+                    padding: 0;
+
+                    li {
+                        list-style-type: none;
+                        padding: 0rem 0rem;
+                        transform: translateX(0px);
+                        transition: .5s;
+
+                        a {
+                            color: #616263;
+                            text-decoration: none;
+                            transition: .5s;
+
+                            &:hover {
+                                color: #c7c0c0;
+                            }
+                        }
+
+                        &:hover {
+                            transform: translateX(5px);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .col-lg-3 {
+        padding-bottom: 2rem;
+    }
+}
