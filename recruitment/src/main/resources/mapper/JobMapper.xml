@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.recruitment.persistence.mapper.JobMapper">
+    <resultMap id="job" type="com.web.recruitment.persistence.dto.Job">
+        <result column="ID" property="id"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="JOB_NM" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="LOCATION" property="location"/>
+        <result column="EMPLOYMENT_TYPE" property="employmentType"/>
+        <result column="EXPERIENCE" property="experience"/>
+        <result column="SALARY_FROM" property="salaryFrom"/>
+        <result column="SALARY_TO" property="salaryTo"/>
+        <result column="CURRENCY" property="currency"/>
+        <result column="EMAIL" property="email"/>
+        <result column="PHONE" property="phone"/>
+        <result column="QUANTITY" property="quantity"/>
+        <result column="DEAL_TIME" property="dealTime"/>
+        <result column="STATUS" property="status"/>
+        <result column="DEL_YN" property="delYn"/>
+        <result column="CREATE_AT" property="createAt"/>
+        <result column="UPDATE_AT" property="updateAt"/>
+    </resultMap>
+    <resultMap id="jobInformation" type="com.web.recruitment.api.dto.job.JobInformation">
+        <result column="ID" property="id"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="JOB_NM" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="LOCATION" property="location"/>
+        <result column="EMPLOYMENT_TYPE" property="employmentType"/>
+        <result column="EXPERIENCE" property="experience"/>
+        <result column="SALARY_FROM" property="salaryFrom"/>
+        <result column="SALARY_TO" property="salaryTo"/>
+        <result column="CURRENCY" property="currency"/>
+        <result column="EMAIL" property="email"/>
+        <result column="PHONE" property="phone"/>
+        <result column="QUANTITY" property="quantity"/>
+        <result column="DEAL_TIME" property="dealTime"/>
+    </resultMap>
+    <resultMap id="jobIntroduction" type="com.web.recruitment.api.dto.job.JobIntroduction">
+        <result column="JOB_NM" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
+    </resultMap>
+    <sql id="select_job">
+        SELECT *
+        FROM JOB_TB
+    </sql>
+    <sql id="update_job">
+        UPDATE
+        JOB_TB
+        SET COMPANY_ID = #{companyId}
+        , JOB_NM = BINARY#{name}
+        , DESCRIPTION = #{description}
+        , LOCATION = #{location}
+        , EMPLOYMENT_TYPE = #{employmentType}
+        , EXPERIENCE = #{experience}
+        , SALARY_FROM = #{salaryFrom}
+        , SALARY_TO = #{salaryTo}
+        , CURRENCY = #{currency}
+        , EMAIL = #{email}
+        , PHONE = #{phone}
+        , QUANTITY = #{quantity}
+        , DEAL_TIME = #{dealTime}
+        , STATUS = 0
+        , UPDATE_AT = NOW()
+    </sql>
+    <sql id="delete_job">
+        UPDATE
+        JOB_TB
+        SET DEL_YN = 1
+        , UPDATE_AT = NOW()
+    </sql>
+    <select id="list_job" resultMap="job" parameterType="map">
+        <include refid="select_job"></include>
+        WHERE DEL_YN = 0
+        ORDER BY CREATE_DT DESC
+    </select>
+    <select id="select" resultMap="job" parameterType="map">
+        <include refid="select_job"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
+    <!-- list phân trang-->
+    <select id="list" resultMap="jobInformation" parameterType="map">
+        <include refid="select_job"></include>
+        WHERE DEL_YN = 0
+            AND STATUS = 0
+        <if test="keyword != null">
+            AND JOB_NM LIKE CONCAT("%", #{keyword}, "%")
+        </if>
+        <if test="employmentType != null">
+            AND EMPLOYMENT_TYPE = #{employmentType}
+        </if>
+        <if test="experience != null">
+            AND EXPERIENCE = #{experience}
+        </if>
+        <if test="salaryFrom == null and salaryTo != null ">
+            AND SALARY_TO &lt; #{salaryTo}
+            AND CURRENCY = #{currency}
+        </if>
+        <if test="salaryFrom != null and salaryTo == null ">
+            AND SALARY_FROM &gt; #{salaryFrom}
+            AND CURRENCY = #{currency}
+        </if>
+        <if test="salaryFrom != null and salaryTo != null ">
+            AND SALARY_FROM &gt; #{salaryFrom}
+            AND SALARY_TO &lt; #{salaryTo}
+            AND CURRENCY = #{currency}
+        </if>
+        ORDER BY
+        <if test="sortBy == 'time'">
+            CREATE_AT
+        </if>
+        <if test="sortBy == 'name'">
+            JOB_NM
+        </if>
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="total" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM JOB_TB
+        WHERE DEL_YN = 0
+        <if test="keyword != null">
+            AND JOB_NM LIKE CONCAT("%", #{keyword}, "%")
+        </if>
+        <if test="employmentType != null">
+            AND EMPLOYMENT_TYPE = #{employmentType}
+        </if>
+        <if test="experience != null">
+            AND EXPERIENCE = #{experience}
+        </if>
+        <if test="salaryFrom == null and salaryTo != null ">
+            AND SALARY_TO &lt; #{salaryTo}
+            AND CURRENCY = #{currency}
+        </if>
+        <if test="salaryFrom != null and salaryTo == null ">
+            AND SALARY_FROM &gt; #{salaryFrom}
+            AND CURRENCY = #{currency}
+        </if>
+        <if test="salaryFrom != null and salaryTo != null ">
+            AND SALARY_FROM &gt; #{salaryFrom}
+            AND SALARY_TO &lt; #{salaryTo}
+            AND CURRENCY = #{currency}
+        </if>
+    </select>
+    <select id="selectByName" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM JOB_TB
+        WHERE JOB_NM = BINARY#{name}
+        AND COMPANY_ID = #{companyId}
+        AND DEL_YN = 0
+    </select>
+    <select id="checkNameUpdate" resultMap="job" parameterType="map">
+        SELECT *
+        FROM JOB_TB
+        WHERE JOB_NM = BINARY#{name}
+        AND COMPANY_ID = #{companyId}
+        AND DEL_YN = 0
+    </select>
+    <update id="update" parameterType="com.web.recruitment.api.dto.job.JobUpdate" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        <include refid="update_job"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </update>
+    <delete id="delete" parameterType="int">
+        <include refid="delete_job"></include>
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </delete>
+    <update id="deleteChoice" parameterType="java.util.List">
+        UPDATE
+        JOB_TB
+        SET DEL_YN = 1
+        WHERE DEL_YN = 0
+        AND ID IN
+        <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
+    </update>
+    <insert id="insert" parameterType="com.web.recruitment.api.dto.job.JobInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+            JOB_TB
+            (
+                COMPANY_ID
+                , JOB_NM
+                , DESCRIPTION
+                , LOCATION
+                , EMPLOYMENT_TYPE
+                , EXPERIENCE
+                , SALARY_FROM
+                , SALARY_TO
+                , CURRENCY
+                , EMAIL
+                , PHONE
+                , QUANTITY
+                , DEAL_TIME
+                , STATUS
+                , DEL_YN
+                , CREATE_AT
+                , UPDATE_AT
+            )
+            VALUES
+            (
+                #{companyId}
+                , BINARY#{name}
+                , #{description}
+                , #{location}
+                , #{employmentType}
+                , #{experience}
+                , #{salaryFrom}
+                , #{salaryTo}
+                , #{currency}
+                , #{email}
+                , #{phone}
+                , #{quantity}
+                , #{dealTime}
+                , 0
+                , 0
+                , NOW()
+                , NOW()
+            )
+    </insert>
+    <select id="listJobInCompany" resultMap="jobIntroduction" parameterType="map">
+    SELECT *
+    FROM JOB_TB AS j, COMPANIES_TB AS c
+    WHERE j.COMPANY_ID = c.ID
+        AND j.DEL_YN = 0
+        AND j.STATUS = 0
+        AND c.ID = #{companyId}
+    ORDER BY
+    <if test="sortBy == 'time'">
+        CREATE_AT
+    </if>
+    <if test="sortBy == 'name'">
+        j.JOB_NM
+    </if>
+    <if test="sortType == 'asc'">
+        ASC
+    </if>
+    <if test="sortType == 'desc'">
+        DESC
+    </if>
+    LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="selectCompanyIdByJobId" parameterType="int" resultType="int">
+        SELECT COMPANY_ID
+        FROM JOB_TB
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
+<!--    <select id="selectCompanyIdByDepartmentId" parameterType="int" resultType="int">-->
+<!--        SELECT d.COMPANY_ID-->
+<!--        FROM JOB_TB as j, DEPARTMENT_TB as d, COMPANIES_TB as c-->
+<!--        WHERE j.DEPARTMENT_ID = #{departmentId}-->
+<!--        AND j.DEPARTMENT_ID = d.ID-->
+<!--        AND d.COMPANY_ID = c.ID-->
+<!--        AND c.DEL_YN = 0-->
+<!--    </select>-->
+    <select id="selectNameById" resultType="String" parameterType="int">
+        SELECT JOB_NM
+        FROM JOB_TB
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
+    <select id="listJobByCompanyId" resultMap="job" parameterType="int">
+        SELECT *
+        FROM JOB_TB
+        WHERE COMPANY_ID = #{companyId}
+        AND DEL_YN = 0
+    </select>
+</mapper>

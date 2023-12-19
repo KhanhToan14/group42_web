@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.recruitment.persistence.mapper.DepartmentMapper">
+    <resultMap id="department" type="com.web.recruitment.persistence.dto.Department">
+        <result column="ID" property="id"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="DEPARTMENT_NM" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="DEL_YN" property="delYn"/>
+        <result column="CREATE_AT" property="createAt"/>
+        <result column="UPDATE_AT" property="updateAt"/>
+    </resultMap>
+    <resultMap id="departmentInformation" type="com.web.recruitment.api.dto.department.DepartmentInformation">
+        <result column="ID" property="id"/>
+        <result column="COMPANY_ID" property="companyId"/>
+        <result column="DEPARTMENT_NM" property="name"/>
+        <result column="DESCRIPTION" property="description"/>
+    </resultMap>
+    <sql id="select_department">
+        SELECT *
+        FROM DEPARTMENT_TB
+    </sql>
+    <sql id="update_department">
+        UPDATE
+            DEPARTMENT_TB
+        SET COMPANY_ID = #{companyId}
+            , DEPARTMENT_NM = BINARY#{name}
+            , DESCRIPTION = #{description}
+            , UPDATE_AT = NOW()
+    </sql>
+    <sql id="delete_department">
+        UPDATE
+            DEPARTMENT_TB
+        SET DEL_YN = 1
+            , UPDATE_AT = NOW()
+    </sql>
+    <select id="list_department" resultMap="department" parameterType="map">
+        <include refid="select_department"></include>
+        WHERE DEL_YN = 0
+        ORDER BY CREATE_DT DESC
+    </select>
+    <select id="select" resultMap="department" parameterType="map">
+        <include refid="select_department"></include>
+        WHERE ID = #{id}
+            AND DEL_YN = 0
+    </select>
+    <!-- list phân trang-->
+    <select id="list" resultMap="departmentInformation" parameterType="map">
+        <include refid="select_department"></include>
+        WHERE DEL_YN = 0
+        <if test="keyword != null">
+            AND DEPARTMENT_NM LIKE CONCAT("%", #{keyword}, "%")
+        </if>
+        ORDER BY
+        <if test="sortBy == 'time'">
+            CREATE_AT
+        </if>
+        <if test="sortBy == 'name'">
+            DEPARTMENT_NM
+        </if>
+        <if test="sortType == 'asc'">
+            ASC
+        </if>
+        <if test="sortType == 'desc'">
+            DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="total" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM DEPARTMENT_TB
+        WHERE DEL_YN = 0
+        <if test="keyword != null">
+            AND DEPARTMENT_NM LIKE CONCAT("%", #{keyword}, "%")
+        </if>
+    </select>
+    <insert id="insert" parameterType="com.web.recruitment.api.dto.department.DepartmentInsert" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO
+            DEPARTMENT_TB
+            (
+                COMPANY_ID
+                , DEPARTMENT_NM
+                , DESCRIPTION
+                , DEL_YN
+                , CREATE_AT
+                , UPDATE_AT
+            )
+        VALUES
+            (
+                #{companyId}
+                , BINARY#{name}
+                , #{description}
+                , 0
+                , NOW()
+                , NOW()
+            )
+    </insert>
+
+    <select id="selectByName" resultType="int" parameterType="map">
+        SELECT COUNT(ID)
+        FROM DEPARTMENT_TB
+        WHERE DEPARTMENT_NM = BINARY#{name}
+            AND DEL_YN = 0
+    </select>
+    <update id="update" parameterType="com.web.recruitment.api.dto.department.DepartmentUpdate" keyColumn="id"
+            keyProperty="id"
+            useGeneratedKeys="true">
+        <include refid="update_department"></include>
+        WHERE ID = #{id}
+            AND DEL_YN = 0
+    </update>
+    <delete id="delete" parameterType="int">
+        <include refid="delete_department"></include>
+        WHERE ID = #{id}
+            AND DEL_YN = 0
+    </delete>
+    <update id="deleteChoice" parameterType="java.util.List">
+        UPDATE
+            DEPARTMENT_TB
+        SET DEL_YN = 1
+        WHERE DEL_YN = 0
+            AND ID IN
+        <foreach item="listId" index="index" collection="list" open="(" separator="," close=")">#{listId}</foreach>
+    </update>
+<!--    <select id="selectDepartmentByCompanyId" resultType="int" parameterType="map">-->
+<!--        SELECT COUNT(*)-->
+<!--        FROM DEPARTMENT_TB AS d, COMPANIES_TB AS c-->
+<!--        WHERE d.COMPANY_ID = c.ID-->
+<!--        AND c.ID = #{companyId}-->
+<!--            AND c.DEL_YN = 0-->
+<!--    </select>-->
+    <select id="selectCompanyIdById" resultType="int" parameterType="int">
+        SELECT COMPANY_ID
+        FROM DEPARTMENT_TB
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
+</mapper>
