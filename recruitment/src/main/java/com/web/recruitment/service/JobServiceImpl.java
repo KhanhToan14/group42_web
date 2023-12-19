@@ -2,9 +2,10 @@ package com.web.recruitment.service;
 
 import com.web.recruitment.api.dto.job.JobInsert;
 import com.web.recruitment.api.dto.job.JobUpdate;
+import com.web.recruitment.persistence.dto.ApplicantForm;
 import com.web.recruitment.persistence.dto.Job;
+import com.web.recruitment.persistence.mapper.ApplicantFormMapper;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
-import com.web.recruitment.persistence.mapper.DepartmentMapper;
 import com.web.recruitment.persistence.mapper.JobMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,15 @@ public class JobServiceImpl implements JobService{
     @Autowired
     private final CompanyMapper companyMapper;
     @Autowired
-    private final DepartmentMapper departmentMapper;
+    private final ApplicantFormMapper applicantFormMapper;
+    @Autowired
+    private final ApplicantFormService applicantFormService;
 
-    public JobServiceImpl(JobMapper jobMapper, CompanyMapper companyMapper, DepartmentMapper departmentMapper) {
+    public JobServiceImpl(JobMapper jobMapper, CompanyMapper companyMapper, ApplicantFormMapper applicantFormMapper, ApplicantFormService applicantFormService) {
         this.jobMapper = jobMapper;
         this.companyMapper = companyMapper;
-        this.departmentMapper = departmentMapper;
+        this.applicantFormMapper = applicantFormMapper;
+        this.applicantFormService = applicantFormService;
     }
 
     @Override
@@ -41,9 +45,9 @@ public class JobServiceImpl implements JobService{
     public Map<String, Object> insert(JobInsert jobInsert) throws Exception{
         Map<String, Object> subResError = new HashMap<>();
         Map<String, Object> resError = new HashMap<>();
-        int departmentId = jobInsert.getDepartmentId();
-        if(departmentMapper.select(departmentId) == null){
-            subResError.put(DEPARTMENT_ID, DEPARTMENT_NOT_FOUND);
+        int companyId = jobInsert.getCompanyId();
+        if(companyMapper.select(companyId) == null){
+            subResError.put(COMPANY_ID, COMPANY_ID_NOT_EXIST);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
@@ -58,6 +62,7 @@ public class JobServiceImpl implements JobService{
             name = name.trim();
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put(NAME, name);
+            reqMap.put(COMPANY_ID, companyId);
             if(jobMapper.selectByName(reqMap) != 0){
                 subResError.put(NAME, NAME_EXIST);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -104,8 +109,6 @@ public class JobServiceImpl implements JobService{
             return resError;
         } else {
             email = email.trim();
-            Map<String, Object> map = new HashMap<>();
-            map.put(EMAIL, email);
             if(!validateEmail(email)){
                 subResError.put(EMAIL, EMAIL_INVALID);
                 resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
@@ -156,36 +159,44 @@ public class JobServiceImpl implements JobService{
             resError.put(ERRORS, subResError);
             return resError;
         }
-        if(departmentMapper.select(jobUpdate.getId()) == null){
+        if(jobMapper.select(jobUpdate.getId()) == null){
             subResError.put(ID, ID_NOT_EXIST_ERROR);
             resError.put(MESSAGE, NOT_FOUND_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         }
-        int departmentId = jobUpdate.getDepartmentId();
-        if(departmentMapper.select(departmentId) == null){
-            subResError.put(DEPARTMENT_ID, DEPARTMENT_NOT_FOUND);
+        int companyId = jobUpdate.getCompanyId();
+        if(companyMapper.select(companyId) == null){
+            subResError.put(COMPANY_ID, COMPANY_ID_NOT_EXIST);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         }
-        String name = jobUpdate.getName();
-        if(name == null || name.isBlank()){
+        String nameCurrent = jobMapper.selectNameById(jobUpdate.getId());
+        String nameUpdate = jobUpdate.getName();
+        if(nameUpdate == null || nameUpdate.isBlank()){
             subResError.put(NAME, NAME_MUST_NOT_NULL);
             resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
             resError.put(ERRORS, subResError);
             return resError;
         } else {
-            name = name.trim();
+            nameUpdate = nameUpdate.trim();
             Map<String, Object> reqMap = new HashMap<>();
-            reqMap.put(NAME, name);
-            if(jobMapper.selectByName(reqMap) != 0){
-                subResError.put(NAME, NAME_EXIST);
-                resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
-                resError.put(ERRORS, subResError);
-                return resError;
+            reqMap.put(NAME, nameUpdate);
+            reqMap.put(COMPANY_ID, companyId);
+            Job jobCheck;
+            jobCheck = jobMapper.checkNameUpdate(reqMap);
+            if(jobCheck != null){
+                if(jobCheck.getId() != jobUpdate.getId()){
+                    subResError.put(NAME, NAME_EXIST);
+                    resError.put(MESSAGE, INVALID_INPUT_MESSAGE);
+                    resError.put(ERRORS, subResError);
+                    return resError;
+                } else{
+                    jobUpdate.setName(nameUpdate);
+                }
             } else {
-                jobUpdate.setName(name);
+                jobUpdate.setName(nameUpdate);
             }
         }
         String description = jobUpdate.getDescription();
@@ -344,6 +355,12 @@ public class JobServiceImpl implements JobService{
         }
         jobMapper.delete(id);
         resError.put(MESSAGE, SUCCESS_DELETE_JOB);
+        List<ApplicantForm> listApplicantForm = applicantFormMapper.listApplicantFormByJobId(id);
+        if(listApplicantForm.size() > 0){
+            for(ApplicantForm applicantForm : listApplicantForm){
+                applicantFormService.delete(applicantForm.getId());
+            }
+        }
         return resError;
     }
 
@@ -378,6 +395,14 @@ public class JobServiceImpl implements JobService{
                 resError.put(MESSAGE, SUCCESS_DELETE_JOB);
             } else{
                 resError.put(MESSAGE, SUCCESS_DELETE_JOB);
+            }
+            for(int idJob : idsDeleteSuccess){
+                List<ApplicantForm> listApplicantForm = applicantFormMapper.listApplicantFormByJobId(idJob);
+                if(listApplicantForm.size() != 0){
+                    for(ApplicantForm applicantForm : listApplicantForm){
+                        applicantFormService.delete(applicantForm.getId());
+                    }
+                }
             }
         } else {
             subResError.put(DELETE_IDS, IDS_INVALID);

@@ -3,7 +3,7 @@
 <mapper namespace="com.web.recruitment.persistence.mapper.JobMapper">
     <resultMap id="job" type="com.web.recruitment.persistence.dto.Job">
         <result column="ID" property="id"/>
-        <result column="DEPARTMENT_ID" property="departmentId"/>
+        <result column="COMPANY_ID" property="companyId"/>
         <result column="JOB_NM" property="name"/>
         <result column="DESCRIPTION" property="description"/>
         <result column="LOCATION" property="location"/>
@@ -23,7 +23,7 @@
     </resultMap>
     <resultMap id="jobInformation" type="com.web.recruitment.api.dto.job.JobInformation">
         <result column="ID" property="id"/>
-        <result column="DEPARTMENT_ID" property="departmentId"/>
+        <result column="COMPANY_ID" property="companyId"/>
         <result column="JOB_NM" property="name"/>
         <result column="DESCRIPTION" property="description"/>
         <result column="LOCATION" property="location"/>
@@ -48,7 +48,7 @@
     <sql id="update_job">
         UPDATE
         JOB_TB
-        SET DEPARTMENT_ID = #{departmentId}
+        SET COMPANY_ID = #{companyId}
         , JOB_NM = BINARY#{name}
         , DESCRIPTION = #{description}
         , LOCATION = #{location}
@@ -61,7 +61,7 @@
         , PHONE = #{phone}
         , QUANTITY = #{quantity}
         , DEAL_TIME = #{dealTime}
-        , STATUS = #{status}
+        , STATUS = 0
         , UPDATE_AT = NOW()
     </sql>
     <sql id="delete_job">
@@ -153,6 +153,14 @@
         SELECT COUNT(ID)
         FROM JOB_TB
         WHERE JOB_NM = BINARY#{name}
+        AND COMPANY_ID = #{companyId}
+        AND DEL_YN = 0
+    </select>
+    <select id="checkNameUpdate" resultMap="job" parameterType="map">
+        SELECT *
+        FROM JOB_TB
+        WHERE JOB_NM = BINARY#{name}
+        AND COMPANY_ID = #{companyId}
         AND DEL_YN = 0
     </select>
     <update id="update" parameterType="com.web.recruitment.api.dto.job.JobUpdate" keyColumn="id"
@@ -181,7 +189,7 @@
         INSERT INTO
             JOB_TB
             (
-                DEPARTMENT_ID
+                COMPANY_ID
                 , JOB_NM
                 , DESCRIPTION
                 , LOCATION
@@ -201,7 +209,7 @@
             )
             VALUES
             (
-                #{departmentId}
+                #{companyId}
                 , BINARY#{name}
                 , #{description}
                 , #{location}
@@ -222,11 +230,11 @@
     </insert>
     <select id="listJobInCompany" resultMap="jobIntroduction" parameterType="map">
     SELECT *
-    FROM JOB_TB AS j, DEPARTMENT_TB AS d
-    WHERE j.DEPARTMENT = d.ID
+    FROM JOB_TB AS j, COMPANIES_TB AS c
+    WHERE j.COMPANY_ID = c.ID
         AND j.DEL_YN = 0
         AND j.STATUS = 0
-        AND d.COMPANY_ID = #{companyId}
+        AND c.ID = #{companyId}
     ORDER BY
     <if test="sortBy == 'time'">
         CREATE_AT
@@ -243,19 +251,29 @@
     LIMIT #{limit} OFFSET #{offset}
     </select>
     <select id="selectCompanyIdByJobId" parameterType="int" resultType="int">
-        SELECT d.COMPANY_ID
-        FROM JOB_TB as j, DEPARTMENT_TB as d, COMPANIES_TB as c
-        WHERE j.ID = #{id}
-        AND j.DEPARTMENT_ID = d.ID
-        AND d.COMPANY_ID = c.ID
-        AND c.DEL_YN = 0
+        SELECT COMPANY_ID
+        FROM JOB_TB
+        WHERE ID = #{id}
+        AND DEL_YN = 0
     </select>
-    <select id="selectCompanyIdByDepartmentId" parameterType="int" resultType="int">
-        SELECT d.COMPANY_ID
-        FROM JOB_TB as j, DEPARTMENT_TB as d, COMPANIES_TB as c
-        WHERE j.DEPARTMENT_ID = #{departmentId}
-        AND j.DEPARTMENT_ID = d.ID
-        AND d.COMPANY_ID = c.ID
-        AND c.DEL_YN = 0
+<!--    <select id="selectCompanyIdByDepartmentId" parameterType="int" resultType="int">-->
+<!--        SELECT d.COMPANY_ID-->
+<!--        FROM JOB_TB as j, DEPARTMENT_TB as d, COMPANIES_TB as c-->
+<!--        WHERE j.DEPARTMENT_ID = #{departmentId}-->
+<!--        AND j.DEPARTMENT_ID = d.ID-->
+<!--        AND d.COMPANY_ID = c.ID-->
+<!--        AND c.DEL_YN = 0-->
+<!--    </select>-->
+    <select id="selectNameById" resultType="String" parameterType="int">
+        SELECT JOB_NM
+        FROM JOB_TB
+        WHERE ID = #{id}
+        AND DEL_YN = 0
+    </select>
+    <select id="listJobByCompanyId" resultMap="job" parameterType="int">
+        SELECT *
+        FROM JOB_TB
+        WHERE COMPANY_ID = #{companyId}
+        AND DEL_YN = 0
     </select>
 </mapper>

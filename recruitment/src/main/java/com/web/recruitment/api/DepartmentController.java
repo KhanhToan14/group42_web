@@ -1,3 +1,4 @@
+/*
 package com.web.recruitment.api;
 
 import com.web.recruitment.api.dto.DeleteRequest;
@@ -246,3 +247,4 @@ public class DepartmentController {
     }
 
 }
+*/

@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.InternalServerErrorException;
 import java.util.HashMap;
@@ -161,7 +162,7 @@ public class UserController {
     }*/
 
     @Operation(summary = "Update user API", description = "update user")
-    @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<Object> updateUser(
             @RequestParam(name = "username") String username,

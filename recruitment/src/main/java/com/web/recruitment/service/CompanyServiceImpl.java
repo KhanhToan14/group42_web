@@ -4,15 +4,14 @@ package com.web.recruitment.service;
 import com.web.recruitment.api.dto.company.CompanyInsert;
 import com.web.recruitment.api.dto.company.CompanyUpdate;
 import com.web.recruitment.persistence.dto.Company;
+import com.web.recruitment.persistence.dto.Job;
 import com.web.recruitment.persistence.mapper.CompanyMapper;
-import com.web.recruitment.utils.ImageUtils;
-import com.web.recruitment.utils.ValidationUtils;
+import com.web.recruitment.persistence.mapper.JobMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +25,14 @@ import static com.web.recruitment.utils.ValidationUtils.*;
 public class CompanyServiceImpl implements CompanyService{
     @Autowired
     private final CompanyMapper companyMapper;
-
-    public CompanyServiceImpl(CompanyMapper companyMapper) {
+    @Autowired
+    private final JobMapper jobMapper;
+    @Autowired
+    private final JobService jobService;
+    public CompanyServiceImpl(CompanyMapper companyMapper, JobMapper jobMapper, JobService jobService) {
         this.companyMapper = companyMapper;
+        this.jobMapper = jobMapper;
+        this.jobService = jobService;
     }
 
     @Override
@@ -332,6 +336,12 @@ public class CompanyServiceImpl implements CompanyService{
         }
         companyMapper.delete(id);
         resError.put(MESSAGE, SUCCESS_DELETE_COMPANY);
+        List<Job> listJob = jobMapper.listJobByCompanyId(id);
+        if(listJob.size() != 0){
+            for(Job job : listJob){
+                jobService.delete(job.getId());
+            }
+        }
         return resError;
     }
     @Override
@@ -365,6 +375,14 @@ public class CompanyServiceImpl implements CompanyService{
                 resError.put(MESSAGE, SUCCESS_DELETE_COMPANY);
             } else{
                 resError.put(MESSAGE, SUCCESS_DELETE_COMPANY);
+            }
+            for(int idCompany : idsDeleteSuccess){
+                List<Job> listJob = jobMapper.listJobByCompanyId(idCompany);
+                if(listJob.size() != 0){
+                    for(Job job : listJob){
+                        jobService.delete(job.getId());
+                    }
+                }
             }
         } else {
             subResError.put(DELETE_IDS, IDS_INVALID);
