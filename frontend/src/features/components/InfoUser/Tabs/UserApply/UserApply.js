@@ -14,7 +14,12 @@ function UserApply({ id }) {
         getApi();
     }, []);
     return (
-        <div className="ListJob">
+        <div style={{
+            width: "100%",
+            height: "65.3vh",
+            overflow: "hidden",
+            position: "relative"
+        }} className="ListJob">
             <div className="heading">
                 <div className="heading__title">
                     <h3>Công việc đã ứng tuyển</h3>

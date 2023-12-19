@@ -49,7 +49,12 @@ function ChangePassword({ id }) {
                 <div className="heading__hr"></div>
             </div>
 
-            <div className="content">
+            <div style={{
+                width: "100%",
+                height: "57vh",
+                overflow: "hidden",
+                position: "relative"
+            }} className="content">
                 <form action="" onSubmit={handleSubmit(onSubmit)}>
                     <div style={{
                         display: "flex",

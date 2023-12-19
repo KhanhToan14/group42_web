@@ -34,6 +34,11 @@ export default function Footer() {
                         <div className="footer__box">
                             <div className="footer__title">
                                 <h3>Giới thiệu</h3>
+                                <p>Tên website: Recruitment Management <br />
+                                    Nhóm phát triển: Group42 <br />
+                                    Phiên bản: 1.0 <br />
+                                    Mục tiêu:
+                                    Tối ưu hóa quy trình quản lý tuyển dụng, <br />cung cấp giải pháp cho bài toán quản lý tuyển dụng. </p>
                             </div>
                             <div className="footer__content">
                                 <div className="about">

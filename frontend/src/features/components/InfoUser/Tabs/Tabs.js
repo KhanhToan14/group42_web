@@ -14,10 +14,10 @@ function Tab({ id }) {
                 </TabPane> */}
                 {/* <TabPane tab="Công việc đã lưu" key="2">
                     <WorkSave id={id} />
-                </TabPane>
+                </TabPane> */}
                 <TabPane tab="Công việc đã ứng tuyển" key="3">
                     <UserApply id={id} />
-                </TabPane> */}
+                </TabPane>
                 <TabPane tab="Thông tin cá nhân" key="4">
                     <Information id={id} />
                 </TabPane>

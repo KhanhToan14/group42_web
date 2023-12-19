@@ -226,7 +226,12 @@ function Information({ id }) {
     }
 
     return (
-        <div className="information">
+        <div style={{
+            width: "100%",
+            height: "65.3vh",
+            overflow: "hidden",
+            position: "relative"
+        }} className="information">
             <div className="heading">
                 <div className="heading__title">
                     <h3>Thông tin cá nhân</h3>
